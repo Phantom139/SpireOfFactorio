@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfdtwgiut575i"]
+
+[ext_resource type="Texture2D" uid="uid://bq6s006eyeuc" path="res://SpireOfFactorio/images/charui/big_scrap.png" id="1_ijfhh"]
+
+[node name="engineer_scrap_counter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Layers" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScrapVfxFront" type="Node2D" parent="Layers"]
+position = Vector2(49, 47)
+
+[node name="TextureRect" type="TextureRect" parent="Layers"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_ijfhh")
+
+[node name="ScrapCount" type="Label" parent="."]
+layout_mode = 0
+offset_right = 101.0
+offset_bottom = 97.0
+theme_override_colors/font_color = Color(0.45490196, 0, 0.015686275, 1)
+theme_override_colors/font_outline_color = Color(0.89474297, 0.48621905, 0.15829176, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 16
+theme_override_constants/shadow_outline_size = 16
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1

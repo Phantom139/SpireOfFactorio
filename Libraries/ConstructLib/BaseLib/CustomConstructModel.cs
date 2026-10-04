@@ -1,0 +1,266 @@
+﻿using BaseLib.Abstracts;
+using BaseLib.Extensions;
+using BaseLib.Patches.Content;
+using HarmonyLib;
+using MegaCrit.Sts2.Core.Animation;
+using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using SpireOfFactorio.Libraries.ConstructLib.Construct;
+using SpireOfFactorio.SpireOfFactorioCode.Powers;
+using SpireOfFactorio.SpireOfFactorioCode.Relics;
+using SpireOfFactorio.SpireOfFactorioCode.Util;
+
+namespace SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+
+public abstract class CustomConstructModel : ConstructModel, ICustomModel, ISceneConversions
+{
+    public CustomConstructModel()
+    {
+        CustomContentDictionary.RegisterType(GetType());
+    }
+
+    /// <summary>
+    /// Override this or place your scene at res://scenes/creature_visuals/modname-class_name.tscn
+    /// </summary>
+    public virtual string? CustomVisualPath => null;
+
+    /// <summary>
+    /// Use if you want to generate creature visuals entirely yourself.
+    /// If you do, you'll also need to override AssetPaths to not include VisualPath.
+    /// <code>public override IEnumerable&lt;string&gt; AssetPaths
+    /// {
+    ///     get
+    ///     {
+    ///         List&lt;string&gt; assetPaths = [];
+    ///         foreach (AbstractIntent intent in GetIntents())
+    ///             assetPaths.AddRange(intent.AssetPaths);
+    ///        return assetPaths;
+    ///     }
+    /// }</code>
+    /// Otherwise, just override CustomVisualPath.
+    /// </summary>
+    /// <returns></returns>
+    public virtual NCreatureVisuals? CreateCustomVisuals()
+    {
+        return null;
+    }
+
+
+    public virtual string? CustomAttackSfx => null;
+    public virtual string? CustomCastSfx => null;
+    public virtual string? CustomDeathSfx => null;
+
+
+
+    /// <summary>
+    /// Override and return a CreatureAnimator if you need to set up states that differ from the default for the monster.
+    /// Using <seealso cref="SetupAnimationState"/> is suggested.
+    /// </summary>
+    /// <returns></returns>
+    public virtual CreatureAnimator? SetupCustomAnimationStates(MegaSprite controller)
+    {
+        return null;
+    }
+
+    /// <summary>
+    /// If you have a spine animation without all the required animations,
+    /// use this method to set up a controller that will use animations of your choice for each animation.
+    /// Any omitted animation parameters will default to the idle animation.
+    /// </summary>
+    /// <param name="controller"></param>
+    /// <param name="idleName"></param>
+    /// <param name="deadName"></param>
+    /// <param name="deadLoop"></param>
+    /// <param name="hitName"></param>
+    /// <param name="hitLoop"></param>
+    /// <param name="attackName"></param>
+    /// <param name="attackLoop"></param>
+    /// <param name="castName"></param>
+    /// <param name="castLoop"></param>
+    /// <returns></returns>
+    public static CreatureAnimator SetupAnimationState(MegaSprite controller, string idleName,
+        string? deadName = null, bool deadLoop = false,
+        string? hitName = null, bool hitLoop = false,
+        string? attackName = null, bool attackLoop = false,
+        string? castName = null, bool castLoop = false)
+    {
+        var idleAnim = new AnimState(idleName, true);
+        var deadAnim = deadName == null ? idleAnim : new AnimState(deadName, deadLoop);
+        var hitAnim = hitName == null
+            ? idleAnim
+            : new AnimState(hitName, hitLoop)
+            {
+                NextState = idleAnim
+            };
+        var attackAnim = attackName == null
+            ? idleAnim
+            : new AnimState(attackName, attackLoop)
+            {
+                NextState = idleAnim
+            };
+        var castAnim = castName == null
+            ? idleAnim
+            : new AnimState(castName, castLoop)
+            {
+                NextState = idleAnim
+            };
+
+        var animator = new CreatureAnimator(idleAnim, controller);
+
+        animator.AddAnyState("Idle", idleAnim);
+        animator.AddAnyState("Dead", deadAnim);
+        animator.AddAnyState("Hit", hitAnim);
+        animator.AddAnyState("Attack", attackAnim);
+        animator.AddAnyState("Cast", castAnim);
+
+        return animator;
+    }
+
+    public void RegisterSceneConversions()
+    {
+        CustomVisualPath?.RegisterSceneForConversion<NCreatureVisuals>();
+    }
+
+    public bool IsDisabled()
+    {
+        return Creature.HasPower<DisabledPower>();
+    }
+
+    public int Overclock()
+    {
+        if (Creature.HasPower<OverclockPower>())
+        {
+            return Creature.GetPowerAmount<OverclockPower>();
+        }
+        return 0;
+    }
+
+    public decimal OverclockPercent()
+    {
+        if (Overclock() == 0)
+        {
+            return 1;
+        }
+        return Overclock() * OverclockPower.OverclockMultiplier / 100 + 1;
+    }
+
+    public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+    {
+        // If the player died, stop
+        if (creature.PetOwner == null)
+        {
+            return;
+        }
+
+        if (creature.PetOwner.GetRelic<RecoveryManual>() != null)
+        {
+            // Fetch the source card
+            if (creature.Monster is ConstructModel construct)
+            {
+                // If the player killed the construct, abort
+                if (construct.PlayerDismantled == true)
+                {
+                    return;
+                }
+                CardPlay sourceCard = construct.SourceCard;
+                if (sourceCard != null)
+                {
+                    CustomResourceCost<Scrap> cardCost = CustomResources<Scrap>.Cost(sourceCard.Card);
+                    if (cardCost.Canonical > 0)
+                    {
+                        decimal scrapGained = decimal.Ceiling(cardCost.Canonical * (RecoveryManual.recover_percent / 100));
+                        var scrap = CustomResources<Scrap>.Get(creature.PetOwner.PlayerCombatState!);
+                        scrap.ModifyAmount((int)scrapGained);
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+[HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.CreateVisuals))]
+class CreateVisuals
+{
+    [HarmonyPrefix]
+    static bool CustomCreateVisuals(MonsterModel __instance, ref NCreatureVisuals? __result)
+    {
+        if (__instance is not CustomConstructModel customMonster) return true;
+
+        __result = customMonster.CreateCustomVisuals();
+        return __result == null;
+    }
+}
+
+[HarmonyPatch(typeof(MonsterModel), "VisualsPath", MethodType.Getter)] //TODO - swap to an override
+class VisualsPath
+{
+    [HarmonyPrefix]
+    static bool CustomVisualsPath(MonsterModel __instance, ref string? __result)
+    {
+        if (__instance is not CustomConstructModel customMonster) return true;
+
+        __result = customMonster.CustomVisualPath;
+        return __result == null;
+    }
+}
+
+[HarmonyPatch(typeof(MonsterModel), nameof(MonsterModel.GenerateAnimator))]
+class GenerateAnimatorPatchMonster
+{
+    [HarmonyPrefix]
+    static bool CustomAnimator(MonsterModel __instance, MegaSprite controller, ref CreatureAnimator? __result)
+    {
+        if (__instance is not CustomConstructModel customMon)
+            return true;
+
+        __result = customMon.SetupCustomAnimationStates(controller);
+        return __result == null;
+    }
+}
+
+[HarmonyPatch(typeof(MonsterModel), "AttackSfx", MethodType.Getter)]
+class AttackSfxMonster
+{
+    [HarmonyPrefix]
+    static bool Custom(MonsterModel __instance, ref string? __result)
+    {
+        if (__instance is not CustomConstructModel customMon)
+            return true;
+
+        __result = customMon.CustomAttackSfx;
+        return __result == null;
+    }
+}
+
+[HarmonyPatch(typeof(MonsterModel), "CastSfx", MethodType.Getter)]
+class CastSfxMonster
+{
+    [HarmonyPrefix]
+    static bool Custom(MonsterModel __instance, ref string? __result)
+    {
+        if (__instance is not CustomConstructModel customMon)
+            return true;
+
+        __result = customMon.CustomCastSfx;
+        return __result == null;
+    }
+}
+
+[HarmonyPatch(typeof(MonsterModel), "DeathSfx", MethodType.Getter)]
+class DeathSfxMonster
+{
+    [HarmonyPrefix]
+    static bool Custom(MonsterModel __instance, ref string? __result)
+    {
+        if (__instance is not CustomConstructModel customMon)
+            return true;
+
+        __result = customMon.CustomDeathSfx;
+        return __result == null;
+    }
+}

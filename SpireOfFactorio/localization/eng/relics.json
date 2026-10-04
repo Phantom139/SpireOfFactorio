@@ -1,0 +1,77 @@
+{
+  "SPIREOFFACTORIO-LONG_HANDED_INSERTER.title": "Long-Handed Inserter",
+  "SPIREOFFACTORIO-LONG_HANDED_INSERTER.description": "At the end of your turn, put a random card from your discard pile on the top of your draw pile",
+  "SPIREOFFACTORIO-LONG_HANDED_INSERTER.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-ROCKET_FUEL.title": "Rocket Fuel",
+  "SPIREOFFACTORIO-ROCKET_FUEL.description": "Whenever you play a card that costs {energyPrefix:energyIcons(3)} or more, increase the counter on this relic. At the start of your turn gain {energyPrefix:energyIcons(1)} equal to half the number of stacks on this relic. Resets at the end of combat.",
+  "SPIREOFFACTORIO-ROCKET_FUEL.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.title": "Portable Fission Reactor",
+  "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.description": "All power cards no longer cost {Energy:energyIcons()}, lose [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold] and [blue]{StrengthPower}[/blue] [gold]Strength[/gold] at the start of combat.",
+  "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-PORTABLE_ENERGY_SHIELD.title": "Portable Energy Shield",
+  "SPIREOFFACTORIO-PORTABLE_ENERGY_SHIELD.description": "At the start of non-boss combat, gain [blue]{ArtifactStart}[/blue] [gold]Artifact[/gold]. If you end a turn with more than [blue]{Block}[/blue] [gold]Block[/gold], gain [blue]{ArtifactGain}[/blue] [gold]Artifact[/gold]",
+  "SPIREOFFACTORIO-PORTABLE_ENERGY_SHIELD.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-EFFICIENCY_MODULE.title": "Efficiency Module",
+  "SPIREOFFACTORIO-EFFICIENCY_MODULE.description": "Reduce the {energyPrefix:energyIcons(1)}, {Stars:starIcons()}, and {Scrap:scrapIcons()} cost of all non X cards that cost at least {energyPrefix:energyIcons(2)} by one for the first [blue]{EfficiencyModuleCardsPlayed}[/blue] cards played each turn.",
+  "SPIREOFFACTORIO-EFFICIENCY_MODULE.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-SPEED_MODULE.title": "Speed Module",
+  "SPIREOFFACTORIO-SPEED_MODULE.description": "Store the first card you play each turn on the relic. Each additional card played adds one to the relic counter. At the start of your next turn re-add the saved card to your hand with an increased {energyPrefix:energyIcons(1)} cost, but replay equal to the counter on the relic, then reset the counter.",
+  "SPIREOFFACTORIO-SPEED_MODULE.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-BIOFLUX.title": "Bioflux",
+  "SPIREOFFACTORIO-BIOFLUX.description": "At the start of combat, heal [green]{Heal1}[/green] HP. If your HP at the end of combat is lower than when you entered the room, heal an additional [green]{Heal2}[/green] HP.",
+  "SPIREOFFACTORIO-BIOFLUX.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-PRODUCTIVITY_MODULE.title": "Productivity Module",
+  "SPIREOFFACTORIO-PRODUCTIVITY_MODULE.description": "Whenever you play a card, all copies of the same card in your hand that cost at least {energyPrefix:energyIcons(1)} have their cost reduced by {energyPrefix:energyIcons(1)} for that turn, but their attack and block values are reduced by 20%.",
+  "SPIREOFFACTORIO-PRODUCTIVITY_MODULE.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-UTILITY_SCIENCE_PACK.title": "Utility Science Pack",
+  "SPIREOFFACTORIO-UTILITY_SCIENCE_PACK.description": "Whenever you draw a [gold]Status[/gold] card, it transforms into [gold]{Cards:plural:Complex Recipe|Complex Recipes}[/gold].",
+  "SPIREOFFACTORIO-UTILITY_SCIENCE_PACK.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-RECYCLER.title": "Recycler",
+  "SPIREOFFACTORIO-RECYCLER.description": "Whenever you discard a card, increase the counter on this relic. At [blue]{Recycle}[/blue] stacks, the next discarded card will be upgraded and re-added to your hand. The stack count on the relic will then reset.",
+  "SPIREOFFACTORIO-RECYCLER.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-FIRST_GEAR.title": "First Gear",
+  "SPIREOFFACTORIO-FIRST_GEAR.description": "At the start of each combat, gain {Scrap:scrapIcons(3)}.",
+  "SPIREOFFACTORIO-FIRST_GEAR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-PRISTINE_GEAR.title": "Pristine Gear",
+  "SPIREOFFACTORIO-PRISTINE_GEAR.description": "At the start of each combat, gain {Scrap:scrapIcons(5)}. Additionally, gain {ScrapAdd} {singleScrapIcon} at the start of each turn.",
+  "SPIREOFFACTORIO-PRISTINE_GEAR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-SCRAP_SHIELD.title": "Scrap Shield",
+  "SPIREOFFACTORIO-SCRAP_SHIELD.description": "At the end of your turn, gain [blue]{Block}[/blue] [gold]Block[/gold] for each {Scrap:scrapIcons(1)} you have.",
+  "SPIREOFFACTORIO-SCRAP_SHIELD.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-LIGHTNING_ROD.title": "Lightning Rod",
+  "SPIREOFFACTORIO-LIGHTNING_ROD.description": "Every [blue]{Turns}[/blue] turns, all of your constructs gain [blue]{Overclock}[/blue] [gold]Overclock[/gold].",
+  "SPIREOFFACTORIO-LIGHTNING_ROD.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-SUPERCAPACITOR.title": "Supercapacitor",
+  "SPIREOFFACTORIO-SUPERCAPACITOR.description": "Constructs with [blue]{Overclock}[/blue] or fewer stacks of [gold]Overclock[/gold] do not apply [gold]Overload[/gold] to you.",
+  "SPIREOFFACTORIO-SUPERCAPACITOR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-REFINED_FLAMMABLES.title": "Refined Flammables",
+  "SPIREOFFACTORIO-REFINED_FLAMMABLES.description": "Enemies now only lose half as much [gold]Scorch[/gold] each turn.",
+  "SPIREOFFACTORIO-REFINED_FLAMMABLES.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-FULGORAN_TESLA_CELL.title": "Fulgoran Tesla Cell",
+  "SPIREOFFACTORIO-FULGORAN_TESLA_CELL.description": "[gold]Shock[/gold] can now persist for [blue]{Turns}[/blue] turns without additional stack gains before being lost.",
+  "SPIREOFFACTORIO-FULGORAN_TESLA_CELL.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-RECOVERY_MANUAL.title": "Recovery Manual",
+  "SPIREOFFACTORIO-RECOVERY_MANUAL.description": "Whenever an enemy destroys one of your constructs, recover [blue]{Percent}%[/blue] of its {Scrap:scrapIcons(1)} cost.",
+  "SPIREOFFACTORIO-RECOVERY_MANUAL.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SPIREOFFACTORIO-PLASMA_FUEL.title": "Plasma Fuel",
+  "SPIREOFFACTORIO-PLASMA_FUEL.description": "Enemies afflicted with [gold]Scorch[/gold] will now also lose [blue]{Strength}[/blue] [gold]Strength[/gold] and [blue]{Dexterity}[/blue] [gold]Dexterity[/gold].",
+  "SPIREOFFACTORIO-PLASMA_FUEL.flavor": "[red]Details for this relic will be revealed in the future...[/red]"
+}

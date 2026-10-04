@@ -1,0 +1,74 @@
+[gd_scene load_steps=17 format=3 uid="uid://cgiauqwrxfaab"]
+
+[ext_resource type="PackedScene" uid="uid://deyh03m85dp07" path="res://SpireOfFactorio/raw/wall/wall.glb" id="1_o88gm"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_34smo"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_00lga"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8jcer"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j5vca"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h4hh3"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bgf2v"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wukde"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qs5l1"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ed7hk"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jcw2n"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uxf5m"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_koww5"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1hrsr"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1hxmg"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_r4bqf"]
+states/attack/node = SubResource("AnimationNodeAnimation_34smo")
+states/attack/position = Vector2(462, 100)
+states/cast/node = SubResource("AnimationNodeAnimation_00lga")
+states/cast/position = Vector2(462, 157)
+states/die/node = SubResource("AnimationNodeAnimation_8jcer")
+states/die/position = Vector2(334, 195)
+states/hurt/node = SubResource("AnimationNodeAnimation_j5vca")
+states/hurt/position = Vector2(462, 34)
+states/idle/node = SubResource("AnimationNodeAnimation_h4hh3")
+states/idle/position = Vector2(334, 100)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_bgf2v"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_wukde"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_qs5l1"), "cast", "idle", SubResource("AnimationNodeStateMachineTransition_ed7hk"), "die", "idle", SubResource("AnimationNodeStateMachineTransition_jcw2n"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_uxf5m"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_koww5"), "idle", "cast", SubResource("AnimationNodeStateMachineTransition_1hrsr"), "idle", "die", SubResource("AnimationNodeStateMachineTransition_1hxmg")]
+
+[node name="wall" type="Node3D"]
+
+[node name="wall2" parent="." instance=ExtResource("1_o88gm")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="wall2"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -8.742278e-08, 0, -1)
+projection = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="wall2"]
+tree_root = SubResource("AnimationNodeStateMachine_r4bqf")
+anim_player = NodePath("../AnimationPlayer")
+
+[editable path="wall2"]

@@ -1,0 +1,66 @@
+﻿using MegaCrit.Sts2.Core.Entities.Cards;
+using SpireOfFactorio.Libraries.ConstructLib.Targeting.Util;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
+namespace SpireOfFactorio.Libraries.ConstructLib.Targeting;
+
+public static class CustomTargetTypeManager
+{
+    private static readonly HashSet<TargetType> RegisteredCustomTypes = [];
+
+    private static readonly Dictionary<TargetType, ICustomTargetType>
+        CustomTypeDefinitions = new(BuiltInTargetType.All);
+
+
+    public static TargetType Register(ICustomTargetType customTargetType, string @namespace, string name)
+    {
+        var targetType = (TargetType)Calculate32BitHash($"{@namespace}.{name}");
+        RegisteredCustomTypes.Add(targetType);
+        CustomTypeDefinitions.Add(targetType, customTargetType);
+        return targetType;
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static TargetType Register(ICustomTargetType customTargetType,
+        [CallerArgumentExpression("customTargetType")]
+        string expr = "")
+    {
+        var stackTrace = new StackTrace();
+        var ns = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType?.FullName?.Split('.').FirstOrDefault()
+                 ?? throw new InvalidOperationException(
+                     "Unable to automatically retrieve the namespace. Please specify it manually.");
+        var name = new string(expr.Where(c => !char.IsWhiteSpace(c)).ToArray());
+        return Register(customTargetType, ns, name);
+    }
+
+    public static bool IsCustomTargetType(TargetType targetType)
+    {
+        return RegisteredCustomTypes.Contains(targetType);
+    }
+
+    public static bool TryGetCustomTargetType(TargetType targetType,
+        [MaybeNullWhen(false)] out ICustomTargetType customTargetType, bool includeBuiltin = true)
+    {
+        if (includeBuiltin || IsCustomTargetType(targetType))
+            return CustomTypeDefinitions.TryGetValue(targetType, out customTargetType);
+        customTargetType = null;
+        return false;
+    }
+
+    private static int Calculate32BitHash(string str)
+    {
+        unchecked
+        {
+            var hash = 2166136261U;
+            foreach (var c in str)
+            {
+                hash ^= c;
+                hash *= 16777619U;
+            }
+
+            return (int)hash;
+        }
+    }
+}

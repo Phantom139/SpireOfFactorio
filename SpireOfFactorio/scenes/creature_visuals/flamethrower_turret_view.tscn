@@ -1,0 +1,77 @@
+[gd_scene load_steps=17 format=3 uid="uid://c50lbmmj6p6dw"]
+
+[ext_resource type="PackedScene" uid="uid://bed3x1lvn80ss" path="res://SpireOfFactorio/raw/flamethrower-turret/flamethrower-turret.glb" id="1_0n5qs"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_acow5"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ev5p5"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_42awg"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5i4yn"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xv4ga"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4lney"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pgsdd"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_18c1b"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v3pt8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tp4pe"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tx3ua"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t5lsj"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6n7sx"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u87s5"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_k81qg"]
+states/Idle/node = SubResource("AnimationNodeAnimation_acow5")
+states/Idle/position = Vector2(328, 100)
+states/attack/node = SubResource("AnimationNodeAnimation_ev5p5")
+states/attack/position = Vector2(438, 31)
+states/cast/node = SubResource("AnimationNodeAnimation_42awg")
+states/cast/position = Vector2(556, 100)
+states/die/node = SubResource("AnimationNodeAnimation_5i4yn")
+states/die/position = Vector2(328, 209)
+states/hurt/node = SubResource("AnimationNodeAnimation_xv4ga")
+states/hurt/position = Vector2(506, 184)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4lney"), "attack", "Idle", SubResource("AnimationNodeStateMachineTransition_pgsdd"), "cast", "Idle", SubResource("AnimationNodeStateMachineTransition_18c1b"), "hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_v3pt8"), "die", "Idle", SubResource("AnimationNodeStateMachineTransition_tp4pe"), "Idle", "attack", SubResource("AnimationNodeStateMachineTransition_tx3ua"), "Idle", "cast", SubResource("AnimationNodeStateMachineTransition_t5lsj"), "Idle", "hurt", SubResource("AnimationNodeStateMachineTransition_6n7sx"), "Idle", "die", SubResource("AnimationNodeStateMachineTransition_u87s5")]
+
+[node name="Flamethrower-Turret" type="Node3D"]
+
+[node name="flamethrower-turret" parent="." instance=ExtResource("1_0n5qs")]
+
+[node name="Skeleton3D" parent="flamethrower-turret/Arm_Turret" index="0"]
+bones/1/rotation = Quaternion(-6.689132e-08, 3.184332e-08, -0.008801774, 0.99996126)
+bones/2/rotation = Quaternion(-7.141956e-08, 7.8325195e-09, 0.87869614, 0.47738153)
+
+[node name="Camera3D" type="Camera3D" parent="flamethrower-turret"]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, -1)
+projection = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="flamethrower-turret"]
+tree_root = SubResource("AnimationNodeStateMachine_k81qg")
+anim_player = NodePath("../AnimationPlayer")
+
+[editable path="flamethrower-turret"]

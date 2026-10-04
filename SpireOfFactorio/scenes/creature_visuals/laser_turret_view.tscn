@@ -1,0 +1,76 @@
+[gd_scene load_steps=17 format=3 uid="uid://blj7dech2fxmx"]
+
+[ext_resource type="PackedScene" uid="uid://2k32l7ghjb2x" path="res://SpireOfFactorio/raw/laser-turret/laser-turret.glb" id="1_qx1ec"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p2p5s"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sb6ev"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k4j5o"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8i4uh"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0v0g5"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k3y4f"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sy71n"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lmktj"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iijjo"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xa12b"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d7lp7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5al4u"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hlx01"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b5p4j"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_aayg8"]
+states/attack/node = SubResource("AnimationNodeAnimation_p2p5s")
+states/attack/position = Vector2(493, 26)
+states/cast/node = SubResource("AnimationNodeAnimation_sb6ev")
+states/cast/position = Vector2(619, 81)
+states/die/node = SubResource("AnimationNodeAnimation_k4j5o")
+states/die/position = Vector2(409, 217)
+states/hurt/node = SubResource("AnimationNodeAnimation_8i4uh")
+states/hurt/position = Vector2(613, 163)
+states/idle/node = SubResource("AnimationNodeAnimation_0v0g5")
+states/idle/position = Vector2(362, 101)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_k3y4f"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_sy71n"), "cast", "idle", SubResource("AnimationNodeStateMachineTransition_lmktj"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_iijjo"), "die", "idle", SubResource("AnimationNodeStateMachineTransition_xa12b"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_d7lp7"), "idle", "cast", SubResource("AnimationNodeStateMachineTransition_5al4u"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_hlx01"), "idle", "die", SubResource("AnimationNodeStateMachineTransition_b5p4j")]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="laser-turret" parent="." instance=ExtResource("1_qx1ec")]
+
+[node name="Arm_Barrel" parent="laser-turret" index="0"]
+transform = Transform3D(0.23723619, 0.0097491145, 0.009823366, -0.009757518, 0.23743914, 1.5437421e-06, -0.009815018, -0.0004048901, 0.23743643, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="laser-turret"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -1)
+projection = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="laser-turret"]
+tree_root = SubResource("AnimationNodeStateMachine_aayg8")
+anim_player = NodePath("../AnimationPlayer")
+
+[editable path="laser-turret"]

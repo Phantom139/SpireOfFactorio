@@ -1,0 +1,74 @@
+[gd_scene load_steps=17 format=3 uid="uid://cvvgeqn4xob3a"]
+
+[ext_resource type="PackedScene" uid="uid://c832wpeywnlrv" path="res://SpireOfFactorio/raw/gun-turret/gun-turret.glb" id="1_evdn2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_evdn2"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0371g"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hb0br"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hgeh7"]
+animation = &"still"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w3b6k"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nt57p"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xml0s"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jrbeq"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t26v0"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ky4hj"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2h40f"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3l3a8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fnl3v"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t06rp"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0enco"]
+states/attack/node = SubResource("AnimationNodeAnimation_evdn2")
+states/attack/position = Vector2(475, 110)
+states/cast/node = SubResource("AnimationNodeAnimation_0371g")
+states/cast/position = Vector2(375, 179)
+states/die/node = SubResource("AnimationNodeAnimation_hb0br")
+states/die/position = Vector2(466, 36)
+states/hurt/node = SubResource("AnimationNodeAnimation_hgeh7")
+states/hurt/position = Vector2(334, 31)
+states/idle/node = SubResource("AnimationNodeAnimation_w3b6k")
+states/idle/position = Vector2(336, 104)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_nt57p"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_xml0s"), "idle", "die", SubResource("AnimationNodeStateMachineTransition_jrbeq"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_t26v0"), "idle", "cast", SubResource("AnimationNodeStateMachineTransition_ky4hj"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_2h40f"), "die", "idle", SubResource("AnimationNodeStateMachineTransition_3l3a8"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_fnl3v"), "cast", "idle", SubResource("AnimationNodeStateMachineTransition_t06rp")]
+graph_offset = Vector2(-151, -26)
+
+[node name="gun-turret" instance=ExtResource("1_evdn2")]
+
+[node name="arm-barrel" parent="." index="0"]
+transform = Transform3D(0.37211806, 0.008123959, -0.013989446, -0.008129777, 0.3723808, -2.1806654e-06, 0.013986064, 0.0003075219, 0.37220675, 0, -0.04581933, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." index="3"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -1)
+projection = 1
+size = 1.25
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="4"]
+tree_root = SubResource("AnimationNodeStateMachine_0enco")
+anim_player = NodePath("../AnimationPlayer")

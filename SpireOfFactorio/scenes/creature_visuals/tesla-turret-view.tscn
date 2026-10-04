@@ -1,0 +1,74 @@
+[gd_scene load_steps=17 format=3 uid="uid://bb61hqxchtwl4"]
+
+[ext_resource type="PackedScene" uid="uid://cewg16vqav0ex" path="res://SpireOfFactorio/raw/tesla-turret/tesla-turret.glb" id="1_htav3"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bg82t"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kpi3o"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2epfo"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jsort"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0nt5n"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_db1j2"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8ujrw"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1jdxa"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8606u"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t0fbx"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_14ifk"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7ntsd"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0p7yp"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qubry"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_stpwt"]
+states/attack/node = SubResource("AnimationNodeAnimation_bg82t")
+states/attack/position = Vector2(348, 15)
+states/cast/node = SubResource("AnimationNodeAnimation_kpi3o")
+states/cast/position = Vector2(516, 32)
+states/die/node = SubResource("AnimationNodeAnimation_2epfo")
+states/die/position = Vector2(400, 179)
+states/hurt/node = SubResource("AnimationNodeAnimation_jsort")
+states/hurt/position = Vector2(549, 105)
+states/idle/node = SubResource("AnimationNodeAnimation_0nt5n")
+states/idle/position = Vector2(348, 100)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_db1j2"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_8ujrw"), "idle", "cast", SubResource("AnimationNodeStateMachineTransition_1jdxa"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_8606u"), "idle", "die", SubResource("AnimationNodeStateMachineTransition_t0fbx"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_14ifk"), "cast", "idle", SubResource("AnimationNodeStateMachineTransition_7ntsd"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_0p7yp"), "die", "idle", SubResource("AnimationNodeStateMachineTransition_qubry")]
+graph_offset = Vector2(-78, -23)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="tesla-turret" parent="." instance=ExtResource("1_htav3")]
+
+[node name="Camera3D" type="Camera3D" parent="tesla-turret"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -1)
+projection = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="tesla-turret"]
+tree_root = SubResource("AnimationNodeStateMachine_stpwt")
+anim_player = NodePath("../AnimationPlayer")
+
+[editable path="tesla-turret"]

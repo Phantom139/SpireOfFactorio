@@ -1,0 +1,83 @@
+[gd_scene load_steps=17 format=3 uid="uid://byb8km28kievl"]
+
+[ext_resource type="PackedScene" uid="uid://xf5yhsf67a7v" path="res://SpireOfFactorio/raw/engineer/engineer.glb" id="1_t2lkw"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_adfae"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s68tl"]
+animation = &"cast"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7rk6e"]
+animation = &"die"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vx5jk"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6ws6b"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p1b85"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sp2do"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n3wm0"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w54dy"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4tp3l"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5h46s"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gahjq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mhaqm"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7sykv"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_32jgs"]
+states/attack/node = SubResource("AnimationNodeAnimation_adfae")
+states/attack/position = Vector2(579, 24)
+states/cast/node = SubResource("AnimationNodeAnimation_s68tl")
+states/cast/position = Vector2(579, 105)
+states/die/node = SubResource("AnimationNodeAnimation_7rk6e")
+states/die/position = Vector2(351, 206)
+states/hurt/node = SubResource("AnimationNodeAnimation_vx5jk")
+states/hurt/position = Vector2(579, 196)
+states/idle/node = SubResource("AnimationNodeAnimation_6ws6b")
+states/idle/position = Vector2(351, 105)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_p1b85"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_sp2do"), "idle", "cast", SubResource("AnimationNodeStateMachineTransition_n3wm0"), "idle", "hurt", SubResource("AnimationNodeStateMachineTransition_w54dy"), "idle", "die", SubResource("AnimationNodeStateMachineTransition_4tp3l"), "die", "idle", SubResource("AnimationNodeStateMachineTransition_5h46s"), "hurt", "idle", SubResource("AnimationNodeStateMachineTransition_gahjq"), "cast", "idle", SubResource("AnimationNodeStateMachineTransition_mhaqm"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_7sykv")]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="engineer" parent="." instance=ExtResource("1_t2lkw")]
+
+[node name="Skeleton3D" parent="engineer/Armature" index="0"]
+bones/0/rotation = Quaternion(-0.5890791, 0.39113396, 0.58907926, 0.391134)
+bones/1/rotation = Quaternion(-0.56584513, -1.9320263e-08, 1.6926671e-07, 0.8245116)
+bones/2/rotation = Quaternion(0.6252107, 0.33032027, 0.6252109, -0.33032033)
+bones/3/rotation = Quaternion(-0.31948125, 2.2720332e-08, -8.497782e-08, 0.9475926)
+bones/5/rotation = Quaternion(-6.825917e-08, -3.273651e-08, -0.03722515, 0.9993069)
+bones/6/rotation = Quaternion(-0.17464258, 0.1654387, -0.6530429, 0.7180982)
+bones/7/rotation = Quaternion(0.034226164, 0.050857205, -0.8392321, 0.5403069)
+bones/8/rotation = Quaternion(-0.0059889685, -0.013218227, -0.7058888, 0.70817405)
+
+[node name="Camera3D" type="Camera3D" parent="engineer"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -1)
+projection = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="engineer"]
+tree_root = SubResource("AnimationNodeStateMachine_32jgs")
+anim_player = NodePath("../AnimationPlayer")
+
+[editable path="engineer"]

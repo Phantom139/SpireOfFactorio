@@ -1,0 +1,2 @@
+## TimelineLib
+Based on the Timeline Modules from RitsuLib (https://github.com/BAKAOLC/STS2-RitsuLib/tree/main/src/Timeline) and PR #331 for BaseLib by quipsol (https://github.com/Alchyr/BaseLib-StS2/pull/331)
