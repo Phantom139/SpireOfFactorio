@@ -27,11 +27,15 @@ public sealed class Gunsmith : EngineerCard
         }
         List<CardModel> outputCards = new List<CardModel>();
 
-        outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<TheNuclearOption>(), p));
+        outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<ForceRedirection>(), p));
         outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<RailgunShot>(), p));
         if (p.Character is Characters.Engineer)
         {
             outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<RainOfTrash>(), p));
+        }
+        else
+        {
+            outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<Overheat>(), p));
         }
         if (IsUpgraded || p.Character is Characters.Engineer)
         {

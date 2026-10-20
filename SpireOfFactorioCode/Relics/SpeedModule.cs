@@ -74,7 +74,10 @@ public class SpeedModule : SpireOfFactorioRelic
                 }
                 else
                 {
-                    CurrentExtraPlays++;
+                    if (cardPlay.Card != storedCard)
+                    {
+                        CurrentExtraPlays++;
+                    }
                 }
             }
         }

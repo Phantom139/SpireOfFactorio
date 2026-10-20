@@ -53,9 +53,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="CHANGELOG.md" />
         <None Condition="Exists('Directory.Build.props')" Include="Directory.Build.props" />
         <None Include=".gitignore" />
+        <None Include="README.md" />
         <None Include="SpireOfFactorio.json" />
         <None Include="project.godot" />
         <None Include="Libraries\ConstructLib\README.md" />
@@ -80,6 +80,7 @@
       <Folder Include="Libraries\TimelineLib\Patches\" />
       <Folder Include="Libraries\TimelineLib\Timeline\" />
       <Folder Include="Libraries\TimelineLib\Unlocks\Conditions\" />
+      <Folder Include="SpireOfFactorioCode\Potions\" />
       <Folder Include="SpireOfFactorio\images\card_portraits\big\" />
       <Folder Include="SpireOfFactorio\images\powers\big\" />
       <Folder Include="SpireOfFactorio\images\relics\big\" />

@@ -51,8 +51,70 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 
 ### Changelog
 =====
-### Current Version: 0.7.14
+### Current Version: 0.8.1
 =====
+0.8.0 -> 0.8.1:
+* Bugfixes
+  * Assembled Strike
+	* Fixed the 'Strength' version of the card from being unplayable
+* Balance:
+  * Speed Module: OBVIOUS Nerf (lol) 
+	* Do I even need to say it?
+	* Alright fine ;)
+	* The initial card play no longer counts towards the module's replay add counter
+
+=====
+## Version History
+0.7.14 -> 0.8.0
+* New Content:
+  * New Event: The Assembling Machine
+	* Note: Another Factorio themed event (Yep, gotta keep it rolling), this event will be similar to the "Mad Scientist" event in which you get to "build" a custom card
+	* The difference is that the custom created card can access "elements" of another character
+	* When the event begins you will randomly get to choose between three "Colors", referring to the characters:
+	  * Red: Ironclad
+	  * Green: Silent
+	  * Yellow: Regent
+	  * Purple: Necrobinder
+	  * Blue: Defect
+	  * Orange: Engineer
+	* After this first phase, you may pay gold for an additional effect:
+	  * 50 Gold: Increase card's base damage by 3
+	  * 100 Gold: Reduce energy cost of card by 1
+	  * 150 Gold: Add Replay to the card
+	* You then recieve one "Assembled Strike" with one of two possible effects from the selected character 
+  * Cards
+	* Event Card
+	  * Assembled Strike (2) [Upgrade: 1]: Deal 6 (9) Damage
+		* Gains an additional effect based on the selection from The Assembling Machine event
+		* Possible Effects:
+		  * Gain 2 Strength
+		  * Heal for 5% of your Max HP
+		  * Apply 5 Poison
+		  * Add 2 Shivs into your hand
+		  * Transform a card in your hand into Minion Strike
+		  * Forge 7 
+		  * Summon 5 
+		  * Apply 5 Doom
+		  * Channel 2 Lightning
+		  * Channel 1 Plasma 
+		  * Apply 7 Scorch
+		  * Apply 10 Shock
+	* Engineer Cards
+	  * Pallisades: Uncommon Skill 
+		* Cost: X Scrap
+		* Gain X times 7 (10) Block, next turn gain half of the block gained from this card.
+	  * Force Redirection: Rare Attack
+		* Cost: 3 (2) Energy
+		* Deals 22 (27) Damage, Gain block for each stack of Weak, Vulnerable, Shock, and Scorch on the enemy.
+	  * Overheat: Rare Attack
+		* Cost 2 (1) Energy
+		* Deal 14 (17) Damage and apply 20 (25) Scorch to all enemies, but apply 10 (7) Scorch to yourself.
+* Balance:
+  * Nerf / Adjustment: Gunsmith
+	* Removed 'The Nuclear Option' as an option from this card
+	* Replaced with 'Force Redirection', a new Rare Engineer Attack added in this version
+	* Additionally, if the player is not an Engineer, they will now have access to 'Overheat', another new Rare Engineer Attack added in this version
+	* Note: One of our prior playtests had me upgrade this card and three people looping it through an almost zero resistance A10 Act 2, so let's not do that again :P
 
 0.7.13 -> 0.7.14:
 * Note:
@@ -92,8 +154,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Buff: Grid Redirection
 	* You can now target another player's construct and remove Disabled from it
 
-=====
-## Version History
 0.7.12 -> 0.7.13:
 * Bugfixes:
   * Overload from Overclock now properly applies and is not immediately removed on turn change (Specifically for constructs that attack at the end of the turn)

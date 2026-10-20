@@ -5,8 +5,8 @@ using SpireOfFactorio.SpireOfFactorioCode.Extensions;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Cards
 {
-    public abstract class SpireOfFactorioCard(int cost, CardType type, CardRarity rarity, TargetType target) :
-        CustomCardModel(cost, type, rarity, target)
+    public abstract class SpireOfFactorioCard(int cost, CardType type, CardRarity rarity, TargetType target, bool showInCardLibrary = true) :
+        CustomCardModel(cost, type, rarity, target, showInCardLibrary)
     {
         //Image size:
         //Normal art: 1000x760 (Using 500x380 should also work, it will simply be scaled.)

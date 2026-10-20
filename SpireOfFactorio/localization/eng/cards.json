@@ -1,6 +1,8 @@
 {
   "SPIREOFFACTORIO-COMPLEX_RECIPE.title": "Complex Recipe",
   "SPIREOFFACTORIO-COMPLEX_RECIPE.description": "Gain {DexterityPower:diff()} [gold]Dexterity[/gold] this turn.\nAdditionally, gain {Block::diff()} [gold]Block[/gold] for each copy of this card in your hand.",
+  "SPIREOFFACTORIO-ASSEMBLED_STRIKE.title": "Assembled Strike",
+  "SPIREOFFACTORIO-ASSEMBLED_STRIKE.description": "Deal {Damage:diff()} damage.{HasRider:{Strength:\nGain {RiderStrength:diff()} [gold]Strength[/gold].|}{Heal:\nHeal [green]{RiderHeal:diff()}%[/green] of your Max HP.|}{Poison:\nApply {RiderPoison:diff()} [gold]Poison[/gold].|}{Shivs:\nAdd {RiderShivs:diff()} [gold]{RiderShivs:plural:Shiv|Shivs}[/gold] into your [gold]Hand[/gold].|}{MinionStrike:\nChoose a card in your [gold]Hand[/gold] to [gold]Transform[/gold] into [gold]{IfUpgraded:show:Minion Strike+|Minion Strike}[/gold].|}{Forge:\n[gold]Forge[/gold] {RiderForge:diff()}.|}{Summon:\n[gold]Summon[/gold] {RiderSummon:diff()}.|}{Doom:\nApply {RiderDoom:diff()} [gold]Doom[/gold].|}{Lightning:\n[gold]Channel[/gold] {RiderLightning:diff()} [gold]Lightning[/gold].|}{Plasma:\n[gold]Channel[/gold] {RiderPlasma:diff()} [gold]Plasma[/gold].|}{Shock:\nApply {RiderShock:diff()} [gold]Shock[/gold].|}{Scorch:\nApply {RiderScorch:diff()} [gold]Scorch[/gold].|}}",
   "SPIREOFFACTORIO-RADAR.title": "Radar",
   "SPIREOFFACTORIO-RADAR.description": "A task from The Lost Engineer, carry it to the [gold]Top of The Spire[/gold] to gain his favor.",
   "SPIREOFFACTORIO-DEFEND_ENGINEER.title": "Defend",
@@ -100,6 +102,8 @@
   "SPIREOFFACTORIO-DEEPER_RESEARCH.description": "Whenever a non-generated Colorless card is played, add a random {IfUpgraded:show:upgraded }Colorless card to your hand.",
   "SPIREOFFACTORIO-IMPROVISED_DEFENSE.title": "Improvised Defense",
   "SPIREOFFACTORIO-IMPROVISED_DEFENSE.description": "Select a [blue]construct[/blue]. Any damage you would take this turn is first absorbed by the selected construct.",
+  "SPIREOFFACTORIO-PALLISADES.title": "Pallisades",
+  "SPIREOFFACTORIO-PALLISADES.description": "Gain {Block:diff()} [gold]Block[/gold] X times. Half of the amount of block gained is also gained next turn.",
   "SPIREOFFACTORIO-RAIN_OF_TRASH.title": "Rain of Trash",
   "SPIREOFFACTORIO-RAIN_OF_TRASH.description": "Deal {Damage:diff()} damage X times.",
   "SPIREOFFACTORIO-MINING_DRILL.title": "Mining Drill",
@@ -142,5 +146,9 @@
   "SPIREOFFACTORIO-EMERGENCY_RECALL.title": "Emergency Recall",
   "SPIREOFFACTORIO-EMERGENCY_RECALL.description": "Deconstruct the selected [blue]construct[/blue], add its card to your hand with a free {Scrap:scrapIcons()} cost until the card has been played.{IfUpgraded:show:\nThe construct card is given [gold]Retain[/gold]}",
   "SPIREOFFACTORIO-VOLTAIC_INFERNO.title": "Voltaic Inferno",
-  "SPIREOFFACTORIO-VOLTAIC_INFERNO.description": "Whenever you apply [gold]Shock[/gold] to an enemy, Apply {VoltaicInferno} [gold]Scorch[/gold] to that enemy."
+  "SPIREOFFACTORIO-VOLTAIC_INFERNO.description": "Whenever you apply [gold]Shock[/gold] to an enemy, Apply {VoltaicInferno} [gold]Scorch[/gold] to that enemy.",
+  "SPIREOFFACTORIO-FORCE_REDIRECTION.title": "Force Redirection",
+  "SPIREOFFACTORIO-FORCE_REDIRECTION.description": "Deal {Damage:diff()} damage. Gain {Block:diff()} [gold]Block[/gold] for each stack of [gold]Weak[/gold], [gold]Vulnerable[/gold], [gold]Scorch[/gold], and [gold]Shock[/gold] on the hit enemy.",
+  "SPIREOFFACTORIO-OVERHEAT.title": "Overheat",
+  "SPIREOFFACTORIO-OVERHEAT.description": "Deal {Damage:diff()} damage and apply {ScorchEnemies} [gold]Scorch[/gold] to all enemies. Apply {ScorchSelf} [gold]Scorch[/gold] to yourself."
 }
