@@ -49,10 +49,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Additional Events (?)
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
-### Changelog
-=====
-### Current Version: 0.8.1
-=====
+### Changelog (Current)
 0.8.0 -> 0.8.1:
 * Bugfixes
   * Assembled Strike
@@ -63,7 +60,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Alright fine ;)
 	* The initial card play no longer counts towards the module's replay add counter
 
-=====
 ## Version History
 0.7.14 -> 0.8.0
 * New Content:
