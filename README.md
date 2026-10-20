@@ -8,9 +8,9 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 ## Development
 - Author: Phantom139
 - Thanks To:
-* Slay The Spire 2 Modding Discord
-* BaseLib Team
-* FuYnAloft (MinionLib)
+  * Slay The Spire 2 Modding Discord
+  * BaseLib Team
+  * FuYnAloft (MinionLib)
 
 ## Roadmap
 
@@ -59,6 +59,11 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Do I even need to say it?
 	* Alright fine ;)
 	* The initial card play no longer counts towards the module's replay add counter
+* Misc
+  * Scorch adjustments
+	* With 'Overheat' being the first card / interaction that can Scorch a player, I made some adjustments to the Scorch Logic
+	* Player-based scorch applies at the end of the turn like all other damage debuffs, instead of at the beginning like scorch usually does.
+	* Additional code checks were added to stop Refined Flammables and Plasma Fuel from affecting Scorch applied to yourself from Overheat.
 
 ## Version History
 0.7.14 -> 0.8.0

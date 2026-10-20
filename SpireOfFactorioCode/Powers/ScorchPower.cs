@@ -56,6 +56,11 @@ public sealed class ScorchPower : SpireOfFactorioPower
         {
             return;
         }
+        if (side == CombatSide.Player && base.Owner.IsPlayer)
+        {
+            // Player based scorch triggers at the end of the turn
+            return;
+        }
 
         NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NGroundFireVfx.Create(base.Owner));
         SfxCmd.Play("event:/sfx/characters/attack_fire");
@@ -89,9 +94,43 @@ public sealed class ScorchPower : SpireOfFactorioPower
         }
     }
 
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    {
+        // This block of code is specifically for scorch applied to players, it works a little differently.
+        if (!participants.Contains(base.Owner))
+        {
+            return;
+        }
+        if (side == CombatSide.Enemy && !base.Owner.IsPlayer)
+        {
+            // Enemy-based scorch triggers at the start of the turn
+            return;
+        }
+
+        NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NGroundFireVfx.Create(base.Owner));
+        SfxCmd.Play("event:/sfx/characters/attack_fire");
+        await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner, base.Amount, ValueProp.Unpowered, null, null);
+        if (base.Owner.IsAlive)
+        {
+            if (base.Amount < 5)
+            {
+                await PowerCmd.Remove<ScorchPower>(base.Owner);
+            }
+
+            double percent = 50;
+            Decimal reduction = decimal.Ceiling((decimal)(base.Amount) * (decimal)(percent / 100));
+            await PowerCmd.ModifyAmount(new ThrowingPlayerChoiceContext(), this, -reduction, null, null);
+
+        }
+        else
+        {
+            await Cmd.CustomScaledWait(0.1f, 0.25f);
+        }
+    }
+
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
     {
-        if (applier.IsPlayer)
+        if (applier.IsPlayer && base.Owner.IsEnemy)
         {
             if (applier.Player.GetRelic<PlasmaFuel>() != null)
             {
