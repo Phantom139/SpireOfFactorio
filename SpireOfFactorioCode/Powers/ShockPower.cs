@@ -72,6 +72,8 @@ public sealed class ShockPower : SpireOfFactorioPower
 
         DynamicVars["StunPercent"].UpgradeValueBy(percentNow - percentBefore);
 
+        MainFile.Logger.Info($"[ShockPower] Value changes to {base.Amount} from {stacksBefore} [Delta: {amount}]. Percent change: {percentBefore} to {percentNow}, calling UpgradeValueBy with {percentNow - percentBefore}");
+
         return Task.CompletedTask;
     }
 

@@ -54,16 +54,16 @@ public class EfficiencyModule : SpireOfFactorioRelic
     {
         if (card.Owner == base.Owner)
         {
-            MainFile.Logger.Info($"[EfficiencyModule] Draw {card.Id.ToString()}");
+            //MainFile.Logger.Info($"[EfficiencyModule] Draw {card.Id.ToString()}");
             if (CurrentExtraPlays > _numberOfExtrasBeforeCostUp)
             {
-                MainFile.Logger.Info($"[EfficiencyModule] Stopped... {CurrentExtraPlays} > {_numberOfExtrasBeforeCostUp}");
+                //MainFile.Logger.Info($"[EfficiencyModule] Stopped... {CurrentExtraPlays} > {_numberOfExtrasBeforeCostUp}");
                 return Task.CompletedTask;
             }
             int cardCost = card.EnergyCost.GetWithModifiers(CostModifiers.All);
             if (cardCost > 1 && !card.EnergyCost.CostsX)
             {
-                MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} energy cost is reducible");
+                //MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} energy cost is reducible");
                 card.EnergyCost.AddThisTurnOrUntilPlayed(-1);
 
                 int starCost = card.CurrentStarCost;
@@ -78,11 +78,11 @@ public class EfficiencyModule : SpireOfFactorioRelic
                     int scrapCost = scrap.GetWithModifiers(CostModifiers.All);
                     bool scrapX = scrap.CostsX;
 
-                    MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} has a scrap cost. X? {scrapX} #: {scrapCost}");
+                    //MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} has a scrap cost. X? {scrapX} #: {scrapCost}");
 
                     if (scrapCost > 0 && !scrapX)
                     {
-                        MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} scrap cost is reducible");
+                        //MainFile.Logger.Info($"[EfficiencyModule] {card.Id.ToString()} scrap cost is reducible");
                         scrap.SetThisTurnOrUntilPlayed(scrapCost - 1);
                     }
                 }

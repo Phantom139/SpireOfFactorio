@@ -45,7 +45,6 @@ public sealed class AssembledStrike : SpireOfFactorioCard
 
     public TheAssemblingMachine.CardColor _assemblingMachineColor;
     public TheAssemblingMachine.RiderEffect _assemblingMachineRider;
-    public TheAssemblingMachine.RiderEnhancement _assemblingMachineBonus;
 
     public AssembledStrike() : base(2, CardType.Attack, CardRarity.Event, TargetType.AnyEnemy, false)
     {
@@ -120,32 +119,6 @@ public sealed class AssembledStrike : SpireOfFactorioCard
         {
             AssertMutable();
             _assemblingMachineRider = value;
-        }
-    }
-
-    [SavedProperty(SerializationCondition.SaveIfNotTypeDefault)]
-    public TheAssemblingMachine.RiderEnhancement AssemblingMachineBonus
-    {
-        get
-        {
-            return _assemblingMachineBonus;
-        }
-        set
-        {
-            AssertMutable();
-            _assemblingMachineBonus = value;
-            if (_assemblingMachineBonus == TheAssemblingMachine.RiderEnhancement.BonusDamage)
-            {
-                DynamicVars.Damage.UpgradeValueBy(DynamicVars["BonusRiderDamage"].BaseValue);
-            }
-            if (_assemblingMachineBonus == TheAssemblingMachine.RiderEnhancement.ReducedCost)
-            {
-                base.EnergyCost.UpgradeBy(-DynamicVars["BonusRiderEnergy"].IntValue);
-            }
-            if (_assemblingMachineBonus == TheAssemblingMachine.RiderEnhancement.Replay)
-            {
-                base.BaseReplayCount += DynamicVars["BonusRiderReplay"].IntValue;
-            }
         }
     }
 

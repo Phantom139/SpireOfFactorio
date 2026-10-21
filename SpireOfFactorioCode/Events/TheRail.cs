@@ -108,7 +108,7 @@ public class TheRail : SpireOfFactorioEvent
     {
         int roll = base.Rng.NextInt(0, 100);
         MainFile.Logger.Info("TheRail: Rolled " + roll.ToString());
-        if (roll > 39)
+        if (roll > 44)
         {
             // Train strike :)
             await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner.Creature, CurrentHpLoss, ValueProp.Unblockable | ValueProp.Unpowered, null, null);

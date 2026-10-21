@@ -28,6 +28,15 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Extensions
             return Path.Join(MainFile.ResPath, "images", "card_portraits", "big", "card.png");
         }
 
+        public static string CardEnchantmentImagePath(this string path)
+        {
+            path = Path.Join(MainFile.ResPath, "images", "card_enchantments", path);
+            if (ResourceLoader.Exists(path)) return path;
+
+            MainFile.Logger.Info("Could not find card enchantment image path: " + path);
+            return Path.Join(MainFile.ResPath, "images", "card_enchantments", "placeholder.png");
+        }
+
         public static string PlaceholderProtected_CardImagePath(this string path)
         {
             path = Path.Join(MainFile.ResPath, "images", "card_portraits", path);

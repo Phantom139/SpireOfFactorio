@@ -68,6 +68,7 @@
       <None Remove="SpireOfFactorio\localization\eng\cards.json" />
       <None Remove="SpireOfFactorio\localization\eng\card_keywords.json" />
       <None Remove="SpireOfFactorio\localization\eng\characters.json" />
+      <None Remove="SpireOfFactorio\localization\eng\enchantments.json" />
       <None Remove="SpireOfFactorio\localization\eng\epochs.json" />
       <None Remove="SpireOfFactorio\localization\eng\events.json" />
       <None Remove="SpireOfFactorio\localization\eng\monsters.json" />
@@ -98,6 +99,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Update="SpireOfFactorio\localization\eng\characters.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <AdditionalFiles Update="SpireOfFactorio\localization\eng\enchantments.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Update="SpireOfFactorio\localization\eng\epochs.json">

@@ -4,11 +4,14 @@ using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Models.Orbs;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
+using SpireOfFactorio.SpireOfFactorioCode.Cards.Enchantments;
 using SpireOfFactorio.SpireOfFactorioCode.Cards.Event;
 using SpireOfFactorio.SpireOfFactorioCode.Powers;
 
@@ -31,14 +34,6 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         Plasma,
         Shock,
         Scorch
-    }
-
-    public enum RiderEnhancement
-    {
-        None,
-        BonusDamage,
-        ReducedCost,
-        Replay
     }
 
     public enum CardColor
@@ -228,7 +223,6 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     public CardHoverTip GetCardTypeHoverTip(CardColor cardColor)
     {
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = RiderEnhancement.None;
         assembledStrike.AssemblingMachineColor = cardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(cardColor);
         return new CardHoverTip(assembledStrike);
@@ -275,7 +269,7 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         List<EventOption> list = new List<EventOption>();
         if (base.Owner.Gold >= _SharpGold)
         {
-            list.Add(new EventOption(this, SharpEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.SHARP", GetEnhancementHoverTip(RiderEnhancement.BonusDamage)));
+            list.Add(new EventOption(this, SharpEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.SHARP", GetEnhancementHoverTip(ModelDb.Enchantment<Sharp>())));
         }
         else
         {
@@ -284,7 +278,7 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
 
         if (base.Owner.Gold >= _EfficientGold)
         {
-            list.Add(new EventOption(this, EfficientEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.EFFICIENT", GetEnhancementHoverTip(RiderEnhancement.ReducedCost)));
+            list.Add(new EventOption(this, EfficientEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.EFFICIENT", GetEnhancementHoverTip(ModelDb.Enchantment<Efficient>())));
         }
         else
         {
@@ -293,7 +287,7 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
 
         if (base.Owner.Gold >= _ReplicatingGold)
         {
-            list.Add(new EventOption(this, ReplicatingEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.REPLICATING", GetEnhancementHoverTip(RiderEnhancement.Replay)));
+            list.Add(new EventOption(this, ReplicatingEnhancement, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_ENHANCEMENT.options.REPLICATING", GetEnhancementHoverTip(ModelDb.Enchantment<Replicating>())));
         }
         else
         {
@@ -309,9 +303,10 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     {
         await PlayerCmd.LoseGold(_SharpGold, base.Owner);
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = RiderEnhancement.BonusDamage;
+        //assembledStrike.AssemblingMachineBonus = RiderEnhancement.BonusDamage;
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
+        CardCmd.Enchant<Sharp>(assembledStrike, 3m);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(assembledStrike, PileType.Deck), 3f);
         SetEventFinished(L10NLookup("THE_ASSEMBLING_MACHINE.pages.DONE"));
     }
@@ -320,9 +315,10 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     {
         await PlayerCmd.LoseGold(_EfficientGold, base.Owner);
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = RiderEnhancement.ReducedCost;
+        //assembledStrike.AssemblingMachineBonus = RiderEnhancement.ReducedCost;
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
+        CardCmd.Enchant<Efficient>(assembledStrike, 1m);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(assembledStrike, PileType.Deck), 3f);
         SetEventFinished(L10NLookup("THE_ASSEMBLING_MACHINE.pages.DONE"));
     }
@@ -331,9 +327,10 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     {
         await PlayerCmd.LoseGold(_ReplicatingGold, base.Owner);
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = RiderEnhancement.Replay;
+        //assembledStrike.AssemblingMachineBonus = RiderEnhancement.Replay;
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
+        CardCmd.Enchant<Replicating>(assembledStrike, 1m);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(assembledStrike, PileType.Deck), 3f);
         SetEventFinished(L10NLookup("THE_ASSEMBLING_MACHINE.pages.DONE"));
     }
@@ -341,19 +338,19 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     public async Task SkipEnhancement()
     {
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = RiderEnhancement.None;
+        //assembledStrike.AssemblingMachineBonus = RiderEnhancement.None;
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
         CardCmd.PreviewCardPileAdd(await CardPileCmd.Add(assembledStrike, PileType.Deck), 3f);
         SetEventFinished(L10NLookup("THE_ASSEMBLING_MACHINE.pages.DONE"));
     }
 
-    public CardHoverTip GetEnhancementHoverTip(RiderEnhancement rider)
+    public CardHoverTip GetEnhancementHoverTip(EnchantmentModel rider)
     {
         AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
-        assembledStrike.AssemblingMachineBonus = rider;
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
         assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
+        assembledStrike.Enchantment = rider;
         return new CardHoverTip(assembledStrike);
     }
 

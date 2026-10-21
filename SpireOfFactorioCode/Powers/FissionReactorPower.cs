@@ -1,4 +1,6 @@
-﻿using MegaCrit.Sts2.Core.Entities.Creatures;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
@@ -27,5 +29,25 @@ public sealed class FissionReactorPower : SpireOfFactorioPower
         EngineerCombatState.MaxConstructs[base.Owner.Player.PlayerCombatState] += (int)amount;
 
         return Task.CompletedTask;
+    }
+
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    {
+        if (!base.Owner.IsPlayer)
+        {
+            return;
+        }
+        if (side == CombatSide.Player)
+        {
+            int currentActiveConstructs = EngineerCmd.GetConstructCount(base.Owner.Player);
+            int maxConstructs = EngineerCmd.GetMaxConstructs(base.Owner.Player);
+
+            decimal perc = currentActiveConstructs / maxConstructs;
+            if (perc <= 0.5m)
+            {
+                await PlayerCmd.GainEnergy(base.Amount, base.Owner.Player);
+            }
+
+        }
     }
 }

@@ -54,16 +54,36 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Bugfixes
   * Assembled Strike
 	* Fixed the 'Strength' version of the card from being unplayable
+	  * Do you always have to find the one case I didn't test for Zeke? (lol) 
 * Balance:
+  * The Rail Event:
+	* Bumped the success chance up slightly to 45% from 40%
+	* Note: See last night's playtest :)
+	  * Jokes aside, it's still sucks to get whacked with 7 misses in a row (Especially two that miss the roll by 3 or less). I'm still considering changing it to a percentage HP loss, but for now I'll leave the damage alone. 
   * Speed Module: OBVIOUS Nerf (lol) 
-	* Do I even need to say it?
-	* Alright fine ;)
-	* The initial card play no longer counts towards the module's replay add counter
+	* Replay from the stored card no longer counts toward the stack on the relic
+	* Note: As comical as it was, Replay 300+ is downright silly. It's still possible, it just requires a lot more user input, which was the intent for this relic's rework.
+  * Buff: Hunker Down
+	* The base 'Disabled' is now only one turn
+	* Note: Disabled for multiple turns can be absolutely deadly for a construct focused deck, this should make the card a bit more competitive. I am considering a rework adjustment to Grid Redirection due to this, but we'll see.
+  * Buff: Fission Reactor
+	* Now gain energy if half of your construct slots are empty at the start of your turn.
+	* The amount of energy gained is equal to the stack count of Fission Reactor
+	* Note: Setting up constructs and their respective powers / buffs can take quite a lot, so cards like this are usually ignored. This change should make it worth grabbing.
+  * Buff: Power Armor
+	* Titanium amount changed to 4 (6) from 3 (5).
+	* Note: After a few more playtests, I think moving it down to 3 was a bit too much. I still want to encourage the use of block cards, but the passive block gain should still be worth it.
 * Misc
+  * Assembling Machine
+	* The added bonuses step now applies to the card as enchantments instead of using the internal upgrades
+	* This should ensure that things like the Hex Knight's upgrade removal debuff does not negate these effects
+	* I am currently aware of the bug with the event's card preview not showing the effect on the preview card, it works, just not for the preview right yet (I'll get around to this during the 0.8 cycle)
   * Scorch adjustments
 	* With 'Overheat' being the first card / interaction that can Scorch a player, I made some adjustments to the Scorch Logic
 	* Player-based scorch applies at the end of the turn like all other damage debuffs, instead of at the beginning like scorch usually does.
 	* Additional code checks were added to stop Refined Flammables and Plasma Fuel from affecting Scorch applied to yourself from Overheat.
+  * Internal
+	* Added internal quick-accessor functions for construct counts, and refactored old code to use these new functions.
 
 ## Version History
 0.7.14 -> 0.8.0

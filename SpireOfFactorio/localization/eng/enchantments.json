@@ -1,0 +1,6 @@
+{
+  "SPIREOFFACTORIO-EFFICIENT.title": "Efficient",
+  "SPIREOFFACTORIO-EFFICIENT.description": "This card costs {Amount} less {energyPrefix:energyIcons(1)} to play.",
+  "SPIREOFFACTORIO-REPLICATING.title": "Replicating",
+  "SPIREOFFACTORIO-REPLICATING.description": "This card costs gains [gold]Replay[/gold] {Amount}."
+}

@@ -12,7 +12,7 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Cards.Engineer;
 
 public sealed class PowerArmor : EngineerCard
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<StrengthPower>(1m), new PowerVar<DexterityPower>(1m), new PowerVar<TitaniumPower>(3m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<StrengthPower>(1m), new PowerVar<DexterityPower>(1m), new PowerVar<TitaniumPower>(4m)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<TitaniumPower>()];
 

@@ -13,7 +13,7 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Cards.Engineer;
 
 public sealed class HunkerDown : EngineerCard
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DisabledPower>("Disabled", 2m), new BlockVar(20, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DisabledPower>("Disabled", 1m), new BlockVar(20, ValueProp.Move)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<DisabledPower>()];
 
