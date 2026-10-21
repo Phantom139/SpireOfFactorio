@@ -42,6 +42,12 @@ public sealed class FissionReactorPower : SpireOfFactorioPower
             int currentActiveConstructs = EngineerCmd.GetConstructCount(base.Owner.Player);
             int maxConstructs = EngineerCmd.GetMaxConstructs(base.Owner.Player);
 
+            if (currentActiveConstructs == 0)
+            {
+                await PlayerCmd.GainEnergy(base.Amount, base.Owner.Player);
+                return;
+            }
+
             decimal perc = currentActiveConstructs / maxConstructs;
             if (perc <= 0.5m)
             {
