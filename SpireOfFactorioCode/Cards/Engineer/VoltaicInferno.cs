@@ -13,7 +13,7 @@ public sealed class VoltaicInferno : EngineerCard
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<ScorchPower>()];
 
-    public VoltaicInferno() : base(3, CardType.Power, CardRarity.Rare, TargetType.Self)
+    public VoltaicInferno() : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
     {
 
     }

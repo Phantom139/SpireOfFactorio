@@ -31,7 +31,7 @@ public sealed class LaserTurret : EngineerCard
 
     public LaserTurret() : base(2, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 2);
+        CustomResources<Scrap>.SetCanonicalCost(this, 1);
     }
 
     protected override void OnUpgrade()
@@ -44,7 +44,6 @@ public sealed class LaserTurret : EngineerCard
             MainFile.Logger.Warn($"[Cards:LaserTurret] OnUpgrade() Could not resolve the CustomResource<Scrap> object.");
             return;
         }
-        scrapCost.UpgradeCostBy(-1);
     }
 
 

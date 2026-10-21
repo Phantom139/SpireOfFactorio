@@ -63,6 +63,10 @@ public sealed class ShockPower : SpireOfFactorioPower
 
     public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
+        if (power is not ShockPower)
+        {
+            return Task.CompletedTask;
+        }
         int playerCountIncrease = base.Owner.CombatState.Players.Count - 1;
         int factor = (playerCountIncrease > 0 ? 10 * playerCountIncrease : 0) + 100;
 

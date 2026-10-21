@@ -31,7 +31,7 @@ public sealed class FlamethrowerTurret : EngineerCard
 
     public FlamethrowerTurret() : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 3);
+        CustomResources<Scrap>.SetCanonicalCost(this, 2);
     }
 
     protected override void OnUpgrade()

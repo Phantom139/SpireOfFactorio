@@ -31,7 +31,7 @@ public sealed class TeslaTurret : EngineerCard
 
     public TeslaTurret() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 4);
+        CustomResources<Scrap>.SetCanonicalCost(this, 3);
     }
 
     protected override void OnUpgrade()

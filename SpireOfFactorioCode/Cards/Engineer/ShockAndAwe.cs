@@ -31,7 +31,7 @@ public sealed class ShockAndAwe : EngineerCard
 
     public ShockAndAwe() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 5);
+        CustomResources<Scrap>.SetCanonicalCost(this, 3);
     }
 
     protected override void OnUpgrade()
@@ -43,7 +43,7 @@ public sealed class ShockAndAwe : EngineerCard
             MainFile.Logger.Warn($"[Cards:ShockAndAwe] OnUpgrade() Could not resolve the CustomResource<Scrap> object.");
             return;
         }
-        scrapCost.UpgradeCostBy(-1);
+        //scrapCost.UpgradeCostBy(-1);
     }
 
 

@@ -205,22 +205,4 @@ public static class EngineerCmd
         return command;
     }
 
-    public static int GetConstructCount(Player player)
-    {
-        if (player == null)
-        {
-            return 0;
-        }
-        int currentActiveConstructs = 0;
-        var pets = player.Creature.Pets;
-        foreach (Creature pet in pets)
-        {
-            if (pet.Monster is ConstructModel)
-            {
-                currentActiveConstructs++;
-            }
-        }
-        return currentActiveConstructs;
-    }
-
 }

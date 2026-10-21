@@ -12,7 +12,7 @@ public class PristineGear : SpireOfFactorioRelic
 {
     public override RelicRarity Rarity => RelicRarity.Starter;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new ScrapVar(5), new ScrapVar("ScrapAdd", 1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new ScrapVar(5), new ScrapVar("ScrapAdd", 2)];
 
     public override Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {

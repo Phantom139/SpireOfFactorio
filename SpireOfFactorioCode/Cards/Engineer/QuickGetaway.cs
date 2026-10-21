@@ -1,5 +1,4 @@
-﻿using BaseLib.Abstracts;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -7,7 +6,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.SpireOfFactorioCode.Powers;
-using SpireOfFactorio.SpireOfFactorioCode.Util;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Cards.Engineer;
 
@@ -19,7 +17,7 @@ public sealed class QuickGetaway : EngineerCard
 
     public QuickGetaway() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 1);
+        //CustomResources<Scrap>.SetCanonicalCost(this, 1);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

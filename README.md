@@ -50,6 +50,41 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.1 -> 0.8.2:
+* Bugfixes:
+  * Fixed the percent display on the Shock debuff UI
+  * Undid the 0.8.1 refactor for construct counts, it was causing all sorts of oddities in the calculations 
+* Balance:
+  * Adjustment: Speed Module
+	* Replay gained from Speed Module is lost if the card is not looped two turns in a row.
+	* Note: Still needs a bit more tuning, our last A10 run still had Replay values well over 50 possible, this should make it a bit more fair 
+  * Buff: Voltaic Inferno
+	* Reduced energy cost from 3 to 1
+	* Note: This power is very expensive but can be looped very effectively with a Tesla Turret build, but like before, having two rare cards in a deck is quite hard enough to pull already, this should make non-tesla turret builds with this card a bit easier to play.
+  * Scrap Costs:
+	* This is probably the bigger aspect of this tuning pass. One of the continued weaknesses I have seen with Engineer compared to Regent is how punishing not having Scrap can be in the late game with a substantial amount of cards requiring Scrap to play. 
+	* This will be my first "swing" at this problem to see how it works out with more tuning likely to come.
+	* Relic: First Gear
+	  * Now grants 1 Scrap at the start of each turn
+	* Relic Pristine Gear
+	  * Now grants 2 Scrap at the start of each turn
+    * Card: Gun Turret 
+	  * Reduced base Scrap cost to 1, the upgraded card now becomes a zero cost 
+	* Card: Defensive Perimeter
+	  * Reduced base Scrap cost to 1, the upgrade still does not reduce cost further 
+	* Card: Laser Turret
+	  * Reduced base Scrap cost to 1, the upgraded card no longer reduces scrap cost 
+	* Card: Flamethrower Turret
+	  * Reduced base Scrap cost to 2, the upgrade still reduces cost by 1 additional scrap 
+    * Card: Shock and Awe
+	  * Reduced base Scrap cost to 3, the upgraded card no longer reduces the cost further
+	  * Note: Artillery Turret is very powerful already, this should make it a little less punishing to play. 
+    * Card: Tesla Turret
+	  * Reduced base Scrap cost to 3, the upgraded card still reduces cost by 1 additional scrap 
+    * Card: Quick Getaway
+	  * Removed the Scrap cost on the card. 
+
+## Version History
 0.8.0 -> 0.8.1:
 * Bugfixes
   * Assembled Strike
@@ -85,7 +120,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Internal
 	* Added internal quick-accessor functions for construct counts, and refactored old code to use these new functions.
 
-## Version History
 0.7.14 -> 0.8.0
 * New Content:
   * New Event: The Assembling Machine

@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.SpireOfFactorioCode.Characters;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Powers;
@@ -39,7 +40,16 @@ public sealed class FissionReactorPower : SpireOfFactorioPower
         }
         if (side == CombatSide.Player)
         {
-            int currentActiveConstructs = EngineerCmd.GetConstructCount(base.Owner.Player);
+            int currentActiveConstructs = 0;
+            var pets = base.Owner.Pets;
+            foreach (Creature pet in pets)
+            {
+                if (pet.Monster is ConstructModel)
+                {
+                    currentActiveConstructs++;
+                }
+            }
+
             int maxConstructs = base.Owner.Player.Character is Engineer
                 ? EngineerCombatState.MaxConstructs[base.Owner.Player.PlayerCombatState]
                 : 1;

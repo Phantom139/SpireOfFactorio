@@ -30,7 +30,7 @@ public sealed class DefensivePerimeter : EngineerCard
 
     public DefensivePerimeter() : base(2, CardType.Skill, CardRarity.Ancient, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 2);
+        CustomResources<Scrap>.SetCanonicalCost(this, 1);
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

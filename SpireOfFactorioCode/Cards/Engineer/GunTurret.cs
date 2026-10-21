@@ -33,7 +33,7 @@ public sealed class GunTurret : EngineerCard, ITranscendenceCard
 
     public GunTurret() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
-        CustomResources<Scrap>.SetCanonicalCost(this, 2);
+        CustomResources<Scrap>.SetCanonicalCost(this, 1);
     }
 
     protected override void OnUpgrade()
