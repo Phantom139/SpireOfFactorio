@@ -72,6 +72,7 @@
       <None Remove="SpireOfFactorio\localization\eng\epochs.json" />
       <None Remove="SpireOfFactorio\localization\eng\events.json" />
       <None Remove="SpireOfFactorio\localization\eng\monsters.json" />
+      <None Remove="SpireOfFactorio\localization\eng\potions.json" />
       <None Remove="SpireOfFactorio\localization\eng\powers.json" />
       <None Remove="SpireOfFactorio\localization\eng\static_hover_tips.json" />
     </ItemGroup>
@@ -81,7 +82,6 @@
       <Folder Include="Libraries\TimelineLib\Patches\" />
       <Folder Include="Libraries\TimelineLib\Timeline\" />
       <Folder Include="Libraries\TimelineLib\Unlocks\Conditions\" />
-      <Folder Include="SpireOfFactorioCode\Potions\" />
       <Folder Include="SpireOfFactorio\images\card_portraits\big\" />
       <Folder Include="SpireOfFactorio\images\powers\big\" />
       <Folder Include="SpireOfFactorio\images\relics\big\" />
@@ -108,6 +108,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
       <AdditionalFiles Update="SpireOfFactorio\localization\eng\monsters.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AdditionalFiles>
+      <AdditionalFiles Update="SpireOfFactorio\localization\eng\potions.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AdditionalFiles>
     </ItemGroup>

@@ -21,6 +21,8 @@ public class SpeedModule : SpireOfFactorioRelic
 
     private CardModel? storedCard;
 
+    private readonly HashSet<CardModel> _speedModuleCards = new();
+
     [SavedProperty]
     public int StoredCardCost { get; set; }
 
@@ -62,24 +64,25 @@ public class SpeedModule : SpireOfFactorioRelic
 
     public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
     {
-        if (!cardPlay.IsAutoPlay)
+        // Ignore autoplay, other players' cards, and cards created by Speed Module.
+        if (cardPlay.IsAutoPlay ||
+            cardPlay.Card.Owner != base.Owner ||
+            _speedModuleCards.Contains(cardPlay.Card))
         {
-            if (cardPlay.Card.Owner == base.Owner)
-            {
-                if (storedCard == null)
-                {
-                    storedCard = cardPlay.Card;
-                    StoredCardCost = cardPlay.Card.EnergyCost.GetWithModifiers(CostModifiers.All);
-                    InvokeDisplayAmountChanged();
-                }
-                else
-                {
-                    if (cardPlay.Card != storedCard)
-                    {
-                        CurrentExtraPlays++;
-                    }
-                }
-            }
+            return;
+        }
+
+        if (storedCard == null)
+        {
+            storedCard = cardPlay.Card;
+            StoredCardCost = cardPlay.Card.EnergyCost.GetWithModifiers(
+                CostModifiers.All);
+
+            InvokeDisplayAmountChanged();
+        }
+        else if (cardPlay.Card != storedCard)
+        {
+            CurrentExtraPlays++;
         }
     }
 
@@ -99,7 +102,11 @@ public class SpeedModule : SpireOfFactorioRelic
                     newCard.EnergyCost.SetThisTurnOrUntilPlayed(StoredCardCost + (int)DynamicVars.Energy.BaseValue);
                 }
 
-                newCard.BaseReplayCount += CurrentExtraPlays;
+                // Replace the existing replay count rather than accumulating it.
+                newCard.BaseReplayCount = CurrentExtraPlays;
+
+                // Remember this exact card instance so it cannot feed back into the relic.
+                _speedModuleCards.Add(newCard);
                 newCard.AddKeyword(CardKeyword.Eternal);
                 newCard.AddKeyword(CardKeyword.Exhaust);
 
@@ -120,6 +127,7 @@ public class SpeedModule : SpireOfFactorioRelic
     {
         CurrentExtraPlays = 0;
         storedCard = null;
+        _speedModuleCards.Clear();
         return Task.CompletedTask;
     }
 

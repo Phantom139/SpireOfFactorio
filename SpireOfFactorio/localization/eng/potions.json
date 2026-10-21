@@ -1,0 +1,12 @@
+{
+  "SPIREOFFACTORIO-SCORCHING_JELLY.title": "Scorching Jelly",
+  "SPIREOFFACTORIO-SCORCHING_JELLY.description": "Apply {ScorchPower:diff()} [gold]Scorch[/gold].",
+  "SPIREOFFACTORIO-CONDUCTIVE_FLUID.title": "Conductive Fluid",
+  "SPIREOFFACTORIO-CONDUCTIVE_FLUID.description": "Apply {ShockPower:diff()} [gold]Shock[/gold].",
+  "SPIREOFFACTORIO-SCRAP_SOLUTION.title": "Scrap Solution",
+  "SPIREOFFACTORIO-SCRAP_SOLUTION.description": "Gain {Scrap:scrapIcons(3)}.",
+  "SPIREOFFACTORIO-POWER_CELL.title": "Power Cell",
+  "SPIREOFFACTORIO-POWER_CELL.description": "Apply {OverclockPower:diff()} [gold]Overclock[/gold] to all of your [blue]constructs[/blue].",
+  "SPIREOFFACTORIO-TINKERERS_GAMBLE.title": "Tinkerer's Gamble",
+  "SPIREOFFACTORIO-TINKERERS_GAMBLE.description": "Assemble a random upgraded [blue]construct[/blue]."
+}

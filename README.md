@@ -51,13 +51,26 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 
 ### Changelog (Current)
 0.8.1 -> 0.8.2:
+* New Content:
+  * Potions
+	* One of the big things I wanted to do for some time now was introduce potions to the mod!
+	* This version adds five new potions to the game. Three are Engineer exclusive, the other two are general
+	* General Potions:
+	  * Scorching Jelly: Common Potion, Apply 15 Scorch to an enemy
+	  * Conductive Fluid: Uncommon Potion, Apply 25 Shock to an enemy
+	* Engineer Potions:
+	  * Scrap Solution: Common Potion, Gain 3 Scrap
+	  * Power Cell: Uncommon Potion, All allied constructs gain 3 Overclock
+	  * Tinkerer's Gamble: Rare Potion, Assemble a random upgraded construct 
 * Bugfixes:
   * Fixed the percent display on the Shock debuff UI
   * Undid the 0.8.1 refactor for construct counts, it was causing all sorts of oddities in the calculations 
+  * Fixed a bug with Speed Module's counter also counting cards played from other players. 
 * Balance:
   * Adjustment: Speed Module
-	* Replay gained from Speed Module is lost if the card is not looped two turns in a row.
-	* Note: Still needs a bit more tuning, our last A10 run still had Replay values well over 50 possible, this should make it a bit more fair 
+	* Cards with replay granted by the Speed Module no longer add to the relic counter.
+	* The replay count awarded on the return card is overwritten instead of added.
+	* Note: Still needs a bit more tuning, our last A10 run still had Replay values well over 50 possible, this should significantly reduce the "game breakyness" on the relic, but still make it powerful enough to be worth taking.
   * Buff: Voltaic Inferno
 	* Reduced energy cost from 3 to 1
 	* Note: This power is very expensive but can be looped very effectively with a Tesla Turret build, but like before, having two rare cards in a deck is quite hard enough to pull already, this should make non-tesla turret builds with this card a bit easier to play.
