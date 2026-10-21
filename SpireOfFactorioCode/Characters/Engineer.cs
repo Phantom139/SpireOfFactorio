@@ -223,16 +223,4 @@ public static class EngineerCmd
         return currentActiveConstructs;
     }
 
-    public static int GetMaxConstructs(Player player)
-    {
-        if (player == null)
-        {
-            return 0;
-        }
-        int maxConstructs = player.Character is Engineer
-            ? EngineerCombatState.MaxConstructs[player.PlayerCombatState]
-            : 1;
-        return maxConstructs;
-    }
-
 }

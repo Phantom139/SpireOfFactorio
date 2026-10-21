@@ -30,7 +30,9 @@ public sealed class MiningDrillPower : SpireOfFactorioPower
             if (base.Owner.IsPlayer)
             {
                 int currentActiveConstructs = EngineerCmd.GetConstructCount(base.Owner.Player);
-                int maxConstructs = EngineerCmd.GetMaxConstructs(base.Owner.Player);
+                int maxConstructs = base.Owner.Player.Character is Engineer
+                    ? EngineerCombatState.MaxConstructs[base.Owner.Player.PlayerCombatState]
+                    : 1;
 
                 int miningDrill = maxConstructs - currentActiveConstructs;
                 int scrapGain = miningDrill * base.Amount;
