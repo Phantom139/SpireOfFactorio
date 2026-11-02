@@ -16,10 +16,6 @@ public sealed class Hellfire : EngineerCard
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<ScorchPower>("Scorch", 10m), new DynamicVar("HellfireVulnerableIncrease", 20m)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<ScorchPower>()];
 
-    //
-    // Summary:
-    //     The only difference between the starting Strike cards are portrait, attack vfx,
-    //     and color.
     public Hellfire()
         : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
     {

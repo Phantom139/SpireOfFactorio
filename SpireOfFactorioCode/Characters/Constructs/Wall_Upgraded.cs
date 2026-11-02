@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.Libraries.ConstructLib.Hooks;
 
@@ -56,10 +57,8 @@ public sealed class Wall_Upgraded : CustomConstructModel
             {
                 return;
             }
-            IEnumerable<Creature> enumerable = from c in base.CombatState.GetTeammatesOf(base.Creature)
-                                               where c != null && c.IsAlive && c.Monster is not Wall && c.Monster is not Wall_Upgraded
-                                               select c;
-            foreach (Creature item in enumerable)
+            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllPlayers);
+            foreach (Creature item in tList)
             {
                 decimal outBlock = decimal.Ceiling(block.BaseValue * OverclockPercent());
                 await CreatureCmd.GainBlock(item, outBlock, ValueProp.Move, null, true);

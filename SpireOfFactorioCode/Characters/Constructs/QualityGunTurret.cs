@@ -1,4 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Combat;
+﻿using BaseLib.Patches.Features;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -6,6 +7,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.Libraries.ConstructLib.Hooks;
 
@@ -53,9 +55,11 @@ public sealed class QualityGunTurret : CustomConstructModel
             {
                 return;
             }
+            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllEnemies);
+
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
             await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
-                .TargetingAllOpponents(base.CombatState)
+                .TargetingFiltered(tList)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);

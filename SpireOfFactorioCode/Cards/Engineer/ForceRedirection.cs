@@ -13,7 +13,7 @@ public sealed class ForceRedirection : EngineerCard
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(22m, ValueProp.Move), new BlockVar(1m, ValueProp.Move)];
 
     public ForceRedirection()
-        : base(3, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+        : base(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
     }
 
@@ -37,7 +37,7 @@ public sealed class ForceRedirection : EngineerCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m);
-        base.EnergyCost.UpgradeBy(-1);
+        DynamicVars.Damage.UpgradeValueBy(8m);
+        //base.EnergyCost.UpgradeBy(-1);
     }
 }

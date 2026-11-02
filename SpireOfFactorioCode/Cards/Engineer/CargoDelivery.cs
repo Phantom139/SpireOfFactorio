@@ -12,7 +12,7 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Cards.Engineer;
 
 public sealed class CargoDelivery : EngineerCard
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(20m, ValueProp.Move), new DynamicVar("CargoDeliveryWeakIncrease", 10m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(20m, ValueProp.Move), new DynamicVar("CargoDeliveryWeakIncrease", 15m)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<WeakPower>()];
 
     public CargoDelivery()
@@ -40,6 +40,6 @@ public sealed class CargoDelivery : EngineerCard
     {
         base.EnergyCost.UpgradeBy(-1);
         DynamicVars.Damage.UpgradeValueBy(6m);
-        DynamicVars["CargoDeliveryWeakIncrease"].UpgradeValueBy(5m);
+        DynamicVars["CargoDeliveryWeakIncrease"].UpgradeValueBy(10m);
     }
 }

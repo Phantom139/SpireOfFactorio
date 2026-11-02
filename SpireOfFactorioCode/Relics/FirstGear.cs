@@ -15,14 +15,18 @@ public class FirstGear : SpireOfFactorioRelic
 
     public override RelicModel? GetUpgradeReplacement() => ModelDb.Relic<PristineGear>();
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new ScrapVar(3), new ScrapVar("ScrapAdd", 1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new ScrapVar(3), new ScrapVar("ScrapAdd", 1), new DynamicVar("TurnBonus", 3m)];
 
     public override Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        if (base.Owner.PlayerCombatState.TurnNumber > 1)
+        if (base.Owner != player)
+        {
+            return Task.CompletedTask;
+        }
+        if (base.Owner.PlayerCombatState.TurnNumber > 1 && Owner.PlayerCombatState.TurnNumber < DynamicVars["TurnBonus"].IntValue + 1)
         {
             var scrap = CustomResources<Scrap>.Get(base.Owner.PlayerCombatState!);
-            scrap.ModifyAmount(1);
+            scrap.ModifyAmount(DynamicVars["ScrapAdd"].IntValue);
         }
         return Task.CompletedTask;
     }

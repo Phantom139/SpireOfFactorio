@@ -157,7 +157,14 @@ public sealed class AssembledStrike : SpireOfFactorioCard
             case TheAssemblingMachine.RiderEffect.Shivs:
                 for (int i = 0; i < base.DynamicVars["RiderShivs"].IntValue; i++)
                 {
-                    await Shiv.CreateInHand(base.Owner, base.CombatState);
+                    Task<CardModel?> createdShiv = Shiv.CreateInHand(base.Owner, base.CombatState);
+                    if (createdShiv.Result != null)
+                    {
+                        if (base.IsUpgraded)
+                        {
+                            CardCmd.Upgrade(createdShiv.Result);
+                        }
+                    }
                     await Cmd.CustomScaledWait(0.1f, 0.2f);
                 }
                 break;
@@ -220,6 +227,19 @@ public sealed class AssembledStrike : SpireOfFactorioCard
     {
         base.EnergyCost.UpgradeBy(-1);
         DynamicVars.Damage.UpgradeValueBy(3m);
+        // Effect Upgrades
+        DynamicVars["RiderStrength"].UpgradeValueBy(1m);
+        DynamicVars["RiderHeal"].UpgradeValueBy(5m);
+        DynamicVars["RiderPoison"].UpgradeValueBy(3m);
+        DynamicVars["RiderShivs"].UpgradeValueBy(1m);
+        DynamicVars["RiderMinion"].UpgradeValueBy(1m);
+        DynamicVars["RiderForge"].UpgradeValueBy(5m);
+        DynamicVars["RiderSummon"].UpgradeValueBy(3m);
+        DynamicVars["RiderDoom"].UpgradeValueBy(4m);
+        DynamicVars["RiderLightning"].UpgradeValueBy(1m);
+        DynamicVars["RiderPlasma"].UpgradeValueBy(1m);
+        DynamicVars["RiderShock"].UpgradeValueBy(5m);
+        DynamicVars["RiderScorch"].UpgradeValueBy(3m);
     }
 
 }

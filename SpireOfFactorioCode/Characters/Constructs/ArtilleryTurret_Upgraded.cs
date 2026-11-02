@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.Libraries.ConstructLib.Hooks;
 using SpireOfFactorio.SpireOfFactorioCode.Powers;
@@ -58,27 +59,26 @@ public sealed class ArtilleryTurret_Upgraded : CustomConstructModel
         if (side == CombatSide.Player)
         {
             // Find the strongest enemy
-            Creature target = null;
-            decimal highest = 0;
-            foreach (Creature candidate in base.Creature.Monster.CombatState.Enemies)
+            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
+            Creature target = tList.First();
+
+            if (target == null || target.IsDead)
             {
-                if (candidate.IsDead)
+                // If the target died prior to this call, give it one re-attempt
+                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
+                Creature target2 = tList2.First();
+                if (target2 == null || target2.IsDead)
                 {
-                    continue;
+                    // If still null or dead, abort.
+                    return;
                 }
-                if (candidate.CurrentHp > highest)
-                {
-                    highest = candidate.CurrentHp;
-                    target = candidate;
-                }
-            }
-            if (target == null)
-            {
-                return;
+                target = target2;
             }
             // Apply Damage
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
             decimal outShock = decimal.Ceiling(shock * OverclockPercent());
+            // Check for targeting routine
+            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
 
             await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
             .Targeting(target)

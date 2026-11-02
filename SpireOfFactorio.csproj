@@ -80,7 +80,6 @@
     <ItemGroup>
       <Folder Include="Libraries\TimelineLib\Content\" />
       <Folder Include="Libraries\TimelineLib\Patches\" />
-      <Folder Include="Libraries\TimelineLib\Timeline\" />
       <Folder Include="Libraries\TimelineLib\Unlocks\Conditions\" />
       <Folder Include="SpireOfFactorio\images\card_portraits\big\" />
       <Folder Include="SpireOfFactorio\images\powers\big\" />

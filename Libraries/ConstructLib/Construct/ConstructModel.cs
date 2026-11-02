@@ -79,3 +79,15 @@ public enum ConstructActionPhase
     BeforeEnemyTurn,
     AfterEnemyTurn
 }
+
+public enum ConstructTargetSelectionType
+{
+    RandomEnemy = 0,
+    RandomPlayer,
+    WeakestEnemy,
+    WeakestPlayer,
+    StrongestEnemy,
+    StrongestPlayer,
+    AllEnemies,
+    AllPlayers
+}

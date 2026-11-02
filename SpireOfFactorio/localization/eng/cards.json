@@ -108,6 +108,8 @@
   "SPIREOFFACTORIO-RAIN_OF_TRASH.description": "Deal {Damage:diff()} damage X times.",
   "SPIREOFFACTORIO-MINING_DRILL.title": "Mining Drill",
   "SPIREOFFACTORIO-MINING_DRILL.description": "At the start of your turn, gain {Scrap:scrapIcons()}{IfUpgraded:show:{Scrap:scrapIcons()}} for each open [blue]construct[/blue] slot you have.",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL.title": "Big Mining Drill",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL.description": "Draw one additional card each turn. Gain 25% of the {Scrap:scrapIcons()} cost as {energyPrefix:energyIcons(1)}, or 25% of the {energyPrefix:energyIcons(1)} as {Scrap:scrapIcons()} for whichever is higher on the card drawn. X costs are ignored.",
   "SPIREOFFACTORIO-LIMITLESS_PRODUCTION.title": "Limitless Production",
   "SPIREOFFACTORIO-LIMITLESS_PRODUCTION.description": "For this turn, convert the {energyPrefix:energyIcons(1)} cost of all cards in your hand to {Scrap:scrapIcons(1)}.",
   "SPIREOFFACTORIO-LOGISTICS_ROBOT.title": "Logistics Robot",
@@ -125,7 +127,7 @@
   "SPIREOFFACTORIO-ROBOTICS_ASSEMBLY_ROUTINE.description": "Add {RobotCards} {IfUpgraded:show:upgraded }[blue]Robot[/blue] card{RobotCards:plural:|s} to your hand, they are free to play this turn.",
   "SPIREOFFACTORIO-ROBOTICS_ASSEMBLY_ROUTINE.selectionScreenPrompt": "Select {RobotCards} card{RobotCards:plural:|s} to add to your hand.",
   "SPIREOFFACTORIO-TARGETING_ROUTINE.title": "Targeting Routine",
-  "SPIREOFFACTORIO-TARGETING_ROUTINE.description": "Select a single target, this turn, your [blue]constructs[/blue] will only attack this target, dealing {TargetingRoutineExtra}% extra damage.",
+  "SPIREOFFACTORIO-TARGETING_ROUTINE.description": "Select a single target, this turn, all offensive [blue]constructs[/blue] will only attack this target, dealing {TargetingRoutine}% extra damage.",
   "SPIREOFFACTORIO-RAILGUN_SHOT.title": "Railgun Shot",
   "SPIREOFFACTORIO-RAILGUN_SHOT.description": "Deal {Damage:diff()} [gold]unblockable[/gold] damage. If the target has a damage reduction buff excluding [gold]Intangible[/gold], remove it and deal an additional additional {RailgunExtra} damage. Removes all [gold]Block[/gold] on the target.",
   "SPIREOFFACTORIO-EFFICIENT_POWERING_NETWORK.title": "Efficient Powering Network",
@@ -150,5 +152,8 @@
   "SPIREOFFACTORIO-FORCE_REDIRECTION.title": "Force Redirection",
   "SPIREOFFACTORIO-FORCE_REDIRECTION.description": "Deal {Damage:diff()} damage. Gain {Block:diff()} [gold]Block[/gold] for each stack of [gold]Weak[/gold], [gold]Vulnerable[/gold], [gold]Scorch[/gold], and [gold]Shock[/gold] on the hit enemy.",
   "SPIREOFFACTORIO-OVERHEAT.title": "Overheat",
-  "SPIREOFFACTORIO-OVERHEAT.description": "Deal {Damage:diff()} damage and apply {ScorchEnemies} [gold]Scorch[/gold] to all enemies. Apply {ScorchSelf} [gold]Scorch[/gold] to yourself."
+  "SPIREOFFACTORIO-OVERHEAT.description": "Deal {Damage:diff()} damage and apply {ScorchEnemies} [gold]Scorch[/gold] to all enemies. Apply {ScorchSelf} [gold]Scorch[/gold] to yourself.",
+  "SPIREOFFACTORIO-FORGE_FORM.title": "Forge Form",
+  "SPIREOFFACTORIO-FORGE_FORM.description": "Select a card in your hand and [gold]Exhaust[/gold] it. Whenever you spend {Scrap:scrapIcons(3)} in a turn, play a random card from your exhaust pile.",
+  "SPIREOFFACTORIO-FORGE_FORM.selectionScreenPrompt": "Select {ExhaustCount} card to [gold]Exhaust[/gold]."
 }

@@ -50,6 +50,57 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.2 -> 0.8.3:
+* New Content
+  * Engineer Cards:
+	* Big Mining Drill
+	  * Rare Power (2 Energy)
+	  * At the start of your turn, draw 1 additional card. Gain scrap equal to half of the energy cost on the card, or energy equal to half of the scrap cost on the card for whichever is higher.
+	* Forge Form
+	  * Rare Power (3 Energy)
+	  * Exhaust a card in your hand, whenever you spend 3 or more scrap in a single turn, play a random card in your exhaust pile.
+	* Targeting Routine
+	  * Rare Skill (1 Energy)
+	  * Select an enemy, all allied offensive constructs will force-target this enemy this turn, dealing 15% additional damage to it.
+	  * NOTE: I designed this card concept back for the 0.7 release, but only got around to the necessary backend code changes for it with this release, enjoy! 
+* Bugfixes:
+  * Fixed the owner bug in First Gear / Pristine Gear (See Balance Section for more info)
+	* You would think I would catch this one by default by now ;) 
+* Balance: 
+  * Scrap Costs:
+	* Relic: First Gear
+	  * The extra free scrap is now awarded only on the first three turns.
+	  * Note: There was a bug that counted all players instead of just the owning player when granting scrap, additionally getting a scrap each turn makes the scrap gain cards feel a little too weak, so this is my first "dial back" change
+    * Relic: Pristine Gear
+	  * The extra scrap gain each turn has been reduced to 1 from 2
+		* There is no turn limit on Pristine Gear
+	  * Note: I had to dial this back after the last update, gaining 2 scrap each turn effectively makes the scrap gain cards pointless, and that's not the idea here.
+  * Buff: Assembled Strike
+	* The upgraded version of the card now applies upgraded effects to the bonus as well as the existing upgrade
+	  * Strength: Adds 1 (From 2)
+	  * Heal: Increases to 10% (From 5%)
+	  * Shivs: Adds 1 and upgrades generated Shivs (From 2 unupgraded)
+	  * Poison: Adds 3 (From 5) 
+	  * Minion Strike: Adds 1 and upgrades generated Minion Strike(s) (From 1 Unupgraded) 
+	  * Forge: Adds 5 (From 7) 
+	  * Summon: Adds 3 (From 5)
+	  * Doom: Adds 4 (From 5)
+	  * Lightning / Plasma: Add +1 to orb count
+	  * Scorch: Adds 3 (From 7)
+	  * Shock: Adds 5 (From 10) 
+	* Note: I want this to be a worthwhile pursuit / upgrade for a deck.
+  * Buff: Cargo Delivery
+	* Weak damage bonus increased from 10% (15%) to 15% (25%)
+	* Note: I think the reward for firing this card off from successfully building a lot of Weak should be a lot more significant, this should help
+  * Buff: Force Redirection
+	* Reduced base cost to 2, upgrade cost remains at 2
+	* Upgraded damage increased from 27 -> 30
+	* Note: The base version of this card is a bit too much high-risk / high-reward right now, so I'm lowering that just a tad bit 
+* Misc
+  * Removed Grid Redirection from the mod for now while I come up with an idea on a suitable replacement for this card. 
+  * More backend work on TimelineLib for the 0.9 cycle 
+
+## Version History
 0.8.1 -> 0.8.2:
 * New Content:
   * Potions
@@ -97,7 +148,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
     * Card: Quick Getaway
 	  * Removed the Scrap cost on the card. 
 
-## Version History
 0.8.0 -> 0.8.1:
 * Bugfixes
   * Assembled Strike
@@ -753,3 +803,4 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Multiplayer Desyncs:
   * Recorded multiplayer desync when enemy turn began (Final boss - Queen) related to Power
 * Shock appears to be rolling the same RNG instance for all creatures on the same turn instead of each creature rolling a unique RNG
+* Overload is not properly applying to the player when an Overclock construct performs an action

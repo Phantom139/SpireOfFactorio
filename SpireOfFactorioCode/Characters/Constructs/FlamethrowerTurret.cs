@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.Libraries.ConstructLib.Hooks;
 using SpireOfFactorio.SpireOfFactorioCode.Powers;
@@ -60,23 +61,33 @@ public sealed class FlamethrowerTurret : CustomConstructModel
             {
                 return;
             }
+            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+            Creature target = tList.First();
+
+            if (target == null || target.IsDead)
+            {
+                // If the target died prior to this call, give it one re-attempt
+                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+                Creature target2 = tList2.First();
+                if (target2 == null || target2.IsDead)
+                {
+                    // If still null or dead, abort.
+                    return;
+                }
+                target = target2;
+            }
+
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
             decimal outScorch = decimal.Ceiling(scorch * OverclockPercent());
+            // Check for targeting routine
+            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
 
             AttackCommand damageCommand = await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
-                .TargetingRandomOpponents(base.CombatState)
+                .Targeting(target)
                 .WithHitFx("vfx/fires/vfx_ground_fire")
                 .Execute(choiceContext);
-            Creature? hitCreature = damageCommand.Results
-                .SelectMany(r => r)
-                .Select(r => r.Receiver)
-                .FirstOrDefault();
 
-            if (hitCreature == null)
-            {
-                return;
-            }
-            await PowerCmd.Apply<ScorchPower>(choiceContext, hitCreature, outScorch, base.Creature, null);
+            await PowerCmd.Apply<ScorchPower>(choiceContext, target, outScorch, base.Creature, null);
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
         return;

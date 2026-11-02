@@ -6,8 +6,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
+using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.Libraries.ConstructLib.Hooks;
+using SpireOfFactorio.SpireOfFactorioCode.Powers;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Characters.Constructs;
 
@@ -55,8 +57,28 @@ public sealed class GunTurret_Upgraded : CustomConstructModel
                 return;
             }
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
+
+            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+            Creature target = tList.First();
+
+            if (target == null || target.IsDead)
+            {
+                // If the target died prior to this call, give it one re-attempt
+                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+                Creature target2 = tList2.First();
+                if (target2 == null || target2.IsDead)
+                {
+                    // If still null or dead, abort.
+                    return;
+                }
+                target = target2;
+            }
+
+            // Check for targeting routine
+            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
+
             await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
-                .TargetingRandomOpponents(base.CombatState)
+                .Targeting(target)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);

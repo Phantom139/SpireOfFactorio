@@ -46,4 +46,12 @@ public abstract class SpireOfFactorioPower : CustomPowerModel
         return Task.CompletedTask;
     }
 
+    public virtual Task ModifyConstructTargetingList(
+        Creature construct,
+        ConstructTargetSelectionType targetingSelectionType,
+        List<Creature> targetList)
+    {
+        return Task.CompletedTask;
+    }
+
 }

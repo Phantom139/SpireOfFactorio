@@ -105,4 +105,39 @@ public static class ConstructHooks
         }
     }
 
+    public static async Task ModifyConstructTargetingList(
+        Creature construct,
+        ConstructTargetSelectionType targetingSelectionType,
+        List<Creature> targetList
+        )
+    {
+        if (construct.IsDead)
+        {
+            return;
+        }
+        if (targetList == null)
+        {
+            return;
+        }
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructTargetingList(construct, targetingSelectionType, targetList);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructTargetingList(construct, targetingSelectionType, targetList);
+            }
+        }
+    }
+
 }

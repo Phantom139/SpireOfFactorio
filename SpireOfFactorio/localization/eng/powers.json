@@ -35,6 +35,9 @@
   "SPIREOFFACTORIO-MINING_DRILL_POWER.description": "At the start of your turn, gain {Scrap:scrapIcons(1)} for each open construct slot you have.",
   "SPIREOFFACTORIO-MINING_DRILL_POWER.smartDescription": "At the start of your turn, gain [blue]{Amount}[/blue] {Scrap:scrapIcons(1)} for each open construct slot you have.",
   "SPIREOFFACTORIO-MINING_DRILL_POWER.title": "Mining Drill",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL_POWER.description": "Draw one additional card each turn. Gain 25% of the {singleScrapIcon} cost as {energyPrefix:energyIcons(1)}, or 25% of the {energyPrefix:energyIcons(1)} as {singleScrapIcon} for whichever is higher on the card drawn. X costs are ignored.",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL_POWER.smartDescription": "Draw one additional card each turn. Gain 25% of the {Scrap:scrapIcons(1)} cost as {energyPrefix:energyIcons(1)}, or 25% of the {energyPrefix:energyIcons(1)} as {Scrap:scrapIcons(1)} for whichever is higher on the card drawn. X costs are ignored.",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL_POWER.title": "Big Mining Drill",
   "SPIREOFFACTORIO-FISSION_REACTOR_POWER.description": "Gain a construct slot. If 50% or less of your construct slots are used at the start of your turn, gain {energyPrefix:energyIcons(1)}.",
   "SPIREOFFACTORIO-FISSION_REACTOR_POWER.smartDescription": "Gain [blue]{Amount}[/blue] [blue]construct[/blue] slot{Amount:plural:|s}. If 50% or less of your construct slots are used at the start of your turn, gain {Amount} {energyPrefix:energyIcons(1)}.",
   "SPIREOFFACTORIO-FISSION_REACTOR_POWER.title": "Fission Reactor",
@@ -67,5 +70,11 @@
   "SPIREOFFACTORIO-TITANIUM_POWER.title": "Titanium",
   "SPIREOFFACTORIO-VOLTAIC_INFERNO_POWER.description": "Whenever you or your constructs apply [gold]Shock[/gold] to an enemy, apply [gold]Scorch[/gold] as well.",
   "SPIREOFFACTORIO-VOLTAIC_INFERNO_POWER.smartDescription": "Whenever you or your constructs apply [gold]Shock[/gold], apply [blue]{Amount}[/blue] [gold]Scorch[/gold].",
-  "SPIREOFFACTORIO-VOLTAIC_INFERNO_POWER.title": "Voltaic Inferno"
+  "SPIREOFFACTORIO-VOLTAIC_INFERNO_POWER.title": "Voltaic Inferno",
+  "SPIREOFFACTORIO-FORGE_FORM_POWER.description": "Whenever you spend 3 {singleScrapIcon} in a turn, play a random exhausted card.",
+  "SPIREOFFACTORIO-FORGE_FORM_POWER.smartDescription": "Whenever you spend {Scrap:scrapIcons(3)} in a turn, play a random exhausted card for free.",
+  "SPIREOFFACTORIO-FORGE_FORM_POWER.title": "Forge Form",
+  "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.description": "This enemy is marked. All offensive [blue]constructs[/blue] will only target this enemy this turn, dealing additional damage.",
+  "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.smartDescription": "This enemy is marked. All offensive [blue]constructs[/blue] will only target this enemy this turn, dealing [blue]{Amount}%[/blue] damage.",
+  "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.title": "Targeting Routine"
 }
