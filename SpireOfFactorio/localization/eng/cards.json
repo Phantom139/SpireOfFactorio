@@ -30,7 +30,7 @@
   "SPIREOFFACTORIO-SUPPRESSING_FIRE.title": "Suppressing Fire",
   "SPIREOFFACTORIO-SUPPRESSING_FIRE.description": "Apply {WeakPower:diff()} [gold]Weak[/gold] to the target.",
   "SPIREOFFACTORIO-MISSILE_LAUNCHER.title": "Missile Launcher",
-  "SPIREOFFACTORIO-MISSILE_LAUNCHER.description": "Deal {Damage:diff()} damage. Damage is increased by [gold]{MissileStrikeBlockBuff}%[/gold] if the target has [gold]Block[/gold].",
+  "SPIREOFFACTORIO-MISSILE_LAUNCHER.description": "Deal {Damage:diff()} damage. If the target has [gold]Block[/gold], the damage is increased by [gold]{MissileStrikeBlockBuff}%[/gold] and the target loses {DexterityLossFromBlock} [gold]Dexterity[/gold].",
   "SPIREOFFACTORIO-GRENADE_TOSS.title": "Grenade Toss",
   "SPIREOFFACTORIO-GRENADE_TOSS.description": "Deal {Damage:diff()} damage, apply {Shock} [gold]Shock[/gold], and {WeakPower:diff()} [gold]Weak[/gold].",
   "SPIREOFFACTORIO-ACCUMULATION.title": "Accumulation",

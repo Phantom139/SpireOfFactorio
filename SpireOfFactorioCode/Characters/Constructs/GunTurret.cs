@@ -20,7 +20,9 @@ public sealed class GunTurret : CustomConstructModel
 
     public static int spawnHP = 20;
 
-    public static int damage = 5;
+    public static int damage = 2;
+
+    public static int strike_count = 3;
 
     public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
 
@@ -30,6 +32,7 @@ public sealed class GunTurret : CustomConstructModel
     {
         LocString title = new("static_hover_tips", "SPIREOFFACTORIO-GUN_TURRET.title");
         LocString description = new("static_hover_tips", "SPIREOFFACTORIO-GUN_TURRET.description");
+        description.Add("StrikeCount", strike_count);
         description.Add("Damage", damage);
 
         return new HoverTip(title, description);
@@ -60,29 +63,41 @@ public sealed class GunTurret : CustomConstructModel
             }
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
 
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-            Creature target = tList.First();
-
-            if (target == null || target.IsDead)
+            for (int i = 0; i < strike_count; i++)
             {
-                // If the target died prior to this call, give it one re-attempt
-                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-                Creature target2 = tList2.First();
-                if (target2 == null || target2.IsDead)
+                List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+                if (tList == null)
                 {
-                    // If still null or dead, abort.
                     return;
                 }
-                target = target2;
+                Creature target = tList.First();
+
+                if (target == null || target.IsDead)
+                {
+                    // If the target died prior to this call, give it one re-attempt
+                    List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
+                    if (tList2 == null)
+                    {
+                        return;
+                    }
+                    Creature target2 = tList2.First();
+                    if (target2 == null || target2.IsDead)
+                    {
+                        // If still null or dead, abort.
+                        return;
+                    }
+                    target = target2;
+                }
+
+                // Check for targeting routine
+                outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
+
+                await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
+                    .Targeting(target)
+                    .WithHitFx("vfx/vfx_attack_blunt")
+                    .Execute(choiceContext);
             }
 
-            // Check for targeting routine
-            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
-
-            await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
-                .Targeting(target)
-                .WithHitFx("vfx/vfx_attack_blunt")
-                .Execute(choiceContext);
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
         return;

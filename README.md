@@ -50,6 +50,26 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.3 -> 0.8.4:
+* Bugfixes
+  * Addressed the bug in the new construct targeting function leading to ArgumentNullException when the final enemy died with remaining construct actions queued.
+  * Fixed the bug in the Fusion and Fission reactors that allowed players to accumulate ungodly amounts of construct slots.
+	* Hopefully for real this time (I thought I got this one back in 0.7.5, but apparently an extra condition snuck in)
+  * Adjusted the player context in the Gunsmith card so all players must now pick their card at the same time and nobody can play cards until all choices have been made. 
+  * Removed the OnDowngrade function from the Conductor card which was triggering an unintended infinite loop (Causing a hard crash of the game).
+	* Unsure why this was here in the first place, perhaps some old code?
+* Balance:
+  * Adjustment / Buff: Gun Turret Construct
+	* Damage logic changed from 5 (8) damage to a single random enemy to 3x2, 3x3 damage to random targets.
+	* Note: I wanted to flex that new targeting function a bit while also giving the starting construct some potential to be strong even into Act 2 when using Vulnerable effects.
+  * Nerf (Again, lol): Speed Module
+	* Power Cards can no longer be enhanced by Speed Module
+	* Note: We're getting closer to a "fair" speed module, I think this should be the last adjustment needed for a while (if at all), but looping powers was absolutely busted (See me having 50+ construct slots by Replay 5+ on Fission Reactor+)
+  * Buff: Missile Launcher
+	* When striking an enemy with Block, the target will now also lose 1 (2) Dexterity
+	* Note: Missile Launcher is sort of in an odd spot right now, it's an early-game 2-cost card that can hit hard, but given that building into 2-cost cards early is tough enough already, I wanted to give a little more incentive to increase the take rate.
+
+## Version History
 0.8.2 -> 0.8.3:
 * New Content
   * Engineer Cards:
@@ -98,9 +118,9 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Note: The base version of this card is a bit too much high-risk / high-reward right now, so I'm lowering that just a tad bit 
 * Misc
   * Removed Grid Redirection from the mod for now while I come up with an idea on a suitable replacement for this card. 
+  * Added a large new backend function methodology for construct targeting to allow for advanced selection logic for construct events. 
   * More backend work on TimelineLib for the 0.9 cycle 
 
-## Version History
 0.8.1 -> 0.8.2:
 * New Content:
   * Potions
@@ -758,7 +778,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Whenever you play a card, draw a card, but the cost of that card will be increased.
   * Card: Complex Recipe
 	* Status Card
-	* Gain 1 Dexterity this turn, gain 2 block for each copy of Complex Recipe ion your hand.
+	* Gain 1 Dexterity this turn, gain 2 block for each copy of Complex Recipe in your hand.
   * Relic: Utility Science Pack
 	* Convert any status cards in your hand into Complex Recipe at the start of your turn.
 
@@ -804,3 +824,4 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Recorded multiplayer desync when enemy turn began (Final boss - Queen) related to Power
 * Shock appears to be rolling the same RNG instance for all creatures on the same turn instead of each creature rolling a unique RNG
 * Overload is not properly applying to the player when an Overclock construct performs an action
+* The Targeting Routine power sometimes does not properly adjust the damage a construct deals 

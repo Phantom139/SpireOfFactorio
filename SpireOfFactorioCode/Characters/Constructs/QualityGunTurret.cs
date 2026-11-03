@@ -56,6 +56,10 @@ public sealed class QualityGunTurret : CustomConstructModel
                 return;
             }
             List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllEnemies);
+            if (tList == null)
+            {
+                return;
+            }
 
             decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
             await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)

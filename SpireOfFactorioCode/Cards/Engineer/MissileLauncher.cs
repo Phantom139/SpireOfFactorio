@@ -2,7 +2,9 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -11,7 +13,9 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Cards.Engineer;
 
 public sealed class MissileLauncher : EngineerCard
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(15m, ValueProp.Move), new DynamicVar("MissileStrikeBlockBuff", 25m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(15m, ValueProp.Move), new DynamicVar("MissileStrikeBlockBuff", 25m), new DynamicVar("DexterityLossFromBlock", 1m)];
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<DexterityPower>()];
 
     //
     // Summary:
@@ -28,6 +32,7 @@ public sealed class MissileLauncher : EngineerCard
         if (cardPlay.Target.Block > 0)
         {
             decimal totalHit = decimal.Ceiling(DynamicVars.Damage.BaseValue + (DynamicVars.Damage.BaseValue * (DynamicVars["MissileStrikeBlockBuff"].BaseValue / 100)));
+            await PowerCmd.Apply<DexterityPower>(choiceContext, cardPlay.Target, -DynamicVars["DexterityLossFromBlock"].BaseValue, base.Owner.Creature, cardPlay.Card);
             await DamageCmd.Attack(totalHit).FromCard(this).Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);
@@ -45,5 +50,6 @@ public sealed class MissileLauncher : EngineerCard
     {
         DynamicVars.Damage.UpgradeValueBy(3m);
         DynamicVars["MissileStrikeBlockBuff"].UpgradeValueBy(8m);
+        DynamicVars["DexterityLossFromBlock"].UpgradeValueBy(1m);
     }
 }

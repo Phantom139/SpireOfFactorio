@@ -56,12 +56,20 @@ public sealed class LaserTurret_Upgraded : CustomConstructModel
         {
             // Find the weakest enemy
             List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.WeakestEnemy);
+            if (tList == null)
+            {
+                return;
+            }
             Creature target = tList.First();
 
             if (target == null || target.IsDead)
             {
                 // If the target died prior to this call, give it one re-attempt
                 List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.WeakestEnemy);
+                if (tList2 == null)
+                {
+                    return;
+                }
                 Creature target2 = tList2.First();
                 if (target2 == null || target2.IsDead)
                 {

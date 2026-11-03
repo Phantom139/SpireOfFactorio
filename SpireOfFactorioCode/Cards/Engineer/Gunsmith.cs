@@ -74,7 +74,7 @@ public sealed class Gunsmith : EngineerCard
 
             CardPile playerHand = PileType.Hand.GetPile(p);
             // NOTE: May need to change the Choice Context, using the choiceContext object as is blocks all other player actions until the current Gunsmith stack is done.
-            List<CardModel> selection = (await CardSelectCmd.FromSimpleGrid(new ThrowingPlayerChoiceContext(), options, p, new CardSelectorPrefs(base.SelectionScreenPrompt, 1))).ToList();
+            List<CardModel> selection = (await CardSelectCmd.FromSimpleGrid(new BlockingPlayerChoiceContext(), options, p, new CardSelectorPrefs(base.SelectionScreenPrompt, 1))).ToList();
             foreach (CardModel option in selection)
             {
                 CardPileAddResult? addedCard = await CardPileCmd.Add(option, playerHand, CardPilePosition.Top);

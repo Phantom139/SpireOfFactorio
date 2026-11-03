@@ -58,6 +58,10 @@ public sealed class Wall : CustomConstructModel
                 return;
             }
             List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllPlayers);
+            if (tList == null)
+            {
+                return;
+            }
             foreach (Creature item in tList)
             {
                 decimal outBlock = decimal.Ceiling(block.BaseValue * OverclockPercent());

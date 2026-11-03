@@ -52,10 +52,4 @@ public sealed class Conductor : EngineerCard
         DynamicVars["Increase"].UpgradeValueBy(2m);
     }
 
-    protected override void AfterDowngraded()
-    {
-        AfterDowngraded();
-        DynamicVars.Damage.BaseValue += ExtraDamage;
-    }
-
 }

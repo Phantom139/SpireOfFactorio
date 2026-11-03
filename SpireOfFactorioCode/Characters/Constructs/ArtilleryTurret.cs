@@ -60,12 +60,20 @@ public sealed class ArtilleryTurret : CustomConstructModel
         {
             // Find the strongest enemy
             List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
+            if (tList == null)
+            {
+                return;
+            }
             Creature target = tList.First();
 
             if (target == null || target.IsDead)
             {
                 // If the target died prior to this call, give it one re-attempt
                 List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
+                if (tList2 == null)
+                {
+                    return;
+                }
                 Creature target2 = tList2.First();
                 if (target2 == null || target2.IsDead)
                 {

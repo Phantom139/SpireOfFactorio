@@ -29,6 +29,10 @@ public sealed class FusionReactorPower : SpireOfFactorioPower
         {
             return Task.CompletedTask;
         }
+        if (power is not FusionReactorPower)
+        {
+            return Task.CompletedTask;
+        }
         // 
         EngineerCombatState.MaxConstructs[base.Owner.Player.PlayerCombatState] += (int)amount * ConstructIncrease;
 

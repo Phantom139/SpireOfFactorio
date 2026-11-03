@@ -1,8 +1,8 @@
 {
   "SPIREOFFACTORIO-GUN_TURRET.title": "Gun Turret Construct",
-  "SPIREOFFACTORIO-GUN_TURRET.description": "At the end of your turn, fires on a random enemy dealing {Damage} damage.",
+  "SPIREOFFACTORIO-GUN_TURRET.description": "At the end of your turn, fires on{StrikeCount:plural: a|} random enem{StrikeCount:plural:y|ies} {StrikeCount} time{StrikeCount:plural:|s} dealing {Damage} damage.",
   "SPIREOFFACTORIO-GUN_TURRET_UPGRADED.title": "Gun Turret+ Construct",
-  "SPIREOFFACTORIO-GUN_TURRET_UPGRADED.description": "At the end of your turn, fires on a random enemy dealing {Damage} damage.",
+  "SPIREOFFACTORIO-GUN_TURRET_UPGRADED.description": "At the end of your turn, fires on{StrikeCount:plural: a|} random enem{StrikeCount:plural:y|ies} {StrikeCount} time{StrikeCount:plural:|s} dealing {Damage} damage.",
   "SPIREOFFACTORIO-QUALITY_GUN_TURRET.title": "Quality Gun Turret Construct",
   "SPIREOFFACTORIO-QUALITY_GUN_TURRET.description": "At the end of your turn, fires on all enemies dealing {Damage} damage.",
   "SPIREOFFACTORIO-QUALITY_GUN_TURRET_UPGRADED.title": "Quality Gun Turret+ Construct",

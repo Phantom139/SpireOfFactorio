@@ -27,6 +27,10 @@ public sealed class FissionReactorPower : SpireOfFactorioPower
         {
             return Task.CompletedTask;
         }
+        if (power is not FissionReactorPower)
+        {
+            return Task.CompletedTask;
+        }
         EngineerCombatState.MaxConstructs[base.Owner.Player.PlayerCombatState] += (int)amount;
 
         return Task.CompletedTask;

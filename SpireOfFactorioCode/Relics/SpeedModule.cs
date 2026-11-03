@@ -74,11 +74,14 @@ public class SpeedModule : SpireOfFactorioRelic
 
         if (storedCard == null)
         {
-            storedCard = cardPlay.Card;
-            StoredCardCost = cardPlay.Card.EnergyCost.GetWithModifiers(
-                CostModifiers.All);
+            if (cardPlay.Card.Type == CardType.Attack || cardPlay.Card.Type == CardType.Skill)
+            {
+                storedCard = cardPlay.Card;
+                StoredCardCost = cardPlay.Card.EnergyCost.GetWithModifiers(
+                    CostModifiers.All);
 
-            InvokeDisplayAmountChanged();
+                InvokeDisplayAmountChanged();
+            }
         }
         else if (cardPlay.Card != storedCard)
         {

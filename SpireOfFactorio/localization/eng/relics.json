@@ -20,7 +20,7 @@
   "SPIREOFFACTORIO-EFFICIENCY_MODULE.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-SPEED_MODULE.title": "Speed Module",
-  "SPIREOFFACTORIO-SPEED_MODULE.description": "Store the first card you play each turn on the relic. Each additional card played adds one to the relic counter. At the start of your next turn re-add the saved card to your hand with an increased {energyPrefix:energyIcons(1)} cost, but replay equal to the counter on the relic, then reset the counter.",
+  "SPIREOFFACTORIO-SPEED_MODULE.description": "Store the first attack or skill you play each turn on the relic. At the start of your next turn re-add the saved card to your hand with an increased {energyPrefix:energyIcons(1)} cost and replay equal to the counter on the relic. Counter is increased from non-speed module enhanced card plays.",
   "SPIREOFFACTORIO-SPEED_MODULE.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-BIOFLUX.title": "Bioflux",
