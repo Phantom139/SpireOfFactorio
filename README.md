@@ -50,6 +50,14 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.4 -> 0.8.4.1
+* Note: Going to start doing releases like this as needed, essentially this is a "hotfix" release foxues on quickly hitting the issues from a play-test session.
+* Bugfixes:
+  * Adjusted the call stack in Assembled Strike for the two defect effects (Orbs) to properly await the calls, which should address the desync issue when the created orbs trigger an evoke.
+  * Adjusted the logic of the upgraded Shiv version of Assembled Strike to not block the game with a sychronous .Result call, which should address the issue with the user's game seemingly "freezing" when playing this card. 
+  * Fixed the bug where the Overload debuff was applying to ALL players instead of just the player with the debuff
+
+## Version History
 0.8.3 -> 0.8.4:
 * Bugfixes
   * Addressed the bug in the new construct targeting function leading to ArgumentNullException when the final enemy died with remaining construct actions queued.
@@ -69,7 +77,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* When striking an enemy with Block, the target will now also lose 1 (2) Dexterity
 	* Note: Missile Launcher is sort of in an odd spot right now, it's an early-game 2-cost card that can hit hard, but given that building into 2-cost cards early is tough enough already, I wanted to give a little more incentive to increase the take rate.
 
-## Version History
 0.8.2 -> 0.8.3:
 * New Content
   * Engineer Cards:

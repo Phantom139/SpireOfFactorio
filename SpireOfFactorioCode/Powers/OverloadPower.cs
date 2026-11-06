@@ -28,6 +28,14 @@ public sealed class OverloadPower : SpireOfFactorioPower
 
     public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        if (!Owner.IsPlayer)
+        {
+            return Task.CompletedTask;
+        }
+        if (card.Owner != Owner.Player)
+        {
+            return Task.CompletedTask;
+        }
         if (Amount > 0)
         {
             card.EnergyCost.AddThisTurnOrUntilPlayed(1);

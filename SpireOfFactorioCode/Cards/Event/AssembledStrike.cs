@@ -13,6 +13,7 @@ using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Models.Orbs;
 using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Saves.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.SpireOfFactorioCode.Events;
@@ -157,14 +158,13 @@ public sealed class AssembledStrike : SpireOfFactorioCard
             case TheAssemblingMachine.RiderEffect.Shivs:
                 for (int i = 0; i < base.DynamicVars["RiderShivs"].IntValue; i++)
                 {
-                    Task<CardModel?> createdShiv = Shiv.CreateInHand(base.Owner, base.CombatState);
-                    if (createdShiv.Result != null)
+                    CardModel? createdShiv = await Shiv.CreateInHand(base.Owner, base.CombatState);
+
+                    if (createdShiv != null && IsUpgraded)
                     {
-                        if (base.IsUpgraded)
-                        {
-                            CardCmd.Upgrade(createdShiv.Result);
-                        }
+                        CardCmd.Upgrade(createdShiv, CardPreviewStyle.None);
                     }
+
                     await Cmd.CustomScaledWait(0.1f, 0.2f);
                 }
                 break;
@@ -182,7 +182,7 @@ public sealed class AssembledStrike : SpireOfFactorioCard
                 }
                 break;
             case TheAssemblingMachine.RiderEffect.Forge:
-                ForgeCmd.Forge(DynamicVars["RiderForge"].BaseValue, base.Owner, this);
+                await ForgeCmd.Forge(DynamicVars["RiderForge"].BaseValue, base.Owner, this);
                 break;
             case TheAssemblingMachine.RiderEffect.Doom:
                 if (cardPlay.Target.IsAlive)
@@ -197,13 +197,13 @@ public sealed class AssembledStrike : SpireOfFactorioCard
             case TheAssemblingMachine.RiderEffect.Lightning:
                 for (int i = 0; i < base.DynamicVars["RiderLightning"].IntValue; i++)
                 {
-                    OrbCmd.Channel<LightningOrb>(choiceContext, base.Owner);
+                    await OrbCmd.Channel<LightningOrb>(choiceContext, base.Owner);
                 }
                 break;
             case TheAssemblingMachine.RiderEffect.Plasma:
                 for (int i = 0; i < base.DynamicVars["RiderPlasma"].IntValue; i++)
                 {
-                    OrbCmd.Channel<PlasmaOrb>(choiceContext, base.Owner);
+                    await OrbCmd.Channel<PlasmaOrb>(choiceContext, base.Owner);
                 }
                 break;
             case TheAssemblingMachine.RiderEffect.Scorch:
