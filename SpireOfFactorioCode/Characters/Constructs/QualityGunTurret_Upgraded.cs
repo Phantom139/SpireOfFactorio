@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
@@ -61,8 +62,18 @@ public sealed class QualityGunTurret_Upgraded : CustomConstructModel
                 return;
             }
 
-            decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
-            await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
+            ConstructEffectContext context = new ConstructEffectContext(Creature)
+            {
+                BaseDamage = damage,
+                Props = ValueProp.Move
+            };
+
+            // Fire Hooks
+            await ConstructHooks.ModifyConstructDamageAdditive(context);
+            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+            await ConstructHooks.ModifyConstructPowerList(context);
+
+            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
                 .TargetingFiltered(tList)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);

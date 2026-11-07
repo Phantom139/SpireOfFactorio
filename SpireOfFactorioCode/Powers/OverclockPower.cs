@@ -81,4 +81,33 @@ public sealed class OverclockPower : SpireOfFactorioPower
         // Finally, decrease the Overclock count
         await PowerCmd.Decrement(this);
     }
+
+    public override Task ModifyConstructDamageMultiplicative(ConstructEffectContext context)
+    {
+        decimal multiplier = 1 + ((OverclockMultiplier / 100m) * Amount);
+        context.MultiplicativeDamage *= multiplier;
+
+        return Task.CompletedTask;
+    }
+
+    public override Task ModifyConstructBlockMultiplicative(ConstructEffectContext context)
+    {
+        decimal multiplier = 1 + ((OverclockMultiplier / 100m) * Amount);
+        context.MultiplicativeBlock *= multiplier;
+
+        return Task.CompletedTask;
+    }
+
+    public override Task ModifyConstructPowerList(ConstructEffectContext context)
+    {
+        decimal multiplier = 1 + ((OverclockMultiplier / 100m) * Amount);
+
+        foreach (PowerModel powerType in context.Powers.Keys.ToList())
+        {
+            context.Powers[powerType] = (int)Math.Round(context.Powers[powerType] * multiplier, MidpointRounding.AwayFromZero);
+        }
+
+        return Task.CompletedTask;
+    }
+
 }

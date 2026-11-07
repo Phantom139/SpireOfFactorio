@@ -30,6 +30,10 @@ public class ProductivityModule : SpireOfFactorioRelic
 
     public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
     {
+        if (cardPlay.Card.Owner != base.Owner)
+        {
+            return;
+        }
         List<CardModel> cards = PileType.Hand.GetPile(base.Owner).Cards.ToList();
         CardModel card = cardPlay.Card;
 

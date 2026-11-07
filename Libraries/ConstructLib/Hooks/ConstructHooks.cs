@@ -140,4 +140,124 @@ public static class ConstructHooks
         }
     }
 
+    public static async Task ModifyConstructDamageAdditive(ConstructEffectContext context)
+    {
+        Creature construct = context.Construct;
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructDamageAdditive(context);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructDamageAdditive(context);
+            }
+        }
+    }
+
+    public static async Task ModifyConstructDamageMultiplicative(ConstructEffectContext context)
+    {
+        Creature construct = context.Construct;
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructDamageMultiplicative(context);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructDamageMultiplicative(context);
+            }
+        }
+    }
+
+    public static async Task ModifyConstructBlockAdditive(ConstructEffectContext context)
+    {
+        Creature construct = context.Construct;
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructBlockAdditive(context);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructBlockAdditive(context);
+            }
+        }
+    }
+
+    public static async Task ModifyConstructBlockMultiplicative(ConstructEffectContext context)
+    {
+        Creature construct = context.Construct;
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructBlockMultiplicative(context);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructBlockMultiplicative(context);
+            }
+        }
+    }
+
+    public static async Task ModifyConstructPowerList(ConstructEffectContext context)
+    {
+        Creature construct = context.Construct;
+        Player owner = construct.PetOwner;
+        var ownerPowers = owner.Creature.Powers.ToList();
+        var constructPowers = construct.Powers.ToList();
+
+        foreach (var power in ownerPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructPowerList(context);
+            }
+        }
+
+        foreach (var power in constructPowers)
+        {
+            if (power is SpireOfFactorioPower sPower)
+            {
+                await sPower.ModifyConstructPowerList(context);
+            }
+        }
+    }
+
 }

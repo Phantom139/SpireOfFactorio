@@ -21,6 +21,10 @@ public class PortableFissionReactor : SpireOfFactorioRelic
 
     public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        if (card.Owner != base.Owner)
+        {
+            return Task.CompletedTask;
+        }
         if (card.Type == CardType.Power)
         {
             int cost = card.EnergyCost.Canonical * -1;

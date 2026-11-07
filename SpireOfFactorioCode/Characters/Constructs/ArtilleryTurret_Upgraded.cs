@@ -6,8 +6,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
+using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
@@ -82,13 +84,22 @@ public sealed class ArtilleryTurret_Upgraded : CustomConstructModel
                 }
                 target = target2;
             }
-            // Apply Damage
-            decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
-            decimal outShock = decimal.Ceiling(shock * OverclockPercent());
-            // Check for targeting routine
-            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
+            ConstructEffectContext context = new ConstructEffectContext(Creature)
+            {
+                BaseDamage = damage,
+                Props = ValueProp.Move,
 
-            await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
+                Powers = new Dictionary<PowerModel, int>
+                {
+                    { ModelDb.Power<ShockPower>(), shock }
+                }
+            };
+            // Fire Hooks
+            await ConstructHooks.ModifyConstructDamageAdditive(context);
+            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+            await ConstructHooks.ModifyConstructPowerList(context);
+
+            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
             .Targeting(target)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
@@ -98,10 +109,13 @@ public sealed class ArtilleryTurret_Upgraded : CustomConstructModel
                 if (target.IsAlive)
                 {
                     NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NFireSmokePuffVfx.Create(target));
-                    await PowerCmd.Apply<ShockPower>(choiceContext, target, outShock, Creature, null);
-                    await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+                    foreach (var power in context.Powers)
+                    {
+                        await PowerCmd.Apply(choiceContext, power.Key, target, power.Value, Creature, null);
+                    }
                 }
             }
+            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
         return;
     }

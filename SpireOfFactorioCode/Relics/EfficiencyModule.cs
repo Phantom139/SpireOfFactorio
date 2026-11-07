@@ -95,6 +95,10 @@ public class EfficiencyModule : SpireOfFactorioRelic
 
     public override Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        if (cardPlay.Card.Owner != base.Owner)
+        {
+            return Task.CompletedTask;
+        }
         if (modifiedCards.Contains(cardPlay.Card))
         {
             if (CurrentExtraPlays < _numberOfExtrasBeforeCostUp)

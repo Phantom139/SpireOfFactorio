@@ -50,6 +50,20 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.4.1 -> 0.8.4.2
+* Bugfixes:
+  * Fixed the bug where productivity module was counting card plays from other players.
+  * Fixed a bug where Efficiency Module would count a same card played by another player against your two reduced cost cards for a turn. 
+  * Fixed a bug where the Portable Fission Reactor would remove the cost of powers in the hands of other players. 
+  * Fixed the bug with Targeting Routine not applying a multiplicative damage buff to constructs. 
+* Misc:
+  * The Train gods have seen suffering afflicted on allies, and will now dispense wrath (justice) on those who knowingly do so. 
+  * Reworked a substantial portion of construct damage and power model logic to allow for more hook based adjustments. 
+  * Adjusted the construct targeting hook from Targeting Routine to use less memory 
+  * Tweaked the RNG instance used for Shock
+	* I'm testing a different RNG set to see if this addresses the longstanding bug with Shock generating the exact same roll for all creatures on the field
+
+## Version History
 0.8.4 -> 0.8.4.1
 * Note: Going to start doing releases like this as needed, essentially this is a "hotfix" release focues on quickly hitting the issues from a play-test session.
 * Bugfixes:
@@ -57,7 +71,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Adjusted the logic of the upgraded Shiv version of Assembled Strike to not block the game with a sychronous .Result call, which should address the issue with the user's game seemingly "freezing" when playing this card. 
   * Fixed the bug where the Overload debuff was applying to ALL players instead of just the player with the debuff
 
-## Version History
 0.8.3 -> 0.8.4:
 * Bugfixes
   * Addressed the bug in the new construct targeting function leading to ArgumentNullException when the final enemy died with remaining construct actions queued.

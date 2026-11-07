@@ -5,6 +5,8 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
@@ -78,18 +80,32 @@ public sealed class LaserTurret : CustomConstructModel
                 }
                 target = target2;
             }
-            // Apply Damage
-            decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
-            decimal outScorch = decimal.Ceiling(scorch * OverclockPercent());
-            // Check for targeting routine
-            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
+            ConstructEffectContext context = new ConstructEffectContext(Creature)
+            {
+                BaseDamage = damage,
+                Props = ValueProp.Move,
 
-            await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
+                Powers = new Dictionary<PowerModel, int>
+                {
+                    { ModelDb.Power<ScorchPower>(), scorch }
+                }
+            };
+
+            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
             .Targeting(target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
             // Apply Scorch
-            await PowerCmd.Apply<ScorchPower>(choiceContext, target, outScorch, Creature, null);
+            if (target != null)
+            {
+                if (target.IsAlive)
+                {
+                    foreach (var power in context.Powers)
+                    {
+                        await PowerCmd.Apply(choiceContext, power.Key, target, power.Value, Creature, null);
+                    }
+                }
+            }
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
         return;

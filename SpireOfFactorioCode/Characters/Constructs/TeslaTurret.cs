@@ -1,11 +1,12 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Commands.Builders;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
@@ -84,18 +85,40 @@ public sealed class TeslaTurret : CustomConstructModel
                 target = target2;
             }
 
-            decimal outDamage = decimal.Ceiling(damage * OverclockPercent());
-            decimal outShock = decimal.Ceiling(shock * OverclockPercent());
-            // Check for targeting routine
-            outDamage += Decimal.Ceiling(((target.GetPowerAmount<TargetingRoutinePower>() / 100) * (outDamage)));
+            ConstructEffectContext context = new ConstructEffectContext(Creature)
+            {
+                BaseDamage = damage,
+                Props = ValueProp.Move,
 
-            AttackCommand damageCommand = await DamageCmd.Attack(outDamage).FromMonster(Creature.Monster)
-                .Targeting(target)
-                .WithHitFx("vfx/vfx_attack_lightning")
-                .Execute(choiceContext);
+                Powers = new Dictionary<PowerModel, int>
+                {
+                    { ModelDb.Power<ShockPower>(), shock }
+                }
+            };
 
-            await PowerCmd.Apply<ShockPower>(choiceContext, target, outShock, base.Creature, null);
+            // Fire Hooks
+            await ConstructHooks.ModifyConstructDamageAdditive(context);
+            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+            await ConstructHooks.ModifyConstructPowerList(context);
+
+            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
+            .Targeting(target)
+            .WithHitFx("vfx/vfx_attack_lightning")
+            .Execute(choiceContext);
+            // IF the target is still alive at this point, throw on the debuff
+            if (target != null)
+            {
+                if (target.IsAlive)
+                {
+                    foreach (var power in context.Powers)
+                    {
+                        await PowerCmd.Apply(choiceContext, power.Key, target, power.Value, Creature, null);
+                    }
+                }
+            }
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+
+
         }
         return;
     }

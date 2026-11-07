@@ -141,7 +141,7 @@ public sealed class ShockPower : SpireOfFactorioPower
             int playerCountIncrease = base.Owner.CombatState.Players.Count - 1;
             int factor = playerCountIncrease > 0 ? 10 * playerCountIncrease : 0;
 
-            int roll = base.Owner.Monster.Rng.NextInt(100 + factor);
+            int roll = base.Owner.Monster.RunRng.MonsterAi.NextInt(100 + factor);
 
             MainFile.Logger.Info(
                 $"[ShockPower] {base.Owner.Name} [{base.Amount}], Rolled {roll}");

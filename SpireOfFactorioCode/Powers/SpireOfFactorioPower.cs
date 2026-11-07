@@ -54,4 +54,29 @@ public abstract class SpireOfFactorioPower : CustomPowerModel
         return Task.CompletedTask;
     }
 
+    public virtual Task ModifyConstructDamageAdditive(ConstructEffectContext context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task ModifyConstructDamageMultiplicative(ConstructEffectContext context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task ModifyConstructBlockAdditive(ConstructEffectContext context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task ModifyConstructBlockMultiplicative(ConstructEffectContext context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public virtual Task ModifyConstructPowerList(ConstructEffectContext context)
+    {
+        return Task.CompletedTask;
+    }
+
 }

@@ -6,6 +6,8 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Characters;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.SpireOfFactorioCode.Relics;
@@ -106,6 +108,28 @@ public class TheRail : SpireOfFactorioEvent
 
     private async Task TryCross()
     {
+        // 0.8.5 Meme: Zeke Punishment :)
+        if (Owner.Character is Ironclad && Owner.RunState.Players.Count() > 1)
+        {
+            List<CardModel> zekeTrollCards = Owner.Deck.Cards
+                .Where(card => card is FightMe)
+                .ToList();
+            if (zekeTrollCards.Count() > 0)
+            {
+                foreach (CardModel card in zekeTrollCards)
+                {
+                    CardModel ShameCard = base.Owner.RunState.CreateCard<Shame>(base.Owner);
+                    await CardCmd.Transform(card, ShameCard, MegaCrit.Sts2.Core.Nodes.CommonUi.CardPreviewStyle.MessyLayout);
+                    //CardPileCmd.RemoveFromDeck(card);
+                }
+                int currentHP = Owner.Creature.CurrentHp;
+                await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner.Creature, currentHP - 1, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
+                SetEventFinished(L10NLookup("THE_RAIL.pages.ZEKE_PUNISHMENT.description"));
+                return;
+            }
+
+        }
+        //
         int roll = base.Rng.NextInt(0, 100);
         MainFile.Logger.Info("TheRail: Rolled " + roll.ToString());
         if (roll > 44)

@@ -27,13 +27,20 @@ public sealed class TargetingRoutinePower : SpireOfFactorioPower
         }
     }
 
-    public override async Task ModifyConstructTargetingList(Creature construct, ConstructTargetSelectionType targetingSelectionType, List<Creature> targetList)
+    public override Task ModifyConstructTargetingList(Creature construct, ConstructTargetSelectionType targetingSelectionType, List<Creature> targetList)
     {
         if (targetingSelectionType == ConstructTargetSelectionType.RandomEnemy || targetingSelectionType == ConstructTargetSelectionType.WeakestEnemy || targetingSelectionType == ConstructTargetSelectionType.StrongestEnemy)
         {
-            List<Creature> newList = new List<Creature>();
-            newList.Add(Owner);
-            targetList = newList;
+            targetList.Clear();
+            targetList.Add(Owner);
         }
+        return Task.CompletedTask;
     }
+
+    public override Task ModifyConstructDamageMultiplicative(ConstructEffectContext context)
+    {
+        context.MultiplicativeDamage *= (1 + (Amount / 100));
+        return Task.CompletedTask;
+    }
+
 }

@@ -62,10 +62,20 @@ public sealed class Wall : CustomConstructModel
             {
                 return;
             }
+
+            ConstructEffectContext context = new ConstructEffectContext(Creature)
+            {
+                BaseBlock = block.BaseValue,
+                Props = ValueProp.Move
+            };
+            await ConstructHooks.ModifyConstructBlockAdditive(context);
+            await ConstructHooks.ModifyConstructBlockMultiplicative(context);
+            await ConstructHooks.ModifyConstructPowerList(context);
+
             foreach (Creature item in tList)
             {
                 decimal outBlock = decimal.Ceiling(block.BaseValue * OverclockPercent());
-                await CreatureCmd.GainBlock(item, outBlock, ValueProp.Move, null, true);
+                await CreatureCmd.GainBlock(item, context.FinalBlock, ValueProp.Move, null, true);
             }
             await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
