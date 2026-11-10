@@ -53,6 +53,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 0.8.4.2 -> 0.8.4.3:
 * Bugfixes:
   * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage
+  * Fixed the error with the new construct power application being a non-mutable Power instance
 
 ## Version History
 0.8.4.1 -> 0.8.4.2

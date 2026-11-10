@@ -1,5 +1,4 @@
 ﻿using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace SpireOfFactorio.Libraries.ConstructLib.Construct;
@@ -34,7 +33,7 @@ public class ConstructEffectContext
     }
 
     // Buffs and Debuffs
-    public Dictionary<PowerModel, int> Powers { get; set; } = new();
+    public Dictionary<Type, int> Powers { get; set; } = new();
 
     public ValueProp Props { get; set; }
 

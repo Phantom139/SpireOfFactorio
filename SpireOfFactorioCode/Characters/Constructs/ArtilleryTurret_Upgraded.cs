@@ -6,7 +6,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -89,9 +88,9 @@ public sealed class ArtilleryTurret_Upgraded : CustomConstructModel
                 BaseDamage = damage,
                 Props = ValueProp.Move,
 
-                Powers = new Dictionary<PowerModel, int>
+                Powers = new Dictionary<Type, int>
                 {
-                    { ModelDb.Power<ShockPower>(), shock }
+                    { typeof(ShockPower), shock }
                 }
             };
             // Fire Hooks
@@ -111,7 +110,13 @@ public sealed class ArtilleryTurret_Upgraded : CustomConstructModel
                     NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NFireSmokePuffVfx.Create(target));
                     foreach (var power in context.Powers)
                     {
-                        await PowerCmd.Apply(choiceContext, power.Key, target, power.Value, Creature, null);
+                        await ConstructHooks.ApplyConstructPower(
+                            choiceContext,
+                            power.Key,
+                            target,
+                            power.Value,
+                            Creature
+                        );
                     }
                 }
             }

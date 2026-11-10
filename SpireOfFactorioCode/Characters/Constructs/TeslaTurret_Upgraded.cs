@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.BaseLib;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
@@ -90,9 +89,9 @@ public sealed class TeslaTurret_Upgraded : CustomConstructModel
                 BaseDamage = damage,
                 Props = ValueProp.Move,
 
-                Powers = new Dictionary<PowerModel, int>
+                Powers = new Dictionary<Type, int>
                 {
-                    { ModelDb.Power<ShockPower>(), shock }
+                    { typeof(ShockPower), shock }
                 }
             };
 
@@ -112,7 +111,13 @@ public sealed class TeslaTurret_Upgraded : CustomConstructModel
                 {
                     foreach (var power in context.Powers)
                     {
-                        await PowerCmd.Apply(choiceContext, power.Key, target, power.Value, Creature, null);
+                        await ConstructHooks.ApplyConstructPower(
+                            choiceContext,
+                            power.Key,
+                            target,
+                            power.Value,
+                            Creature
+                        );
                     }
                 }
             }

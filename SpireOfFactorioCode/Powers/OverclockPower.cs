@@ -101,7 +101,7 @@ public sealed class OverclockPower : SpireOfFactorioPower
     {
         decimal multiplier = 1 + ((OverclockMultiplier / 100m) * Amount);
 
-        foreach (PowerModel powerType in context.Powers.Keys.ToList())
+        foreach (Type powerType in context.Powers.Keys.ToList())
         {
             context.Powers[powerType] = (int)Math.Round(context.Powers[powerType] * multiplier, MidpointRounding.AwayFromZero);
         }

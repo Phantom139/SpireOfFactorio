@@ -1,4 +1,5 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -257,6 +258,25 @@ public static class ConstructHooks
             {
                 await sPower.ModifyConstructPowerList(context);
             }
+        }
+    }
+
+    public static async Task ApplyConstructPower(
+        PlayerChoiceContext choiceContext,
+        Type powerType,
+        Creature target,
+        int amount,
+        Creature applier)
+    {
+        if (powerType == typeof(ScorchPower))
+        {
+            await PowerCmd.Apply<ScorchPower>(
+                choiceContext, target, amount, applier, null);
+        }
+        else if (powerType == typeof(ShockPower))
+        {
+            await PowerCmd.Apply<ShockPower>(
+                choiceContext, target, amount, applier, null);
         }
     }
 
