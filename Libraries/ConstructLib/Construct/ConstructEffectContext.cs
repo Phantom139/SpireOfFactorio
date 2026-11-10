@@ -11,7 +11,7 @@ public class ConstructEffectContext
     // Damage
     public Decimal BaseDamage { get; set; }
     public Decimal AdditiveDamage { get; set; }
-    public Decimal MultiplicativeDamage { get; set; }
+    public Decimal MultiplicativeDamage { get; set; } = 1m;
     public Decimal FinalDamage
     {
         get
@@ -24,7 +24,7 @@ public class ConstructEffectContext
     // Block
     public Decimal BaseBlock { get; set; }
     public Decimal AdditiveBlock { get; set; }
-    public Decimal MultiplicativeBlock { get; set; }
+    public Decimal MultiplicativeBlock { get; set; } = 1m;
     public Decimal FinalBlock
     {
         get

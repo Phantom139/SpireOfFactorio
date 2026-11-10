@@ -50,6 +50,11 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.4.2 -> 0.8.4.3:
+* Bugfixes:
+  * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage
+
+## Version History
 0.8.4.1 -> 0.8.4.2
 * Bugfixes:
   * Fixed the bug where productivity module was counting card plays from other players.
@@ -63,7 +68,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Tweaked the RNG instance used for Shock
 	* I'm testing a different RNG set to see if this addresses the longstanding bug with Shock generating the exact same roll for all creatures on the field
 
-## Version History
 0.8.4 -> 0.8.4.1
 * Note: Going to start doing releases like this as needed, essentially this is a "hotfix" release focues on quickly hitting the issues from a play-test session.
 * Bugfixes:

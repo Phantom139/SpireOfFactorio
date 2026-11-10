@@ -12,7 +12,6 @@ using SpireOfFactorio.SpireOfFactorioCode.Relics;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Powers;
 
-// Phantom Note: I'm sure there are better ways to handle this power, but I like having a case-by-case code block for each instead of generic modifiers since we deal with powers, damage, and block in various spots.
 public sealed class OverclockPower : SpireOfFactorioPower
 {
     // This is a percent number (e.g., 20% would be 20m), Ref: CustomConstructModel.OverclockPercent()
@@ -58,7 +57,7 @@ public sealed class OverclockPower : SpireOfFactorioPower
             return;
         }
         // Check for Supercapacitor
-        decimal minimumStacks = 0;
+        Decimal minimumStacks = 0;
         if (owner.GetRelic<Supercapacitor>() != null)
         {
             minimumStacks = Supercapacitor.SupercapacitorStacks;
