@@ -33,13 +33,13 @@ public sealed class MissileLauncher : EngineerCard
         {
             decimal totalHit = decimal.Ceiling(DynamicVars.Damage.BaseValue + (DynamicVars.Damage.BaseValue * (DynamicVars["MissileStrikeBlockBuff"].BaseValue / 100)));
             await PowerCmd.Apply<DexterityPower>(choiceContext, cardPlay.Target, -DynamicVars["DexterityLossFromBlock"].BaseValue, base.Owner.Creature, cardPlay.Card);
-            await DamageCmd.Attack(totalHit).FromCard(this).Targeting(cardPlay.Target)
+            await DamageCmd.Attack(totalHit).FromCard(this, cardPlay).Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);
         }
         else
         {
-            await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+            await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_blunt")
                 .Execute(choiceContext);
         }

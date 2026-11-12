@@ -1,10 +1,16 @@
 ﻿using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
 using SpireOfFactorio.SpireOfFactorioCode;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
 namespace SpireOfFactorio.Libraries.ConstructLib.Targeting.Patches;
 
@@ -23,86 +29,102 @@ public static class CreatureCmdDamagePatch
 
     private static MethodBase TargetMethod()
     {
-        Type? stateMachine = AccessTools.Inner(
+        MethodInfo damageMethod = AccessTools.Method(
             typeof(CreatureCmd),
-            "<Damage>d__12"
+            nameof(CreatureCmd.Damage),
+            new[]
+            {
+            typeof(PlayerChoiceContext),
+            typeof(IEnumerable<DamageTargetData>),
+            typeof(decimal),
+            typeof(ValueProp),
+            typeof(Creature),
+            typeof(CardModel),
+            typeof(CardPlay),
+            typeof(ModifyDamageHookType)
+            }
+        ) ?? throw new Exception(
+            "[CreatureCmdDamagePatch] Could not find Damage method."
         );
 
-        if (stateMachine == null)
+        AsyncStateMachineAttribute? asyncAttribute =
+            damageMethod.GetCustomAttribute<AsyncStateMachineAttribute>();
+
+        if (asyncAttribute == null)
         {
             throw new Exception(
-                "[CreatureCmdDamagePatch] " +
-                "Could not find Damage state machine."
+                "[CreatureCmdDamagePatch] Damage method has no async state machine."
             );
         }
 
-        return AccessTools.Method(stateMachine, "MoveNext") ?? throw new Exception("[CreatureCmdDamagePatch] Could not find MoveNext.");
+        return AccessTools.Method(
+            asyncAttribute.StateMachineType,
+            "MoveNext"
+        ) ?? throw new Exception(
+            "[CreatureCmdDamagePatch] Could not find Damage MoveNext."
+        );
     }
 
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> Transpiler(
-        IEnumerable<CodeInstruction> instructions)
+       IEnumerable<CodeInstruction> instructions)
     {
         var codes = new List<CodeInstruction>(instructions);
 
-        MethodInfo getBlockTarget =
-            AccessTools.Method(
-                typeof(CreatureCmdDamagePatch),
-                nameof(GetBlockTarget)
-            );
+        MethodInfo getBlockTarget = AccessTools.Method(
+            typeof(CreatureCmdDamagePatch),
+            nameof(GetBlockTarget)
+        );
 
-        MethodInfo petOwnerGetter =
-            AccessTools.PropertyGetter(
-                typeof(Creature),
-                nameof(Creature.PetOwner)
-            );
+        MethodInfo petOwnerGetter = AccessTools.PropertyGetter(
+            typeof(Creature),
+            nameof(Creature.PetOwner)
+        );
 
-        MethodInfo damageBlockInternal =
-            AccessTools.Method(
-                typeof(Creature),
-                nameof(Creature.DamageBlockInternal)
-            );
+        MethodInfo petOwnerCreatureGetter = AccessTools.PropertyGetter(
+            petOwnerGetter.ReturnType,
+            "Creature"
+        );
 
-        bool patched = false;
+        if (getBlockTarget == null ||
+            petOwnerGetter == null ||
+            petOwnerCreatureGetter == null)
+        {
+            throw new Exception(
+                "[CreatureCmdDamagePatch] Could not find required property/method getters."
+            );
+        }
+
+        int matches = 0;
 
         for (int i = 0; i < codes.Count; i++)
         {
             if (!codes[i].Calls(petOwnerGetter))
-            {
                 continue;
+
+            // Find the Creature getter belonging to PetOwner.
+            int creatureGetterIndex = -1;
+
+            for (int j = i + 1; j < Math.Min(i + 20, codes.Count); j++)
+            {
+                if (codes[j].Calls(petOwnerCreatureGetter))
+                {
+                    creatureGetterIndex = j;
+                    break;
+                }
             }
 
-            /*
-             * This should be the PetOwner access used by:
-             *
-             * originalTarget2.PetOwner?.Creature ?? originalTarget2
-             *
-             * We expect:
-             *
-             *   ldarg.0
-             *   ldfld originalTarget
-             *   call get_PetOwner
-             */
-
-            if (i < 1)
-            {
+            if (creatureGetterIndex == -1)
                 continue;
-            }
 
-            MainFile.Logger.Info(
-                $"[CreatureCmdDamagePatch] " +
-                $"Found PetOwner getter at IL[{i}]."
-            );
-
-            /*
-             * Find the stloc.3 which terminates the
-             * PetOwner?.Creature ?? originalTarget expression.
-             */
+            // Find the local store terminating the expression.
             int storeIndex = -1;
 
-            for (int j = i; j < Math.Min(i + 20, codes.Count); j++)
+            for (int j = creatureGetterIndex + 1;
+                 j < Math.Min(creatureGetterIndex + 10, codes.Count);
+                 j++)
             {
-                if (codes[j].opcode == OpCodes.Stloc_3)
+                if (codes[j].IsStloc())
                 {
                     storeIndex = j;
                     break;
@@ -110,69 +132,53 @@ public static class CreatureCmdDamagePatch
             }
 
             if (storeIndex == -1)
-            {
-                MainFile.Logger.Error(
-                    "[CreatureCmdDamagePatch] " +
-                    "Could not find stloc.3 after PetOwner getter."
-                );
-
                 continue;
-            }
 
             MainFile.Logger.Info(
-                $"[CreatureCmdDamagePatch] " +
-                $"Replacing IL[{i - 1}] through IL[{storeIndex}] " +
-                $"with GetBlockTarget."
+                $"[CreatureCmdDamagePatch] Found PetOwner target expression at IL[{i}]."
             );
 
             /*
-             * We want to preserve the originalTarget load:
+             * The original target is already on the evaluation stack
+             * immediately before the PetOwner getter.
              *
-             * ldarg.0
-             * ldfld originalTarget
+             * Replace:
              *
-             * So remove everything starting with get_PetOwner
-             * through stloc.3.
+             *   originalTarget.PetOwner?.Creature ?? originalTarget
+             *
+             * With:
+             *
+             *   GetBlockTarget(originalTarget)
+             *
+             * Keep the original stloc instruction.
              */
 
-            int removeStart = i;
-            int removeCount = storeIndex - removeStart + 1;
-
-            codes.RemoveRange(removeStart, removeCount);
-
-            /*
-             * Stack currently contains:
-             *
-             * originalTarget
-             *
-             * Replace the entire PetOwner resolution with:
-             *
-             * GetBlockTarget(originalTarget)
-             * stloc.3
-             */
-
-            codes.Insert(
-                removeStart,
-                new CodeInstruction(
-                    OpCodes.Call,
-                    getBlockTarget
-                )
+            var replacement = new CodeInstruction(
+                OpCodes.Call,
+                getBlockTarget
             );
 
-            codes.Insert(
-                removeStart + 1,
-                new CodeInstruction(
-                    OpCodes.Stloc_3
-                )
-            );
+            // Preserve any incoming labels and exception markers.
+            replacement.labels.AddRange(codes[i].labels);
+            replacement.blocks.AddRange(codes[i].blocks);
 
-            patched = true;
+            codes.RemoveRange(i, storeIndex - i);
+
+            codes.Insert(i, replacement);
+
+            matches++;
             break;
         }
 
+        if (matches != 1)
+        {
+            throw new Exception(
+                $"[CreatureCmdDamagePatch] Expected exactly one target expression, found {matches}."
+            );
+        }
+
         MainFile.Logger.Info(
-            "[CreatureCmdDamagePatch] " +
-            $"Patch applied = {patched}"
+            "[CreatureCmdDamagePatch] Successfully replaced Block target expression."
         );
 
         return codes;

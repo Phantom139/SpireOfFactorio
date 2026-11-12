@@ -26,7 +26,7 @@ public sealed class PowerImpact : EngineerCard
         totalDamage += (DynamicVars["PowerImpactBlockBuff"].BaseValue * Owner.Creature.GetPowerAmount<PlatingPower>());
         totalDamage += (DynamicVars["PowerImpactBlockBuff"].BaseValue * Owner.Creature.GetPowerAmount<TitaniumPower>());
 
-        await DamageCmd.Attack(totalDamage).FromCard(this).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(totalDamage).FromCard(this, cardPlay).Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
     }

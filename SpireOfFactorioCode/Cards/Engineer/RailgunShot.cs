@@ -27,28 +27,28 @@ public sealed class RailgunShot : EngineerCard
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        bool willDealBonusDamage = await RemoveBonusDamagePowers(cardPlay.Target) > 0;
+        bool willDealBonusDamage = await RemoveBonusDamagePowers(choiceContext, cardPlay.Target, cardPlay.Player.Creature) > 0;
 
         if (willDealBonusDamage)
         {
             decimal totalHit = decimal.Ceiling(DynamicVars.Damage.BaseValue + (DynamicVars["RailgunExtra"].BaseValue));
-            AttackCommand attack = DamageCmd.Attack(totalHit).FromCard(this).Targeting(cardPlay.Target)
+            AttackCommand attack = DamageCmd.Attack(totalHit).FromCard(this, cardPlay).Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash");
             Extensions.AttackCommandExtensions.Unblockable(attack);
             await attack.Execute(choiceContext);
         }
         else
         {
-            AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
+            AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash");
             Extensions.AttackCommandExtensions.Unblockable(attack);
             await attack.Execute(choiceContext);
         }
-        await CreatureCmd.LoseBlock(cardPlay.Target, cardPlay.Target.Block);
+        await CreatureCmd.LoseBlock(choiceContext, cardPlay.Target, cardPlay.Target.Block, cardPlay.Player.Creature);
 
     }
 
-    private async Task<int> RemoveBonusDamagePowers(Creature target)
+    private async Task<int> RemoveBonusDamagePowers(PlayerChoiceContext choiceContext, Creature target, Creature playerCreature)
     {
         int removedCount = 0;
 
@@ -61,7 +61,7 @@ public sealed class RailgunShot : EngineerCard
         if (target.HasPower<BurrowedPower>())
         {
             // We do a second call here to trigger the stun effect
-            await CreatureCmd.LoseBlock(target, target.Block);
+            await CreatureCmd.LoseBlock(choiceContext, target, target.Block, playerCreature);
             await PowerCmd.Remove<BurrowedPower>(target);
             removedCount++;
         }

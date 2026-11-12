@@ -50,12 +50,20 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.4.3 -> 0.8.5:
+* Notices:
+  * Bumped mod required game version to v0.113.0 (Beta Release: 11/12/2026)
+	* A significant amount of code has been adjusted in the mod to move to the new version
+  * Bumped BaseLib to 3.4.8
+* Bugfixes:
+  * Fixed the bug which allowed creatures with shock resist to still be stunnable in an edge case
+
+## Version History
 0.8.4.2 -> 0.8.4.3:
 * Bugfixes:
   * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage
   * Fixed the error with the new construct power application being a non-mutable Power instance
 
-## Version History
 0.8.4.1 -> 0.8.4.2
 * Bugfixes:
   * Fixed the bug where productivity module was counting card plays from other players.
@@ -847,6 +855,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 
 * Multiplayer Desyncs:
   * Recorded multiplayer desync when enemy turn began (Final boss - Queen) related to Power
-* Shock appears to be rolling the same RNG instance for all creatures on the same turn instead of each creature rolling a unique RNG
 * Overload is not properly applying to the player when an Overclock construct performs an action
 * The Targeting Routine power sometimes does not properly adjust the damage a construct deals 
+* The shock display percentage is still wrong

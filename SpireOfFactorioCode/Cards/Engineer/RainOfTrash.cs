@@ -30,7 +30,7 @@ public sealed class RainOfTrash : EngineerCard
         }
         int xValue = scrapCost.ResolveXValue();
         //MainFile.Logger.Info($"[RainOfTrash]: Play: Resolved X {xValue.ToString()}");
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).WithHitCount(xValue).TargetingAllOpponents(base.CombatState)
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).WithHitCount(xValue).TargetingAllOpponents(base.CombatState)
         .WithHitFx("vfx/vfx_attack_blunt")
         .Execute(choiceContext);
     }

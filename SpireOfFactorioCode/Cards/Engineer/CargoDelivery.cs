@@ -31,7 +31,7 @@ public sealed class CargoDelivery : EngineerCard
             totalDamage += decimal.Ceiling(totalDamage * ((DynamicVars["CargoDeliveryWeakIncrease"].BaseValue * cardPlay.Target.GetPowerAmount<WeakPower>()) / 100));
         }
 
-        await DamageCmd.Attack(totalDamage).FromCard(this).Targeting(cardPlay.Target)
+        await DamageCmd.Attack(totalDamage).FromCard(this, cardPlay).Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
     }

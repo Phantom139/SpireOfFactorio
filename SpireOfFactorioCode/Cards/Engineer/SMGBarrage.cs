@@ -27,7 +27,7 @@ public sealed class SmgBarrage : EngineerCard
                 xValue *= 2;
             }
         }
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).WithHitCount(xValue).TargetingRandomOpponents(base.CombatState)
+        await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).WithHitCount(xValue).TargetingRandomOpponents(base.CombatState)
         .WithHitFx("vfx/vfx_attack_blunt")
         .Execute(choiceContext);
     }

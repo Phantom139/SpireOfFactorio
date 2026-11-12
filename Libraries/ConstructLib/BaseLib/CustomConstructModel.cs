@@ -148,7 +148,7 @@ public abstract class CustomConstructModel : ConstructModel, ICustomModel, IScen
         return Overclock() * OverclockPower.OverclockMultiplier / 100 + 1;
     }
 
-    public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+    public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, CardModel? source, bool wasRemovalPrevented, float deathAnimLength)
     {
         // If the player died, stop
         if (creature.PetOwner == null)

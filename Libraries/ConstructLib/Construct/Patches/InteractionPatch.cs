@@ -30,15 +30,15 @@ public static class ConstructAddPatch
     }
 }
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.ToggleIsInteractable))]
+[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateInteractability))]
 public static class ConstructInteractablePatch
 {
     [HarmonyPrefix]
-    private static void Prefix(NCreature __instance, ref bool on)
+    private static void Prefix(NCreature __instance, ref bool changeVisibilityImmediately)
     {
         if (__instance.Entity.Monster is ConstructModel && LocalContext.IsMe(__instance.Entity.PetOwner))
         {
-            on = true;
+            changeVisibilityImmediately = true;
         }
     }
 }

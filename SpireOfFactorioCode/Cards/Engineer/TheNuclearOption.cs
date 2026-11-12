@@ -35,7 +35,7 @@ public sealed class TheNuclearOption : EngineerCard
         int playerCountIncrease = base.Owner.Creature.CombatState.Players.Count - 1;
         int shockStacks = (playerCountIncrease > 0 ? 10 * playerCountIncrease : 0) + 100;
 
-        AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
+        AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).TargetingAllOpponents(base.CombatState)
         .WithHitFx("vfx/vfx_attack_blunt");
         Extensions.AttackCommandExtensions.Unblockable(attack);
         await attack.Execute(choiceContext);

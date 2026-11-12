@@ -97,18 +97,18 @@ public sealed class ShockPower : SpireOfFactorioPower
         IReadOnlyList<Creature> participants,
         ICombatState combatState)
     {
-        if (!participants.Contains(base.Owner))
+        if (!participants.Contains(Owner))
         {
             return;
         }
 
-        if (!base.Owner.IsAlive)
+        if (!Owner.IsAlive)
         {
             return;
         }
 
         // Additional Shock was applied since the previous turn.
-        if (base.Amount > StacksLastTurn)
+        if (Amount > StacksLastTurn)
         {
             UnalteredTurns = 0;
         }
@@ -117,11 +117,11 @@ public sealed class ShockPower : SpireOfFactorioPower
             UnalteredTurns++;
         }
 
-        StacksLastTurn = base.Amount;
+        StacksLastTurn = Amount;
 
         int turnThreshold = 2;
         // Check if any players have the Fulgoran Tesla Cell
-        IEnumerable<Creature> source = from c in base.Owner.CombatState.GetOpponentsOf(base.Owner)
+        IEnumerable<Creature> source = from c in Owner.CombatState.GetOpponentsOf(Owner)
                                        where c.IsAlive
                                        select c;
         int teslaCellCount = source.Sum(a => a.Player is not null && a.Player.Relics.Contains(ModelDb.Relic<FulgoranTeslaCell>()) ? 1 : 0);
@@ -132,34 +132,36 @@ public sealed class ShockPower : SpireOfFactorioPower
 
         if (UnalteredTurns >= turnThreshold)
         {
-            await PowerCmd.Remove<ShockPower>(base.Owner);
+            await PowerCmd.Remove<ShockPower>(Owner);
             return;
         }
 
-        if (base.Owner.Monster != null)
+        if (Owner.HasPower<ShockResistPower>())
         {
-            int playerCountIncrease = base.Owner.CombatState.Players.Count - 1;
+            return;
+        }
+
+        if (Owner.Monster != null)
+        {
+            int playerCountIncrease = Owner.CombatState.Players.Count - 1;
             int factor = playerCountIncrease > 0 ? 10 * playerCountIncrease : 0;
 
-            int roll = base.Owner.Monster.RunRng.MonsterAi.NextInt(100 + factor);
+            int roll = Owner.Monster.RunRng.MonsterAi.NextInt(100 + factor);
 
             MainFile.Logger.Info(
-                $"[ShockPower] {base.Owner.Name} [{base.Amount}], Rolled {roll}");
+                $"[ShockPower] {Owner.Name} [{Amount}], Rolled {roll}");
 
             if (base.Amount >= roll)
             {
-                if (!base.Owner.HasPower<ShockResistPower>())
-                {
-                    await CreatureCmd.Stun(base.Owner);
-                    await PowerCmd.Remove<ShockPower>(base.Owner);
-                    await PowerCmd.Apply<ShockResistPower>(new ThrowingPlayerChoiceContext(), base.Owner, ShockResistPower.DefaultTurnCount, base.Owner, null);
-                }
+                await CreatureCmd.Stun(Owner);
+                await PowerCmd.Remove<ShockPower>(Owner);
+                await PowerCmd.Apply<ShockResistPower>(new ThrowingPlayerChoiceContext(), Owner, ShockResistPower.DefaultTurnCount, Owner, null);
             }
         }
         else
         {
             MainFile.Logger.Warn(
-                $"[ShockPower] base.Owner.Monster was 'null'.");
+                $"[ShockPower] Owner.Monster was 'null'.");
         }
     }
 

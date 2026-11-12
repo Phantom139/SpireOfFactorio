@@ -26,7 +26,7 @@ public sealed class Overheat : EngineerCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).TargetingAllOpponents(base.CombatState)
+        AttackCommand attack = DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this, cardPlay).TargetingAllOpponents(base.CombatState)
         .WithHitFx("vfx/vfx_attack_blunt");
         Extensions.AttackCommandExtensions.Unblockable(attack);
         await attack.Execute(choiceContext);

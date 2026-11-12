@@ -25,9 +25,9 @@ public sealed class ForgeForm : EngineerCard
     {
         foreach (CardModel item in await CardSelectCmd.FromHand(prefs: new CardSelectorPrefs(base.SelectionScreenPrompt, 0, base.DynamicVars["ExhaustCount"].IntValue), context: choiceContext, player: base.Owner, filter: null, source: this))
         {
-            await PowerCmd.Apply<ForgeFormPower>(choiceContext, Owner.Creature, 1m, Owner.Creature, this);
             await CardCmd.Exhaust(choiceContext, item);
         }
+        await PowerCmd.Apply<ForgeFormPower>(choiceContext, Owner.Creature, 1m, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

@@ -193,7 +193,8 @@ public static class EngineerCmd
 
             if (constructNode != null)
             {
-                constructNode.ToggleIsInteractable(true);
+                constructNode.SetIsInteractable(true, true);
+                //constructNode.ToggleIsInteractable(true);
             }
         }
 
