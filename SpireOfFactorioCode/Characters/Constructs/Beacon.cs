@@ -1,5 +1,4 @@
 ﻿using BaseLib.Abstracts;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -21,7 +20,7 @@ public sealed class Beacon : CustomConstructModel
     public static int spawnHP = 20;
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/beacon.tscn";
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.BeforePlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.BeforePlayerTurn;
 
     public static HoverTip GetHoverTip()
     {
@@ -42,27 +41,19 @@ public sealed class Beacon : CustomConstructModel
         }
     }
 
-    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        // Fetch the current scrap count
+        if (construct.PetOwner.Creature.IsDead)
         {
             return;
         }
-        if (side == CombatSide.Player)
-        {
-            // Fetch the current scrap count
-            if (Creature.PetOwner.Creature.IsDead)
-            {
-                return;
-            }
-            var scrap = CustomResources<Scrap>.Get(Creature.PetOwner.PlayerCombatState);
-            int currentScrap = scrap.Amount;
-            decimal energyToGain = decimal.Ceiling((currentScrap / 4) * OverclockPercent());
-            //decimal energyToPass = decimal.Ceiling((energyToGain / 2) * OverclockPercent());
+        var scrap = CustomResources<Scrap>.Get(construct.PetOwner.PlayerCombatState);
+        int currentScrap = scrap.Amount;
+        decimal energyToGain = decimal.Ceiling((currentScrap / 4) * OverclockPercent());
+        //decimal energyToPass = decimal.Ceiling((energyToGain / 2) * OverclockPercent());
 
-            await PlayerCmd.GainEnergy(energyToGain, Creature.PetOwner);
-            await ConstructHooks.OnConstructPerformedTask(new ThrowingPlayerChoiceContext(), Creature, Creature.PetOwner);
-        }
-        return;
+        await PlayerCmd.GainEnergy(energyToGain, construct.PetOwner);
+        await ConstructHooks.OnConstructPerformedTask(new ThrowingPlayerChoiceContext(), construct, construct.PetOwner);
     }
 }

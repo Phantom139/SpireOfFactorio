@@ -14,7 +14,7 @@ public abstract class ConstructModel : MonsterModel
 
     public ConstructPosition Position { get; internal set; }
 
-    public ConstructActionPhase ActionPhase { get; set; }
+    public virtual ConstructActionPhase ActionPhase => ConstructActionPhase.BeforePlayerTurn;
 
     public CardPlay? SourceCard { get; internal set; }
 
@@ -28,6 +28,11 @@ public abstract class ConstructModel : MonsterModel
         };
         idle.FollowUpState = idle;
         return new MonsterMoveStateMachine([idle], idle);
+    }
+
+    public virtual Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
+    {
+        return Task.CompletedTask;
     }
 
     public virtual Task OnConstructed(PlayerChoiceContext choiceContext, Creature construct, Player owner, ConstructCreationArgs args)

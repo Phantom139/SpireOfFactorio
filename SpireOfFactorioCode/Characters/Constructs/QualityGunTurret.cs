@@ -1,5 +1,4 @@
 ﻿using BaseLib.Patches.Features;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -23,7 +22,7 @@ public sealed class QualityGunTurret : CustomConstructModel
 
     public static int damage = 7;
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/gun_turret.tscn";
 
     public static HoverTip GetHoverTip()
@@ -44,41 +43,33 @@ public sealed class QualityGunTurret : CustomConstructModel
         }
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        if (base.CombatState.HittableEnemies.Count == 0)
         {
             return;
         }
-        if (side == CombatSide.Player)
+        List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.AllEnemies);
+        if (tList == null)
         {
-            if (base.CombatState.HittableEnemies.Count == 0)
-            {
-                return;
-            }
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllEnemies);
-            if (tList == null)
-            {
-                return;
-            }
-
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseDamage = damage,
-                Props = ValueProp.Move
-            };
-
-            // Fire Hooks
-            await ConstructHooks.ModifyConstructDamageAdditive(context);
-            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
-            await ConstructHooks.ModifyConstructPowerList(context);
-
-            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
-                .TargetingFiltered(tList)
-                .WithHitFx("vfx/vfx_attack_blunt")
-                .Execute(choiceContext);
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+            return;
         }
-        return;
+
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseDamage = damage,
+            Props = ValueProp.Move
+        };
+
+        // Fire Hooks
+        await ConstructHooks.ModifyConstructDamageAdditive(context);
+        await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+        await ConstructHooks.ModifyConstructPowerList(context);
+
+        await DamageCmd.Attack(context.FinalDamage).FromMonster(construct.Monster)
+            .TargetingFiltered(tList)
+            .WithHitFx("vfx/vfx_attack_blunt")
+            .Execute(choiceContext);
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 }

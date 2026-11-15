@@ -68,6 +68,16 @@ public sealed class Engineer : PlaceholderCharacterModel
     public override string CustomEnergyCounterPath => "res://SpireOfFactorio/scenes/engineer_energy_counter.tscn";
 
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/engineer/engineer.tscn";
+    public override string? CustomCharacterSelectIconPath => "res://SpireOfFactorio/images/charui/character_select.png";
+
+    public override string? CustomArmPointingTexturePath =>
+        "res://SpireOfFactorio/images/charui/engineer_hand_point.png";
+    public override string? CustomArmRockTexturePath =>
+        "res://SpireOfFactorio/images/charui/engineer_hand_rock.png";
+    public override string? CustomArmPaperTexturePath =>
+        "res://SpireOfFactorio/images/charui/engineer_hand_paper.png";
+    public override string? CustomArmScissorsTexturePath =>
+        "res://SpireOfFactorio/images/charui/engineer_hand_scissors.png";
 
     public static readonly AddedNode<NEnergyCounter, EngineerScrapCounter> ScrapCounterNode =
         new(parent =>

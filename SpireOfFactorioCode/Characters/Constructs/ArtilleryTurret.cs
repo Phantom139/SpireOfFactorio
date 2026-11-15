@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -27,7 +26,7 @@ public sealed class ArtilleryTurret : CustomConstructModel
     public static int damage = 30;
     public static int shock = 10;
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
 
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/artillery_turret.tscn";
 
@@ -51,77 +50,69 @@ public sealed class ArtilleryTurret : CustomConstructModel
         //await PowerCmd.Apply<ImprovisedDefensePower>(choiceContext, self, 1, owner.Creature, null);
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        // Find the strongest enemy
+        List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.StrongestEnemy);
+        if (tList == null)
         {
             return;
         }
-        if (side == CombatSide.Player)
+        Creature target = tList.First();
+
+        if (target == null || target.IsDead)
         {
-            // Find the strongest enemy
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
-            if (tList == null)
+            // If the target died prior to this call, give it one re-attempt
+            List<Creature> tList2 = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.StrongestEnemy);
+            if (tList2 == null)
             {
                 return;
             }
-            Creature target = tList.First();
-
-            if (target == null || target.IsDead)
+            Creature target2 = tList2.First();
+            if (target2 == null || target2.IsDead)
             {
-                // If the target died prior to this call, give it one re-attempt
-                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.StrongestEnemy);
-                if (tList2 == null)
-                {
-                    return;
-                }
-                Creature target2 = tList2.First();
-                if (target2 == null || target2.IsDead)
-                {
-                    // If still null or dead, abort.
-                    return;
-                }
-                target = target2;
+                // If still null or dead, abort.
+                return;
             }
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseDamage = damage,
-                Props = ValueProp.Move,
+            target = target2;
+        }
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseDamage = damage,
+            Props = ValueProp.Move,
 
-                Powers = new Dictionary<Type, int>
+            Powers = new Dictionary<Type, int>
                 {
                     { typeof(ShockPower), shock }
                 }
-            };
-            // Fire Hooks
-            await ConstructHooks.ModifyConstructDamageAdditive(context);
-            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
-            await ConstructHooks.ModifyConstructPowerList(context);
+        };
+        // Fire Hooks
+        await ConstructHooks.ModifyConstructDamageAdditive(context);
+        await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+        await ConstructHooks.ModifyConstructPowerList(context);
 
-            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
-            .Targeting(target)
-            .WithHitFx("vfx/vfx_attack_blunt")
-            .Execute(choiceContext);
-            // IF the target is still alive at this point, throw on the debuff
-            if (target != null)
+        await DamageCmd.Attack(context.FinalDamage).FromMonster(construct.Monster)
+        .Targeting(target)
+        .WithHitFx("vfx/vfx_attack_blunt")
+        .Execute(choiceContext);
+        // IF the target is still alive at this point, throw on the debuff
+        if (target != null)
+        {
+            if (target.IsAlive)
             {
-                if (target.IsAlive)
+                NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NFireSmokePuffVfx.Create(target));
+                foreach (var power in context.Powers)
                 {
-                    NCombatRoom.Instance?.CombatVfxContainer.AddChildSafely(NFireSmokePuffVfx.Create(target));
-                    foreach (var power in context.Powers)
-                    {
-                        await ConstructHooks.ApplyConstructPower(
-                            choiceContext,
-                            power.Key,
-                            target,
-                            power.Value,
-                            Creature
-                        );
-                    }
+                    await ConstructHooks.ApplyConstructPower(
+                        choiceContext,
+                        power.Key,
+                        target,
+                        power.Value,
+                        construct
+                    );
                 }
             }
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
         }
-        return;
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 }

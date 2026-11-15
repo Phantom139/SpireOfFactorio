@@ -76,5 +76,11 @@
   "SPIREOFFACTORIO-FORGE_FORM_POWER.title": "Forge Form",
   "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.description": "This enemy is marked. All offensive [blue]constructs[/blue] will only target this enemy this turn, dealing additional damage.",
   "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.smartDescription": "This enemy is marked. All offensive [blue]constructs[/blue] will only target this enemy this turn, dealing [blue]{Amount}%[/blue] damage.",
-  "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.title": "Targeting Routine"
+  "SPIREOFFACTORIO-TARGETING_ROUTINE_POWER.title": "Targeting Routine",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_POWER.title": "Factory Floor",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_POWER.description": "Whenever you spend {singleScrapIcon}, add a [blue]Logistics[/blue] to your hand.",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_POWER.smartDescription": "Whenever you spend {singleScrapIcon}, add a [blue]Logistics[/blue] to your hand.",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_UPGRADED_POWER.title": "Factory Floor",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_UPGRADED_POWER.description": "Whenever you spend {singleScrapIcon}, add a [green]Logistics+[/green] to your hand.",
+  "SPIREOFFACTORIO-FACTORY_FLOOR_UPGRADED_POWER.smartDescription": "Whenever you spend {singleScrapIcon}, add a [green]Logistics+[/green] to your hand."
 }

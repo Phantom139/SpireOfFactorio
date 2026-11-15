@@ -4,12 +4,14 @@ using BaseLib.Patches.Content;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using SpireOfFactorio.Libraries.ConstructLib.Construct;
+using SpireOfFactorio.SpireOfFactorioCode;
 using SpireOfFactorio.SpireOfFactorioCode.Powers;
 using SpireOfFactorio.SpireOfFactorioCode.Relics;
 using SpireOfFactorio.SpireOfFactorioCode.Util;
@@ -146,6 +148,56 @@ public abstract class CustomConstructModel : ConstructModel, ICustomModel, IScen
             return 1;
         }
         return Overclock() * OverclockPower.OverclockMultiplier / 100 + 1;
+    }
+
+    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    {
+        if (IsDisabled())
+        {
+            return;
+        }
+        if (ActionPhase == ConstructActionPhase.AfterPlayerTurn)
+        {
+            if (side == CombatSide.Player)
+            {
+                MainFile.Logger.Info($"[CustomConstructModel] {Creature.Name} Performing Action {ActionPhase} - BeforeSideTurnEnd: CombatSide = Player");
+                await PerformAction(choiceContext, Creature);
+            }
+        }
+        if (ActionPhase == ConstructActionPhase.AfterEnemyTurn)
+        {
+            if (side == CombatSide.Enemy)
+            {
+                MainFile.Logger.Info($"[CustomConstructModel] {Creature.Name} Performing Action {ActionPhase} - BeforeSideTurnEnd: CombatSide = Enemy");
+                await PerformAction(choiceContext, Creature);
+            }
+        }
+        return;
+    }
+
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
+    {
+        if (IsDisabled())
+        {
+            return;
+        }
+        if (ActionPhase == ConstructActionPhase.BeforePlayerTurn)
+        {
+            if (side == CombatSide.Player)
+            {
+                MainFile.Logger.Info($"[CustomConstructModel] {Creature.Name} Performing Action {ActionPhase} - AfterSideTurnStart: CombatSide = Player");
+                await PerformAction(new ThrowingPlayerChoiceContext(), Creature);
+            }
+        }
+        if (ActionPhase == ConstructActionPhase.BeforeEnemyTurn)
+        {
+            if (side == CombatSide.Enemy)
+            {
+                MainFile.Logger.Info($"[CustomConstructModel] {Creature.Name} Performing Action {ActionPhase} - AfterSideTurnStart: CombatSide = Enemy");
+                await PerformAction(new ThrowingPlayerChoiceContext(), Creature);
+            }
+        }
+        return;
     }
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, CardModel? source, bool wasRemovalPrevented, float deathAnimLength)

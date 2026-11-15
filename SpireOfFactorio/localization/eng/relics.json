@@ -40,7 +40,7 @@
   "SPIREOFFACTORIO-RECYCLER.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-FIRST_GEAR.title": "First Gear",
-  "SPIREOFFACTORIO-FIRST_GEAR.description": "At the start of each combat, gain {Scrap:scrapIcons(3)}. Gain {ScrapAdd} {singleScrapIcon} at the start of the first [blue]{TurnBonus}[/blue] {TurnBonus:plural:turns|turn} each combat.",
+  "SPIREOFFACTORIO-FIRST_GEAR.description": "At the start of each combat, gain {Scrap:scrapIcons(3)}. Gain {ScrapAdd} {singleScrapIcon} at the start of the first [blue]{TurnBonus}[/blue] {TurnBonus:plural:turn|turns} each combat.",
   "SPIREOFFACTORIO-FIRST_GEAR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-PRISTINE_GEAR.title": "Pristine Gear",
@@ -73,5 +73,7 @@
 
   "SPIREOFFACTORIO-PLASMA_FUEL.title": "Plasma Fuel",
   "SPIREOFFACTORIO-PLASMA_FUEL.description": "Enemies afflicted with [gold]Scorch[/gold] will now also lose [blue]{Strength}[/blue] [gold]Strength[/gold] and [blue]{Dexterity}[/blue] [gold]Dexterity[/gold].",
-  "SPIREOFFACTORIO-PLASMA_FUEL.flavor": "[red]Details for this relic will be revealed in the future...[/red]"
+  "SPIREOFFACTORIO-PLASMA_FUEL.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
+
+  "SEA_GLASS.SPIREOFFACTORIO-ENGINEER.title": "Assembled Glass"
 }

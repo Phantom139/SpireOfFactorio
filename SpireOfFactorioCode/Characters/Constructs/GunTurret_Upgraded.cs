@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -24,7 +23,7 @@ public sealed class GunTurret_Upgraded : CustomConstructModel
 
     public static int strike_count = 3;
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/gun_turret.tscn";
 
     public static HoverTip GetHoverTip()
@@ -46,64 +45,57 @@ public sealed class GunTurret_Upgraded : CustomConstructModel
         }
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseDamage = damage,
+            Props = ValueProp.Move
+        };
+
+        // Fire Hooks
+        await ConstructHooks.ModifyConstructDamageAdditive(context);
+        await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+        await ConstructHooks.ModifyConstructPowerList(context);
+        // Verify the presence of enemies
+        if (base.CombatState.HittableEnemies.Count == 0)
         {
             return;
         }
-        if (side == CombatSide.Player)
-        {
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseDamage = damage,
-                Props = ValueProp.Move
-            };
 
-            // Fire Hooks
-            await ConstructHooks.ModifyConstructDamageAdditive(context);
-            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
-            await ConstructHooks.ModifyConstructPowerList(context);
-            // Verify the presence of enemies
-            if (base.CombatState.HittableEnemies.Count == 0)
+        for (int i = 0; i < strike_count; i++)
+        {
+            List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.RandomEnemy);
+            if (tList == null)
             {
                 return;
             }
+            Creature target = tList.First();
 
-            for (int i = 0; i < strike_count; i++)
+            if (target == null || target.IsDead)
             {
-                List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-                if (tList == null)
+                // If the target died prior to this call, give it one re-attempt
+                List<Creature> tList2 = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.RandomEnemy);
+                if (tList2 == null)
                 {
                     return;
                 }
-                Creature target = tList.First();
-
-                if (target == null || target.IsDead)
+                Creature target2 = tList2.First();
+                if (target2 == null || target2.IsDead)
                 {
-                    // If the target died prior to this call, give it one re-attempt
-                    List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-                    if (tList2 == null)
-                    {
-                        return;
-                    }
-                    Creature target2 = tList2.First();
-                    if (target2 == null || target2.IsDead)
-                    {
-                        // If still null or dead, abort.
-                        return;
-                    }
-                    target = target2;
+                    // If still null or dead, abort.
+                    return;
                 }
-
-                await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
-                    .Targeting(target)
-                    .WithHitFx("vfx/vfx_attack_blunt")
-                    .Execute(choiceContext);
+                target = target2;
             }
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+
+            await DamageCmd.Attack(context.FinalDamage).FromMonster(construct.Monster)
+                .Targeting(target)
+                .WithHitFx("vfx/vfx_attack_blunt")
+                .Execute(choiceContext);
         }
-        return;
+
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 
 }

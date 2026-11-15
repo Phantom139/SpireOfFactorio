@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -24,7 +23,7 @@ public sealed class LaserTurret_Upgraded : CustomConstructModel
     public static int damage = 13;
     public static int scorch = 5;
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/laser_turret.tscn";
 
     public static HoverTip GetHoverTip()
@@ -47,72 +46,64 @@ public sealed class LaserTurret_Upgraded : CustomConstructModel
         //await PowerCmd.Apply<ImprovisedDefensePower>(choiceContext, self, 1, owner.Creature, null);
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        // Find the weakest enemy
+        List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.WeakestEnemy);
+        if (tList == null)
         {
             return;
         }
-        if (side == CombatSide.Player)
+        Creature target = tList.First();
+
+        if (target == null || target.IsDead)
         {
-            // Find the weakest enemy
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.WeakestEnemy);
-            if (tList == null)
+            // If the target died prior to this call, give it one re-attempt
+            List<Creature> tList2 = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.WeakestEnemy);
+            if (tList2 == null)
             {
                 return;
             }
-            Creature target = tList.First();
-
-            if (target == null || target.IsDead)
+            Creature target2 = tList2.First();
+            if (target2 == null || target2.IsDead)
             {
-                // If the target died prior to this call, give it one re-attempt
-                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.WeakestEnemy);
-                if (tList2 == null)
-                {
-                    return;
-                }
-                Creature target2 = tList2.First();
-                if (target2 == null || target2.IsDead)
-                {
-                    // If still null or dead, abort.
-                    return;
-                }
-                target = target2;
+                // If still null or dead, abort.
+                return;
             }
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseDamage = damage,
-                Props = ValueProp.Move,
-
-                Powers = new Dictionary<Type, int>
-                {
-                    { typeof(ScorchPower), scorch }
-                }
-            };
-
-            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
-            .Targeting(target)
-            .WithHitFx("vfx/vfx_attack_slash")
-            .Execute(choiceContext);
-            // Apply Scorch
-            if (target != null)
-            {
-                if (target.IsAlive)
-                {
-                    foreach (var power in context.Powers)
-                    {
-                        await ConstructHooks.ApplyConstructPower(
-                            choiceContext,
-                            power.Key,
-                            target,
-                            power.Value,
-                            Creature
-                        );
-                    }
-                }
-            }
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+            target = target2;
         }
-        return;
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseDamage = damage,
+            Props = ValueProp.Move,
+
+            Powers = new Dictionary<Type, int>
+            {
+                { typeof(ScorchPower), scorch }
+            }
+        };
+
+        await DamageCmd.Attack(context.FinalDamage).FromMonster(construct.Monster)
+        .Targeting(target)
+        .WithHitFx("vfx/vfx_attack_slash")
+        .Execute(choiceContext);
+        // Apply Scorch
+        if (target != null)
+        {
+            if (target.IsAlive)
+            {
+                foreach (var power in context.Powers)
+                {
+                    await ConstructHooks.ApplyConstructPower(
+                        choiceContext,
+                        power.Key,
+                        target,
+                        power.Value,
+                        construct
+                    );
+                }
+            }
+        }
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 }

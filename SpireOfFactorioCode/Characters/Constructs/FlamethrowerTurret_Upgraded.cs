@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -24,7 +23,7 @@ public sealed class FlamethrowerTurret_Upgraded : CustomConstructModel
     public static int damage = 10;
     public static int scorch = 9;
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
 
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/flamethrower_turret.tscn";
 
@@ -48,82 +47,74 @@ public sealed class FlamethrowerTurret_Upgraded : CustomConstructModel
         //await PowerCmd.Apply<ImprovisedDefensePower>(choiceContext, self, 1, owner.Creature, null);
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        // Verify the presence of enemies
+        if (base.CombatState.HittableEnemies.Count == 0)
         {
             return;
         }
-        if (side == CombatSide.Player)
+        List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.RandomEnemy);
+        if (tList == null)
         {
-            // Verify the presence of enemies
-            if (base.CombatState.HittableEnemies.Count == 0)
-            {
-                return;
-            }
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-            if (tList == null)
-            {
-                return;
-            }
-            Creature target = tList.First();
-
-            if (target == null || target.IsDead)
-            {
-                // If the target died prior to this call, give it one re-attempt
-                List<Creature> tList2 = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.RandomEnemy);
-                if (tList2 == null)
-                {
-                    return;
-                }
-                Creature target2 = tList2.First();
-                if (target2 == null || target2.IsDead)
-                {
-                    // If still null or dead, abort.
-                    return;
-                }
-                target = target2;
-            }
-
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseDamage = damage,
-                Props = ValueProp.Move,
-
-                Powers = new Dictionary<Type, int>
-                {
-                    { typeof(ScorchPower), scorch }
-                }
-            };
-
-            // Fire Hooks
-            await ConstructHooks.ModifyConstructDamageAdditive(context);
-            await ConstructHooks.ModifyConstructDamageMultiplicative(context);
-            await ConstructHooks.ModifyConstructPowerList(context);
-
-            await DamageCmd.Attack(context.FinalDamage).FromMonster(Creature.Monster)
-            .Targeting(target)
-            .WithHitFx("vfx/fires/vfx_ground_fire")
-            .Execute(choiceContext);
-            // IF the target is still alive at this point, throw on the debuff
-            if (target != null)
-            {
-                if (target.IsAlive)
-                {
-                    foreach (var power in context.Powers)
-                    {
-                        await ConstructHooks.ApplyConstructPower(
-                            choiceContext,
-                            power.Key,
-                            target,
-                            power.Value,
-                            Creature
-                        );
-                    }
-                }
-            }
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+            return;
         }
-        return;
+        Creature target = tList.First();
+
+        if (target == null || target.IsDead)
+        {
+            // If the target died prior to this call, give it one re-attempt
+            List<Creature> tList2 = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.RandomEnemy);
+            if (tList2 == null)
+            {
+                return;
+            }
+            Creature target2 = tList2.First();
+            if (target2 == null || target2.IsDead)
+            {
+                // If still null or dead, abort.
+                return;
+            }
+            target = target2;
+        }
+
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseDamage = damage,
+            Props = ValueProp.Move,
+
+            Powers = new Dictionary<Type, int>
+            {
+                { typeof(ScorchPower), scorch }
+            }
+        };
+
+        // Fire Hooks
+        await ConstructHooks.ModifyConstructDamageAdditive(context);
+        await ConstructHooks.ModifyConstructDamageMultiplicative(context);
+        await ConstructHooks.ModifyConstructPowerList(context);
+
+        await DamageCmd.Attack(context.FinalDamage).FromMonster(construct.Monster)
+        .Targeting(target)
+        .WithHitFx("vfx/fires/vfx_ground_fire")
+        .Execute(choiceContext);
+        // IF the target is still alive at this point, throw on the debuff
+        if (target != null)
+        {
+            if (target.IsAlive)
+            {
+                foreach (var power in context.Powers)
+                {
+                    await ConstructHooks.ApplyConstructPower(
+                        choiceContext,
+                        power.Key,
+                        target,
+                        power.Value,
+                        construct
+                    );
+                }
+            }
+        }
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 }

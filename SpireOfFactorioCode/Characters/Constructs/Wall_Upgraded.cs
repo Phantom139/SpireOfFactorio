@@ -1,5 +1,4 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -22,7 +21,7 @@ public sealed class Wall_Upgraded : CustomConstructModel
     public static int spawnHP = 35;
     public static BlockVar block = new BlockVar(10m, ValueProp.Move);
 
-    public static ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
+    public override ConstructActionPhase ActionPhase => ConstructActionPhase.AfterPlayerTurn;
 
     public override string CustomVisualPath => "res://SpireOfFactorio/scenes/creature_visuals/wall.tscn";
 
@@ -44,41 +43,33 @@ public sealed class Wall_Upgraded : CustomConstructModel
         }
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task PerformAction(PlayerChoiceContext choiceContext, Creature construct)
     {
-        if (IsDisabled())
+        // Check if any enemies left, if none, ignore.
+        if (base.CombatState.HittableEnemies.Count == 0)
         {
             return;
         }
-        if (side == CombatSide.Player)
+        List<Creature> tList = await ConstructCmd.SelectTarget(construct, ConstructTargetSelectionType.AllPlayers);
+        if (tList == null)
         {
-            // Check if any enemies left, if none, ignore.
-            if (base.CombatState.HittableEnemies.Count == 0)
-            {
-                return;
-            }
-            List<Creature> tList = await ConstructCmd.SelectTarget(Creature, ConstructTargetSelectionType.AllPlayers);
-            if (tList == null)
-            {
-                return;
-            }
-
-            ConstructEffectContext context = new ConstructEffectContext(Creature)
-            {
-                BaseBlock = block.BaseValue,
-                Props = ValueProp.Move
-            };
-            await ConstructHooks.ModifyConstructBlockAdditive(context);
-            await ConstructHooks.ModifyConstructBlockMultiplicative(context);
-            await ConstructHooks.ModifyConstructPowerList(context);
-
-            foreach (Creature item in tList)
-            {
-                decimal outBlock = decimal.Ceiling(block.BaseValue * OverclockPercent());
-                await CreatureCmd.GainBlock(item, context.FinalBlock, ValueProp.Move, null, true);
-            }
-            await ConstructHooks.OnConstructPerformedTask(choiceContext, Creature, Creature.PetOwner);
+            return;
         }
-        return;
+
+        ConstructEffectContext context = new ConstructEffectContext(construct)
+        {
+            BaseBlock = block.BaseValue,
+            Props = ValueProp.Move
+        };
+        await ConstructHooks.ModifyConstructBlockAdditive(context);
+        await ConstructHooks.ModifyConstructBlockMultiplicative(context);
+        await ConstructHooks.ModifyConstructPowerList(context);
+
+        foreach (Creature item in tList)
+        {
+            decimal outBlock = decimal.Ceiling(block.BaseValue * OverclockPercent());
+            await CreatureCmd.GainBlock(item, context.FinalBlock, ValueProp.Move, null, true);
+        }
+        await ConstructHooks.OnConstructPerformedTask(choiceContext, construct, construct.PetOwner);
     }
 }

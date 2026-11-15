@@ -50,6 +50,38 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.5 -> 0.8.6:
+* Bugfixes:
+  * Fixed a missing localization string for the Engineer version of the Sea Glass ancient relic
+  * Fixed a typo on the First Gear relic localization string 
+  * Fixed a hard-lock which would occur with the Big Mining Drill power 
+* Misc:
+  * Reworked construct actions to use a context driven system
+	* This allows for modifications to be made much more easily, and for cards to trigger construct actions 
+* New Content:
+  * Engineer Cards
+	* Logistics
+	  * 0 Cost Token Card
+	  * Draw 1 Card. Exhaust
+		* Upgrade: The drawn card's cost is reduced for this turn
+	  * Note: Engineer is the only character that cannot generate 0-cost cards currently, this will be the Engineer's version, which will be used to tackle one of his current weaknesses.
+	* Convey
+	  * 1 Cost Skill - Common
+	  * Gain 6 (8) Block, Generate 1 (2) Logistics 
+	* Grid Redirection
+	  * Note: This card now returns with a new function
+	  * Select a construct, it immediately performs its construct action for the turn. If the construct has overclock, it immediately loses all Overclock
+	* Factory Floor
+	  * 2 Cost Power - Uncommon
+	  * Whenever you spend scrap, generate 1 Logistics (+) to your hand
+	* Off The Press
+	  * 2 (1) Cost Skill - Uncommon (Multiplayer)
+	  * All players generate 1 (2) Logistics 
+* Balance / Adjustments:
+  * Adjustment / Buff: Work For It
+	* Now also generates 1 Logistics (+) to your hand
+
+## Version History
 0.8.4.3 -> 0.8.5:
 * Notices:
   * Bumped mod required game version to v0.113.0 (Beta Release: 11/12/2026)
@@ -58,7 +90,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Bugfixes:
   * Fixed the bug which allowed creatures with shock resist to still be stunnable in an edge case
 
-## Version History
 0.8.4.2 -> 0.8.4.3:
 * Bugfixes:
   * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage

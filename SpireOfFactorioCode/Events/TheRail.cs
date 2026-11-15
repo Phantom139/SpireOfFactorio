@@ -119,6 +119,9 @@ public class TheRail : SpireOfFactorioEvent
                 foreach (CardModel card in zekeTrollCards)
                 {
                     CardModel ShameCard = base.Owner.RunState.CreateCard<Shame>(base.Owner);
+                    ShameCard.AddKeyword(MegaCrit.Sts2.Core.Entities.Cards.CardKeyword.Eternal);
+                    ShameCard.AddKeyword(MegaCrit.Sts2.Core.Entities.Cards.CardKeyword.Innate);
+                    ShameCard.AddKeyword(MegaCrit.Sts2.Core.Entities.Cards.CardKeyword.Retain);
                     await CardCmd.Transform(card, ShameCard, MegaCrit.Sts2.Core.Nodes.CommonUi.CardPreviewStyle.MessyLayout);
                     //CardPileCmd.RemoveFromDeck(card);
                 }

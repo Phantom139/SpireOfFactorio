@@ -30,7 +30,7 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
         {
             return;
         }
-        CardModel extra = CardPileCmd.Draw(choiceContext, player).Result;
+        CardModel extra = await CardPileCmd.Draw(choiceContext, player);
         if (extra != null)
         {
             // Scan the energy and scrap cost on the extra card
