@@ -33,7 +33,9 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         Lightning,
         Plasma,
         Shock,
-        Scorch
+        Scorch,
+        Arrow,
+        Joy
     }
 
     public enum CardColor
@@ -44,6 +46,7 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         Purple,
         Blue,
         Orange,
+        Gold,
     }
 
     private const int _SharpGold = 50;
@@ -152,6 +155,20 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         }
     }
 
+    public int _rngGold;
+    public int RngGold
+    {
+        get
+        {
+            return _rngGold;
+        }
+        set
+        {
+            AssertMutable();
+            _rngGold = value;
+        }
+    }
+
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(6m, ValueProp.Move),
         new DamageVar("BonusRiderDamage", 3m, ValueProp.Move),
@@ -169,6 +186,8 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         new DynamicVar("RiderPlasma", 1m),
         new PowerVar<ShockPower>("RiderShock", 10m),
         new PowerVar<ScorchPower>("RiderScorch", 7m),
+        new DynamicVar("RiderArrow", 1m),
+        new DynamicVar("RiderJoy", 1m),
         new GoldVar(_SharpCost, _SharpGold),
         new GoldVar(_EfficientCost, _EfficientGold),
         new GoldVar(_ReplicatingCost, _ReplicatingGold)
@@ -182,19 +201,21 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
         RngPurple = Rng.NextInt(0, 100);
         RngBlue = Rng.NextInt(0, 100);
         RngOrange = Rng.NextInt(0, 100);
+        RngGold = Rng.NextInt(0, 100);
         return [new EventOption(this, ChooseGemstone, "THE_ASSEMBLING_MACHINE.INITIAL.options.CHOOSE_GEMSTONE")];
     }
 
     public Task ChooseGemstone()
     {
-        IEnumerable<EventOption> collection = new EventOption[6]
+        IEnumerable<EventOption> collection = new EventOption[7]
         {
             new EventOption(this, GemstoneRed, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.RED", GetCardTypeHoverTip(CardColor.Red)),
             new EventOption(this, GemstoneGreen, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.GREEN", GetCardTypeHoverTip(CardColor.Green)),
             new EventOption(this, GemstoneYellow, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.YELLOW", GetCardTypeHoverTip(CardColor.Yellow)),
             new EventOption(this, GemstonePurple, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.PURPLE", GetCardTypeHoverTip(CardColor.Purple)),
             new EventOption(this, GemstoneBlue, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.BLUE", GetCardTypeHoverTip(CardColor.Blue)),
-            new EventOption(this, GemstoneOrange, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.ORANGE", GetCardTypeHoverTip(CardColor.Orange))
+            new EventOption(this, GemstoneOrange, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.ORANGE", GetCardTypeHoverTip(CardColor.Orange)),
+            new EventOption(this, GemstoneGold, "THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.options.GOLD", GetCardTypeHoverTip(CardColor.Gold))
         };
         SetEventState(L10NLookup("THE_ASSEMBLING_MACHINE.pages.CHOOSE_GEMSTONE.description"), collection.TakeRandom(3, base.Rng));
         return Task.CompletedTask;
@@ -216,6 +237,8 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
                 return RngBlue < 50 ? RiderEffect.Lightning : RiderEffect.Plasma;
             case CardColor.Orange:
                 return RngOrange < 50 ? RiderEffect.Shock : RiderEffect.Scorch;
+            case CardColor.Gold:
+                return RngGold < 50 ? RiderEffect.Arrow : RiderEffect.Joy;
         }
         return RiderEffect.None;
     }
@@ -261,6 +284,12 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
     public Task GemstoneOrange()
     {
         ChosenCardColor = CardColor.Orange;
+        return ChooseBonusEffect();
+    }
+
+    public Task GemstoneGold()
+    {
+        ChosenCardColor = CardColor.Gold;
         return ChooseBonusEffect();
     }
 
@@ -374,6 +403,8 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
             RiderEffect.Plasma => new IHoverTip[1] { HoverTipFactory.FromOrb<PlasmaOrb>() },
             RiderEffect.Scorch => new IHoverTip[1] { HoverTipFactory.FromPower<ScorchPower>() },
             RiderEffect.Shock => new IHoverTip[1] { HoverTipFactory.FromPower<ShockPower>() },
+            RiderEffect.Arrow => new IHoverTip[1] { HoverTipFactory.FromCard<TheShot>() },
+            RiderEffect.Joy => new IHoverTip[1] { HoverTipFactory.FromCard<Joy>() },
             _ => throw new ArgumentOutOfRangeException("rider", rider, null),
         };
     }

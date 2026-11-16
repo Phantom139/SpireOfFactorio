@@ -54,6 +54,7 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
                 {
                     return;
                 }
+                nScrapCost = scrapCost.GetWithModifiers(CostModifiers.All);
             }
             // Ignore if X
             if (energyCost.CostsX)
@@ -61,7 +62,6 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
                 return;
             }
             nEnergyCost = energyCost.GetWithModifiers(CostModifiers.All);
-            nScrapCost = scrapCost.GetWithModifiers(CostModifiers.All);
             // If both are equal, we skip
             if (nEnergyCost == nScrapCost)
             {

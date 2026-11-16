@@ -41,7 +41,9 @@ public sealed class AssembledStrike : SpireOfFactorioCard
         new DynamicVar("RiderLightning", 2m),
         new DynamicVar("RiderPlasma", 1m),
         new PowerVar<ShockPower>("RiderShock", 10m),
-        new PowerVar<ScorchPower>("RiderScorch", 7m)
+        new PowerVar<ScorchPower>("RiderScorch", 7m),
+        new DynamicVar("RiderArrow", 1m),
+        new DynamicVar("RiderJoy", 1m)
     ];
 
     public TheAssemblingMachine.CardColor _assemblingMachineColor;
@@ -89,6 +91,9 @@ public sealed class AssembledStrike : SpireOfFactorioCard
                     break;
                 case TheAssemblingMachine.CardColor.Orange:
                     color = "orange";
+                    break;
+                case TheAssemblingMachine.CardColor.Gold:
+                    color = "gold";
                     break;
             }
             return $"{Id.Entry.RemovePrefix().ToLowerInvariant()}_{color}.png".PlaceholderProtected_BigCardImagePath();
@@ -217,6 +222,23 @@ public sealed class AssembledStrike : SpireOfFactorioCard
                 {
                     await PowerCmd.Apply<ShockPower>(choiceContext, cardPlay.Target, DynamicVars["RiderShock"].BaseValue, base.Owner.Creature, this);
                 }
+                break;
+            case TheAssemblingMachine.RiderEffect.Arrow:
+                ArrowCmd.GainArrowSlot(base.Owner);
+                TheShot the_shot_card = CombatState.CreateCard<TheShot>(Owner);
+                if (base.IsUpgraded)
+                {
+                    CardCmd.Upgrade(the_shot_card);
+                }
+                await CardPileCmd.AddGeneratedCardToCombat(the_shot_card, PileType.Hand, Owner);
+                break;
+            case TheAssemblingMachine.RiderEffect.Joy:
+                Joy joy_card = CombatState.CreateCard<Joy>(Owner);
+                if (base.IsUpgraded)
+                {
+                    CardCmd.Upgrade(joy_card);
+                }
+                await CardPileCmd.AddGeneratedCardToCombat(joy_card, PileType.Hand, Owner);
                 break;
             default:
                 break;

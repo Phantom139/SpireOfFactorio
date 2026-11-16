@@ -50,13 +50,22 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.61 -> 0.8.62:
+* Bugfixes:
+  * Fixed another NRE with Big Mining Drill
+* New Content
+  * Assembled Strike
+	* Added a "Gold Gem" version of the card for The Fool
+	  * Gain 1 Arrow and 1 copy of "The Shot" (+)
+	  * Gain 1 Joy (+)
+
+## Version History
 0.8.6 -> 0.8.61:
 * Bugfixes:
   * Fixed the missing power tag on the upgraded Factory Floor power
   * Logistics is now correctly included in the "Non-Generated Cards" for Deeper Research 
   * Fixed a NullReferenceException in the Big Mining Drill when drawning a card that had a scrap cost attached to it then nulled 
 
-## Version History
 0.8.5 -> 0.8.6:
 * Bugfixes:
   * Fixed a missing localization string for the Engineer version of the Sea Glass ancient relic
