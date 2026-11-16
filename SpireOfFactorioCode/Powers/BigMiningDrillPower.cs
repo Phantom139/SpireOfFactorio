@@ -39,12 +39,24 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
 
             CardEnergyCost energyCost = extra.EnergyCost;
             var scrapCost = CustomResources<Scrap>.Cost(extra);
+            if (energyCost == null)
+            {
+                MainFile.Logger.Warn($"[BigMiningDrillPower] Drawn card {extra.Id.ToString()} does not appear to have an attached EnergyCost object.");
+                return;
+            }
             if (scrapCost == null)
             {
                 nScrapCost = 0;
             }
+            else
+            {
+                if (scrapCost.CostsX)
+                {
+                    return;
+                }
+            }
             // Ignore if X
-            if (energyCost.CostsX || scrapCost.CostsX)
+            if (energyCost.CostsX)
             {
                 return;
             }

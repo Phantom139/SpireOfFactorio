@@ -50,6 +50,13 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.6 -> 0.8.61:
+* Bugfixes:
+  * Fixed the missing power tag on the upgraded Factory Floor power
+  * Logistics is now correctly included in the "Non-Generated Cards" for Deeper Research 
+  * Fixed a NullReferenceException in the Big Mining Drill when drawning a card that had a scrap cost attached to it then nulled 
+
+## Version History
 0.8.5 -> 0.8.6:
 * Bugfixes:
   * Fixed a missing localization string for the Engineer version of the Sea Glass ancient relic
@@ -81,7 +88,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Adjustment / Buff: Work For It
 	* Now also generates 1 Logistics (+) to your hand
 
-## Version History
 0.8.4.3 -> 0.8.5:
 * Notices:
   * Bumped mod required game version to v0.113.0 (Beta Release: 11/12/2026)
@@ -90,12 +96,12 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Bugfixes:
   * Fixed the bug which allowed creatures with shock resist to still be stunnable in an edge case
 
-0.8.4.2 -> 0.8.4.3:
+0.8.4.2 -> 0.8.43:
 * Bugfixes:
   * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage
   * Fixed the error with the new construct power application being a non-mutable Power instance
 
-0.8.4.1 -> 0.8.4.2
+0.8.4.1 -> 0.8.42
 * Bugfixes:
   * Fixed the bug where productivity module was counting card plays from other players.
   * Fixed a bug where Efficiency Module would count a same card played by another player against your two reduced cost cards for a turn. 
@@ -108,7 +114,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Tweaked the RNG instance used for Shock
 	* I'm testing a different RNG set to see if this addresses the longstanding bug with Shock generating the exact same roll for all creatures on the field
 
-0.8.4 -> 0.8.4.1
+0.8.4 -> 0.8.41
 * Note: Going to start doing releases like this as needed, essentially this is a "hotfix" release focues on quickly hitting the issues from a play-test session.
 * Bugfixes:
   * Adjusted the call stack in Assembled Strike for the two defect effects (Orbs) to properly await the calls, which should address the desync issue when the created orbs trigger an evoke.
@@ -887,5 +893,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Multiplayer Desyncs:
   * Recorded multiplayer desync when enemy turn began (Final boss - Queen) related to Power
 * Overload is not properly applying to the player when an Overclock construct performs an action
-* The Targeting Routine power sometimes does not properly adjust the damage a construct deals 
-* The shock display percentage is still wrong
+* The Targeting Routine power is not working correctly right now
+  * Constructs sometimes ignore this power when targeting
+  * The bonus damage does not always correctly apply 
+* The shock display percentage is incorrect when multiple enemies are shocked at once

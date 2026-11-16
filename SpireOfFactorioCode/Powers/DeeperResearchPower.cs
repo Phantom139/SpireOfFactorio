@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.CardPools;
 using MegaCrit.Sts2.Core.Models.Cards;
+using SpireOfFactorio.SpireOfFactorioCode.Cards.Token;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Powers;
 
@@ -32,7 +33,7 @@ public sealed class DeeperResearchPower : SpireOfFactorioPower
             // Remove generated "colorless" cards (e.g., Shiv, Sovereign Blade, Soul)
             if (cardPlay.Card is not Shiv && cardPlay.Card is not SovereignBlade && cardPlay.Card is not Soul
                 && cardPlay.Card is not MinionDiveBomb && cardPlay.Card is not MinionSacrifice && cardPlay.Card is not MinionStrike
-                && cardPlay.Card is not SweepingGaze)
+                && cardPlay.Card is not SweepingGaze && cardPlay.Card is not Logistics)
             {
                 List<CardModel> cards = CardFactory.GetDistinctForCombat(base.Owner.Player, ModelDb.CardPool<ColorlessCardPool>().GetUnlockedCards(base.Owner.Player.UnlockState, base.Owner.Player.RunState.CardMultiplayerConstraint), base.Amount, base.Owner.Player.RunState.Rng.CombatCardGeneration).ToList();
                 await CardPileCmd.AddGeneratedCardsToCombat(cards, PileType.Hand, base.Owner.Player);
