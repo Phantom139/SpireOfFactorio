@@ -53,6 +53,9 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 0.8.61 -> 0.8.62:
 * Bugfixes:
   * Fixed another NRE with Big Mining Drill
+  * Fixed the bugs in Targeting Routine
+	* Targeting Routine will now correctly force the enemy targing
+	* Targeting Routine will now correctly apply a damage buff to the construct firing at the targeted enemy
 * New Content
   * Assembled Strike
 	* Added a "Gold Gem" version of the card for The Fool

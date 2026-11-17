@@ -146,11 +146,13 @@ public static class ConstructCmd
                 break;
         }
 
+        //MainFile.Logger.Info($"[ConstructCmd:SelectTarget] Pre-Hook Target List: {construct.Name}: {targets.ToString()}");
         await ConstructHooks.ModifyConstructTargetingList(
             construct,
             targetType,
             targets
         );
+        //MainFile.Logger.Info($"[ConstructCmd:SelectTarget] Post-Hook Target List: {construct.Name}: {targets.ToString()}");
 
         Creature? target = targets?.FirstOrDefault();
 

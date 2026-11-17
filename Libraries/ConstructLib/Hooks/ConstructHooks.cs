@@ -139,6 +139,18 @@ public static class ConstructHooks
                 await sPower.ModifyConstructTargetingList(construct, targetingSelectionType, targetList);
             }
         }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructTargetingList(construct, targetingSelectionType, targetList);
+                }
+            }
+        }
+
     }
 
     public static async Task ModifyConstructDamageAdditive(ConstructEffectContext context)
@@ -161,6 +173,17 @@ public static class ConstructHooks
             if (power is SpireOfFactorioPower sPower)
             {
                 await sPower.ModifyConstructDamageAdditive(context);
+            }
+        }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructDamageAdditive(context);
+                }
             }
         }
     }
@@ -187,6 +210,17 @@ public static class ConstructHooks
                 await sPower.ModifyConstructDamageMultiplicative(context);
             }
         }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructDamageMultiplicative(context);
+                }
+            }
+        }
     }
 
     public static async Task ModifyConstructBlockAdditive(ConstructEffectContext context)
@@ -209,6 +243,17 @@ public static class ConstructHooks
             if (power is SpireOfFactorioPower sPower)
             {
                 await sPower.ModifyConstructBlockAdditive(context);
+            }
+        }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructBlockAdditive(context);
+                }
             }
         }
     }
@@ -235,6 +280,17 @@ public static class ConstructHooks
                 await sPower.ModifyConstructBlockMultiplicative(context);
             }
         }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructBlockMultiplicative(context);
+                }
+            }
+        }
     }
 
     public static async Task ModifyConstructPowerList(ConstructEffectContext context)
@@ -257,6 +313,17 @@ public static class ConstructHooks
             if (power is SpireOfFactorioPower sPower)
             {
                 await sPower.ModifyConstructPowerList(context);
+            }
+        }
+
+        foreach (Creature creature in construct.CombatState.Enemies)
+        {
+            foreach (var power in creature.Powers.ToList())
+            {
+                if (power is SpireOfFactorioPower sPower)
+                {
+                    await sPower.ModifyConstructPowerList(context);
+                }
             }
         }
     }
