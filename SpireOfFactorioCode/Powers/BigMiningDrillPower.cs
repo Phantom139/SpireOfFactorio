@@ -71,7 +71,7 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
             if (nEnergyCost > nScrapCost)
             {
                 // Energy > Scrap, Gain Scrap
-                Decimal scrapGain = Decimal.Ceiling(0.25m * nEnergyCost);
+                Decimal scrapGain = Decimal.Ceiling(0.5m * nEnergyCost);
                 var scrap = CustomResources<Scrap>.Get(
                     Owner.Player.PlayerCombatState!);
                 scrap.ModifyAmount((int)scrapGain);
@@ -79,7 +79,7 @@ public sealed class BigMiningDrillPower : SpireOfFactorioPower
             else
             {
                 // Scrap > Energy, Gain Energy
-                Decimal energyGain = Decimal.Ceiling(0.25m * nScrapCost);
+                Decimal energyGain = Decimal.Ceiling(0.5m * nScrapCost);
                 await PlayerCmd.GainEnergy(energyGain, Owner.Player);
             }
 

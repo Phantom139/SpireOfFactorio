@@ -117,7 +117,7 @@
   "SPIREOFFACTORIO-MINING_DRILL.title": "Mining Drill",
   "SPIREOFFACTORIO-MINING_DRILL.description": "At the start of your turn, gain {Scrap:scrapIcons()}{IfUpgraded:show:{Scrap:scrapIcons()}} for each open [blue]construct[/blue] slot you have.",
   "SPIREOFFACTORIO-BIG_MINING_DRILL.title": "Big Mining Drill",
-  "SPIREOFFACTORIO-BIG_MINING_DRILL.description": "Draw one additional card each turn. Gain 25% of the {Scrap:scrapIcons()} cost as {energyPrefix:energyIcons(1)}, or 25% of the {energyPrefix:energyIcons(1)} as {Scrap:scrapIcons()} for whichever is higher on the card drawn. X costs are ignored.",
+  "SPIREOFFACTORIO-BIG_MINING_DRILL.description": "At the start of your turn, draw one additional card. Of the higher value, gain 50% of the {Scrap:scrapIcons()} or {energyPrefix:energyIcons(1)} as the opposing resource. X costs are ignored.",
   "SPIREOFFACTORIO-LIMITLESS_PRODUCTION.title": "Limitless Production",
   "SPIREOFFACTORIO-LIMITLESS_PRODUCTION.description": "For this turn, convert the {energyPrefix:energyIcons(1)} cost of all cards in your hand to {Scrap:scrapIcons(1)}.",
   "SPIREOFFACTORIO-LOGISTICS_ROBOT.title": "Logistics Robot",

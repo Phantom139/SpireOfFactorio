@@ -85,6 +85,18 @@ public class SpeedModule : SpireOfFactorioRelic
         }
         else if (cardPlay.Card != storedCard)
         {
+            if (cardPlay.IsAutoPlay)
+            {
+                return;
+            }
+            var eCost = cardPlay.Card.EnergyCost;
+            if (!eCost.CostsX)
+            {
+                if (eCost.GetWithModifiers(CostModifiers.All) == 0)
+                {
+                    return;
+                }
+            }
             CurrentExtraPlays++;
         }
     }

@@ -16,6 +16,8 @@ namespace SpireOfFactorio.SpireOfFactorioCode.Events;
 
 public class TheRail : SpireOfFactorioEvent
 {
+    private const int _donationCost = 25;
+    private const int _startingSuccessChance = 40;
     private const int _initialHPLoss = 8;
     private int _numberOfAttempts;
     //private RelicModel reward;
@@ -67,10 +69,25 @@ public class TheRail : SpireOfFactorioEvent
         }
     }
 
+    private int _current_success_chance;
+    private int current_success_chance
+    {
+        get
+        {
+            return _current_success_chance;
+        }
+        set
+        {
+            AssertMutable();
+            _current_success_chance = value;
+        }
+    }
+
     private int CurrentHpLoss => _initialHPLoss; // + (5 * numberOfAttempts);
-    protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[4]
+    protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[5]
     {
         new DynamicVar("HpLoss", CurrentHpLoss),
+        new GoldVar("OfferingCost", _donationCost),
         new StringVar(_TopFactorioRelic),
         new StringVar(_MiddleFactorioRelic),
         new StringVar(_BottomFactorioRelic)
@@ -100,10 +117,77 @@ public class TheRail : SpireOfFactorioEvent
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
+        current_success_chance = _startingSuccessChance;
+
         List<EventOption> list = new List<EventOption>();
         list.Add(new EventOption(this, TryCross, "THE_RAIL.pages.INITIAL.options.CROSS_0").ThatDoesDamage(CurrentHpLoss));
+        if (base.Owner.Gold >= _donationCost)
+        {
+            list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE.options"));
+        }
+        else
+        {
+            list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE_FAIL.options"));
+        }
         list.Add(new EventOption(this, Resist, "THE_RAIL.pages.INITIAL.options.RESIST"));
         return list;
+    }
+
+    private async Task Donate()
+    {
+        await PlayerCmd.LoseGold(_donationCost, base.Owner);
+        current_success_chance += 10;
+        string currentStrikeCountSuffix = GetTrainStrikeSuffix(numberOfAttempts - 1);
+        string nextStrikeCountSuffix = GetTrainStrikeSuffix(numberOfAttempts);
+        string textKey;
+        if (numberOfAttempts == 0)
+        {
+            textKey = "THE_RAIL.pages.INITIAL.options.CROSS_0";
+        }
+        else
+        {
+            textKey = "THE_RAIL.pages.CROSS_" + currentStrikeCountSuffix + ".options.CROSS_" + nextStrikeCountSuffix;
+        }
+
+        List<EventOption> list = new List<EventOption>();
+        list.Add(new EventOption(this, TryCross, textKey).ThatDoesDamage(CurrentHpLoss));
+        if (base.Owner.Gold >= _donationCost)
+        {
+            list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE.options"));
+        }
+        else
+        {
+            list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE_FAIL.options"));
+        }
+        list.Add(new EventOption(this, Resist, "THE_RAIL.pages.INITIAL.options.RESIST"));
+
+        // The zeke troll warning... don't matter how much he donates... The trains are out for blood.
+        if (Owner.Character is Ironclad && Owner.RunState.Players.Count() > 1)
+        {
+            List<CardModel> zekeTrollCards = Owner.Deck.Cards
+                .Where(card => card is FightMe)
+                .ToList();
+            if (zekeTrollCards.Count() > 0)
+            {
+                SetEventState(L10NLookup("THE_RAIL.pages.DONATE_ZEKE_TROLL_WARN.description"), list);
+            }
+        }
+        else
+        {
+            if (current_success_chance < 60)
+            {
+                SetEventState(L10NLookup("THE_RAIL.pages.DONATE_FAIR.description"), list);
+            }
+            else if (current_success_chance <= 80)
+            {
+                SetEventState(L10NLookup("THE_RAIL.pages.DONATE_GOOD.description"), list);
+            }
+            else
+            {
+                SetEventState(L10NLookup("THE_RAIL.pages.DONATE_PERFECT.description"), list);
+            }
+            MainFile.Logger.Info("TheRail: Gold donated, Current success chance: " + current_success_chance.ToString());
+        }
     }
 
     private async Task TryCross()
@@ -134,8 +218,8 @@ public class TheRail : SpireOfFactorioEvent
         }
         //
         int roll = base.Rng.NextInt(0, 100);
-        MainFile.Logger.Info("TheRail: Rolled " + roll.ToString());
-        if (roll > 44)
+        MainFile.Logger.Info("TheRail: Rolled " + roll.ToString() + ", Current success chance: " + current_success_chance.ToString());
+        if (roll > current_success_chance)
         {
             // Train strike :)
             await CreatureCmd.Damage(new ThrowingPlayerChoiceContext(), base.Owner.Creature, CurrentHpLoss, ValueProp.Unblockable | ValueProp.Unpowered, null, null);
@@ -144,11 +228,20 @@ public class TheRail : SpireOfFactorioEvent
             string currentStrikeCountSuffix = GetTrainStrikeSuffix(numberOfAttempts - 1);
             string nextStrikeCountSuffix = GetTrainStrikeSuffix(numberOfAttempts);
             string textKey = "THE_RAIL.pages.CROSS_" + currentStrikeCountSuffix + ".options.CROSS_" + nextStrikeCountSuffix;
-            SetEventState(L10NLookup("THE_RAIL.pages.CROSS_" + currentStrikeCountSuffix + ".description"), new EventOption[2]
+
+            List<EventOption> list = new List<EventOption>();
+            list.Add(new EventOption(this, TryCross, textKey).ThatDoesDamage(CurrentHpLoss));
+            if (base.Owner.Gold >= _donationCost)
             {
-                new EventOption(this, TryCross, textKey).ThatDoesDamage(CurrentHpLoss),
-                new EventOption(this, Resist, "THE_RAIL.pages.INITIAL.options.RESIST")
-            });
+                list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE.options"));
+            }
+            else
+            {
+                list.Add(new EventOption(this, Donate, "THE_RAIL.pages.DONATE_FAIL.options"));
+            }
+            list.Add(new EventOption(this, Resist, "THE_RAIL.pages.INITIAL.options.RESIST"));
+
+            SetEventState(L10NLookup("THE_RAIL.pages.CROSS_" + currentStrikeCountSuffix + ".description"), list);
         }
         else
         {

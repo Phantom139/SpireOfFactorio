@@ -50,6 +50,23 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.62 -> 0.8.63:
+* Misc
+  * I added a few missing patch notes to some of the earlier 0.8.6 releases that I forgot
+* Balance
+  * Adjustment: The Rail Event
+	* The default success chance has been lowered back to 40% (Was 45%)
+	* You may now donate 25 gold to increase your chance of success by 10% repeatidly :)
+	  * Will you please the locomotive gods? Or take your chances? 
+  * Buff (Note): Big Mining Drill
+	* The resource gain has been increased from 25% to 50%
+	* Reduced the text of the localization string
+	* NOTE: The original release note did say 50%, but I forgot I reduced it to 25% for a test of the functionality. I have restored the 50% to see how it feels.
+  * Speed Module: Nerf
+	* Cards that have been played automatically and zero cost cards no longer contribute to the relic counter
+	* Note: Can't catch a break, can I? lol. This should be the final necessary adjustment to get Speed Module into a "fair" position
+
+## Version History
 0.8.61 -> 0.8.62:
 * Bugfixes:
   * Fixed another NRE with Big Mining Drill
@@ -62,7 +79,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	  * Gain 1 Arrow and 1 copy of "The Shot" (+)
 	  * Gain 1 Joy (+)
 
-## Version History
 0.8.6 -> 0.8.61:
 * Bugfixes:
   * Fixed the missing power tag on the upgraded Factory Floor power
@@ -96,11 +112,14 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Off The Press
 	  * 2 (1) Cost Skill - Uncommon (Multiplayer)
 	  * All players generate 1 (2) Logistics 
+  * UI
+	* The Engineer now has a profile image on the Character Selection Screen
+	* The Engineer's hand images have been added for multiplayer segments
 * Balance / Adjustments:
   * Adjustment / Buff: Work For It
 	* Now also generates 1 Logistics (+) to your hand
 
-0.8.4.3 -> 0.8.5:
+0.8.43 -> 0.8.5:
 * Notices:
   * Bumped mod required game version to v0.113.0 (Beta Release: 11/12/2026)
 	* A significant amount of code has been adjusted in the mod to move to the new version
@@ -108,12 +127,12 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Bugfixes:
   * Fixed the bug which allowed creatures with shock resist to still be stunnable in an edge case
 
-0.8.4.2 -> 0.8.43:
+0.8.42 -> 0.8.43:
 * Bugfixes:
   * Fixed the missing default value of multiplicative damage and block on the new constuct context which was preventing constructs from dealing damage
   * Fixed the error with the new construct power application being a non-mutable Power instance
 
-0.8.4.1 -> 0.8.42
+0.8.41 -> 0.8.42
 * Bugfixes:
   * Fixed the bug where productivity module was counting card plays from other players.
   * Fixed a bug where Efficiency Module would count a same card played by another player against your two reduced cost cards for a turn. 
@@ -905,7 +924,4 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Multiplayer Desyncs:
   * Recorded multiplayer desync when enemy turn began (Final boss - Queen) related to Power
 * Overload is not properly applying to the player when an Overclock construct performs an action
-* The Targeting Routine power is not working correctly right now
-  * Constructs sometimes ignore this power when targeting
-  * The bonus damage does not always correctly apply 
 * The shock display percentage is incorrect when multiple enemies are shocked at once

@@ -3,7 +3,7 @@
   "name": "Spire Of Factorio",
   "author": "Phantom139",
   "description": "A Factorio content mod, with a new character, cards, potions, relics, and events.",
-  "version": "v0.8.62",
+  "version": "v0.8.63",
   "min_game_version": "0.113.0",
   "has_pck": true,
   "has_dll": true,
