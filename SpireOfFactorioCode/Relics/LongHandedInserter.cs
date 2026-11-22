@@ -21,11 +21,11 @@ public class LongHandedInserter : SpireOfFactorioRelic
             return Task.CompletedTask;
         }
 
-        IEnumerable<CardModel> cards = PileType.Discard.GetPile(base.Owner).Cards;
+        IEnumerable<CardModel> cards = PileType.Exhaust.GetPile(base.Owner).Cards;
         CardModel random = cards.TakeRandom(1, base.Owner.RunState.Rng.CombatCardSelection).FirstOrDefault();
         if (random != null)
         {
-            CardPileCmd.Add(random, PileType.Draw, CardPilePosition.Top);
+            CardPileCmd.Add(random, PileType.Discard, CardPilePosition.Top);
         }
 
         return Task.CompletedTask;

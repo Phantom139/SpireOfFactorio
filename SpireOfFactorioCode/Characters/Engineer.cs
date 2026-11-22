@@ -1,6 +1,7 @@
 ﻿using BaseLib.Abstracts;
 using BaseLib.Extensions;
 using BaseLib.Utils;
+using BaseLib.Utils.NodeFactories;
 using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -63,7 +64,15 @@ public sealed class Engineer : PlaceholderCharacterModel
     public override RelicPoolModel RelicPool => ModelDb.RelicPool<EngineerRelicPool>();
     public override PotionPoolModel PotionPool => ModelDb.PotionPool<EngineerPotionPool>();
 
-    public override string CustomIconPath => "head.png".CharacterUiPath();
+    public override Control CustomIcon
+    {
+        get
+        {
+            var icon = NodeFactory<Control>.CreateFromResource(CustomIconTexturePath);
+            icon.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
+            return icon;
+        }
+    }
     public override string CustomIconTexturePath => "head.png".CharacterUiPath();
     public override string? CustomIconOutlineTexturePath => "head_outline.png".CharacterUiPath();
 

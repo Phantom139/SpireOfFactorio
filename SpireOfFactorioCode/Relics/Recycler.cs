@@ -88,6 +88,30 @@ public class Recycler : SpireOfFactorioRelic
         }
     }
 
+    public override async Task AfterCardExhausted(PlayerChoiceContext choiceContext, CardModel card, bool causedByEthereal)
+    {
+        if (card.Owner == base.Owner && base.Owner.Creature.Side == base.Owner.Creature.CombatState.CurrentSide)
+        {
+            base.Status = ((CardsRecycled == _recycleCount) ? RelicStatus.Active : RelicStatus.Normal);
+            if (CardsRecycled >= _recycleCount)
+            {
+                await TaskHelper.RunSafely(DoActivateVisuals());
+                await Cmd.Wait(0.01f);
+                CardCmd.Upgrade(card);
+                await Cmd.Wait(0.01f);
+                if (PileType.Hand.GetPile(base.Owner).Cards.Count < 10)
+                {
+                    await CardPileCmd.Add(card, PileType.Hand, CardPilePosition.Top);
+                }
+                CardsRecycled = 0;
+            }
+            else
+            {
+                CardsRecycled++;
+            }
+        }
+    }
+
     private async Task DoActivateVisuals()
     {
         IsActivating = true;

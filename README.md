@@ -55,6 +55,8 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Fixed the localization string on The Fool version of Assembled Strike missing its extra effect
   * Grid Crash now properly applies overclock to all allied constructs, not just the owning player's constructs 
   * Cards and powers that grant Logistics+ will now show a preview of Logistics+ instead of Logistics 
+  * Fixed the bug introduced in 0.8.1 with the Assembling Machine event's card preview not capturing the enchantment effects 
+  * Removed the word 'additional' which appeared twice on the Railgun Shot card 
 * New Content
   * UI
 	* Updated additional panel UI elements to use the Engineer icon instead of the Ironclad
@@ -62,11 +64,27 @@ General gist, yes I know there are a few Factorio themed mods already out there,
   * Adjustment: Gunsmith
 	* All players now add a random Engineer Rare Card from the pool to their hand.
 	* Energy Cost reduced to 2.
+	  * This is a temporary reduction (See the below note) 
 	* Note: I will likely go back to the original behavior when I figure out the non-blocking nature of the context system, but for now this should stop those awkward moments when it takes Jensen 30+ seconds to choose his card >:|
+	  * Get called out in the patch notes son... lol. 
+  * Adjustment / Buff: Long-Handed Inserter
+	* Changed to: At the end of your turn, move a random card from your exhaust pile to your discard pile.
+	* NOTE: The first relic made for this mod, and unfortunately one that has been "power crept" by all the others. This tweak should give it a fun little gimmick to make it more interesting.
+  * Adjustment / Buff: Recycler
+	* Cards that exhaust now also contribute to the relic counter and can be upgraded / re-added by the relic.
+	* NOTE: In the same spirit as the Long-Handed Inserter buff, this should make Recycler more useful for the characters that struggle with discard but are better at exhaust. 
+  * Adjustment / Buff: Portable Fission Reactor
+	* Changed to: At the start of combat auto-play all power cards in your deck, lose 3 strength and 3 dexterity.
+	* NOTE: I still think this has almost a zero take rate, so getting to the point on the power play effect should make this a bit more potent. I did tweak up the penalty a slight bit in response since this could be incredibly powerful.
   * Buff: Convey
 	* Now Gains 7 (10) Block and 2 (3) Logistics
 	* Note: This card was essentially pointless with Work For It giving slightly more block, scrap, and the ability to get Logistics+. This change will get the power a bit closer and show the focus of this card to be more towards getting more copies of Logistics
-
+* Misc
+  * Adjusted version numbering internally
+	* This version internally will read 0.8.70 to bump ordering over 0.8.63
+  * Adjusted the logic in Deeper Research to exclude cards flagged as "Token" insead of just a list of "Generated cards".
+	* You should not notice any behavior change, but this should "future proof" the card in the event new character(s) use Token generated cards to also match the current implementation.
+	
 ## Version History
 0.8.62 -> 0.8.63:
 * Misc

@@ -1,6 +1,6 @@
 {
   "SPIREOFFACTORIO-LONG_HANDED_INSERTER.title": "Long-Handed Inserter",
-  "SPIREOFFACTORIO-LONG_HANDED_INSERTER.description": "At the end of your turn, put a random card from your discard pile on the top of your draw pile",
+  "SPIREOFFACTORIO-LONG_HANDED_INSERTER.description": "At the end of your turn, put a random card from your exhaust pile into your discard pile",
   "SPIREOFFACTORIO-LONG_HANDED_INSERTER.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-ROCKET_FUEL.title": "Rocket Fuel",
@@ -8,7 +8,7 @@
   "SPIREOFFACTORIO-ROCKET_FUEL.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.title": "Portable Fission Reactor",
-  "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.description": "All power cards no longer cost {Energy:energyIcons()}, lose [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold] and [blue]{StrengthPower}[/blue] [gold]Strength[/gold] at the start of combat.",
+  "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.description": "At the start of combat, auto-play all power cards in your deck, lose [blue]{DexterityPower}[/blue] [gold]Dexterity[/gold] and [blue]{StrengthPower}[/blue] [gold]Strength[/gold].",
   "SPIREOFFACTORIO-PORTABLE_FISSION_REACTOR.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-PORTABLE_ENERGY_SHIELD.title": "Portable Energy Shield",
@@ -36,7 +36,7 @@
   "SPIREOFFACTORIO-UTILITY_SCIENCE_PACK.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-RECYCLER.title": "Recycler",
-  "SPIREOFFACTORIO-RECYCLER.description": "Whenever you discard a card, increase the counter on this relic. At [blue]{Recycle}[/blue] stacks, the next discarded card will be upgraded and re-added to your hand. The stack count on the relic will then reset.",
+  "SPIREOFFACTORIO-RECYCLER.description": "Whenever you discard or exhaust a card, increase the counter on this relic. At [blue]{Recycle}[/blue] stacks, the next discarded or exhausted card will be upgraded and re-added to your hand. The stack count on the relic will then reset.",
   "SPIREOFFACTORIO-RECYCLER.flavor": "[red]Details for this relic will be revealed in the future...[/red]",
 
   "SPIREOFFACTORIO-FIRST_GEAR.title": "First Gear",

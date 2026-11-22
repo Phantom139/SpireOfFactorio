@@ -376,10 +376,42 @@ public class TheAssemblingMachine : SpireOfFactorioEvent
 
     public CardHoverTip GetEnhancementHoverTip(EnchantmentModel rider)
     {
-        AssembledStrike assembledStrike = base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
+        AssembledStrike assembledStrike =
+            base.Owner.RunState.CreateCard<AssembledStrike>(base.Owner);
+
+        // Configure the card first.
         assembledStrike.AssemblingMachineColor = ChosenCardColor;
-        assembledStrike.AssemblingMachineRider = GetCardRider(ChosenCardColor);
-        assembledStrike.Enchantment = rider;
+        assembledStrike.AssemblingMachineRider =
+            GetCardRider(ChosenCardColor);
+
+        // Apply the selected enchantment.
+        switch (rider)
+        {
+            case Sharp:
+                CardCmd.Enchant<Sharp>(assembledStrike, 3m);
+                break;
+
+            case Efficient:
+                CardCmd.Enchant<Efficient>(assembledStrike, 1m);
+                break;
+
+            case Replicating:
+                CardCmd.Enchant<Replicating>(assembledStrike, 1m);
+                break;
+
+            default:
+                MainFile.Logger.Warn(
+                    $"[TheAssemblingMachine] Unknown enhancement: {rider.Id}");
+                break;
+        }
+
+        MainFile.Logger.Info(
+            $"[TheAssemblingMachine] Enchantment: {assembledStrike.Enchantment?.Id}");
+
+        MainFile.Logger.Info(
+            $"[TheAssemblingMachine] Enchantment amount: {assembledStrike.Enchantment?.Amount}");
+
+        // Construct the hover tip only after modifications.
         return new CardHoverTip(assembledStrike);
     }
 
