@@ -50,6 +50,24 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.63 -> 0.8.7:
+* Bugfixes:
+  * Fixed the localization string on The Fool version of Assembled Strike missing its extra effect
+  * Grid Crash now properly applies overclock to all allied constructs, not just the owning player's constructs 
+  * Cards and powers that grant Logistics+ will now show a preview of Logistics+ instead of Logistics 
+* New Content
+  * UI
+	* Updated additional panel UI elements to use the Engineer icon instead of the Ironclad
+* Balance
+  * Adjustment: Gunsmith
+	* All players now add a random Engineer Rare Card from the pool to their hand.
+	* Energy Cost reduced to 2.
+	* Note: I will likely go back to the original behavior when I figure out the non-blocking nature of the context system, but for now this should stop those awkward moments when it takes Jensen 30+ seconds to choose his card >:|
+  * Buff: Convey
+	* Now Gains 7 (10) Block and 2 (3) Logistics
+	* Note: This card was essentially pointless with Work For It giving slightly more block, scrap, and the ability to get Logistics+. This change will get the power a bit closer and show the focus of this card to be more towards getting more copies of Logistics
+
+## Version History
 0.8.62 -> 0.8.63:
 * Misc
   * I added a few missing patch notes to some of the earlier 0.8.6 releases that I forgot
@@ -66,7 +84,6 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Cards that have been played automatically and zero cost cards no longer contribute to the relic counter
 	* Note: Can't catch a break, can I? lol. This should be the final necessary adjustment to get Speed Module into a "fair" position
 
-## Version History
 0.8.61 -> 0.8.62:
 * Bugfixes:
   * Fixed another NRE with Big Mining Drill

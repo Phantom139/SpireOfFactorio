@@ -1,6 +1,7 @@
 ﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -25,12 +26,16 @@ public sealed class GridCrash : EngineerCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var pets = base.Owner.Creature.Pets;
-        foreach (Creature pet in pets)
+        var players = Owner.Creature.CombatState.Players;
+        foreach (Player player in players)
         {
-            if (pet.Monster is ConstructModel)
+            var pets = player.Creature.Pets;
+            foreach (Creature pet in pets)
             {
-                await PowerCmd.Apply<OverclockPower>(choiceContext, pet, DynamicVars["Overclock"].BaseValue, base.Owner.Creature, cardPlay.Card);
+                if (pet.Monster is ConstructModel)
+                {
+                    await PowerCmd.Apply<OverclockPower>(choiceContext, pet, DynamicVars["Overclock"].BaseValue, base.Owner.Creature, cardPlay.Card);
+                }
             }
         }
     }

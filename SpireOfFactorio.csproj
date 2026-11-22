@@ -138,4 +138,6 @@
         <Message Text="Exporting Godot .pck to mods folder" Importance="high" />
         <Exec Command="&quot;$(GodotPath)&quot; --headless --export-pack &quot;BasicExport&quot; &quot;$(ModsPath)$(MSBuildProjectName)/$(MSBuildProjectName).pck&quot;" EnvironmentVariables="IsInnerGodotExport=true;MSBUILDDISABLENODEREUSE=1" ContinueOnError="WarnAndContinue" />
     </Target>
+
+    <ProjectExtensions><VisualStudio><UserProperties spireoffactorio_4localization_4eng_4cards_1json__JsonSchema="https://api.kestra.io/v1/plugins/schemas/flow" /></VisualStudio></ProjectExtensions>
 </Project>

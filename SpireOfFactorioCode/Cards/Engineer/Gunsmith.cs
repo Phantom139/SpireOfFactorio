@@ -1,8 +1,8 @@
 ﻿using BaseLib.Abstracts;
-using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using SpireOfFactorio.SpireOfFactorioCode.Util;
@@ -15,7 +15,7 @@ public sealed class Gunsmith : EngineerCard
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 
-    public Gunsmith() : base(3, CardType.Skill, CardRarity.Rare, TargetType.Self)
+    public Gunsmith() : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
     }
 
@@ -33,10 +33,7 @@ public sealed class Gunsmith : EngineerCard
         {
             outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<RainOfTrash>(), p));
         }
-        else
-        {
-            outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<Overheat>(), p));
-        }
+        outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<Overheat>(), p));
         if (IsUpgraded || p.Character is Characters.Engineer)
         {
             outputCards.Add(p.Creature.CombatState.CreateCard(ModelDb.Card<ShockAndAwe>(), p));
@@ -73,12 +70,16 @@ public sealed class Gunsmith : EngineerCard
             }
 
             CardPile playerHand = PileType.Hand.GetPile(p);
+            CardModel toGive = options.TakeRandom(1, p.PlayerRng.Rewards).First();
+            await CardPileCmd.Add(toGive, playerHand, CardPilePosition.Top);
             // NOTE: May need to change the Choice Context, using the choiceContext object as is blocks all other player actions until the current Gunsmith stack is done.
+            /**
             List<CardModel> selection = (await CardSelectCmd.FromSimpleGrid(new BlockingPlayerChoiceContext(), options, p, new CardSelectorPrefs(base.SelectionScreenPrompt, 1))).ToList();
             foreach (CardModel option in selection)
             {
                 CardPileAddResult? addedCard = await CardPileCmd.Add(option, playerHand, CardPilePosition.Top);
             }
+            **/
         }
     }
 

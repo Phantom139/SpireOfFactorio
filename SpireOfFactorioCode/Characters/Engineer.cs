@@ -63,7 +63,9 @@ public sealed class Engineer : PlaceholderCharacterModel
     public override RelicPoolModel RelicPool => ModelDb.RelicPool<EngineerRelicPool>();
     public override PotionPoolModel PotionPool => ModelDb.PotionPool<EngineerPotionPool>();
 
+    public override string CustomIconPath => "head.png".CharacterUiPath();
     public override string CustomIconTexturePath => "head.png".CharacterUiPath();
+    public override string? CustomIconOutlineTexturePath => "head_outline.png".CharacterUiPath();
 
     public override string CustomEnergyCounterPath => "res://SpireOfFactorio/scenes/engineer_energy_counter.tscn";
 

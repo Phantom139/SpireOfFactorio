@@ -14,8 +14,13 @@ public sealed class WorkForIt : EngineerCard
 {
     public override bool GainsBlock => true;
     protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(8m, ValueProp.Move), new DynamicVar("Scrap", 1m)];
-
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromCard<Logistics>()];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips
+    {
+        get
+        {
+            return [HoverTipFactory.FromCard<Logistics>(IsUpgraded)];
+        }
+    }
 
     public WorkForIt() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {

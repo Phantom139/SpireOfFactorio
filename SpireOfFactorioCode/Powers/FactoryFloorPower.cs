@@ -2,6 +2,7 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using SpireOfFactorio.SpireOfFactorioCode.Cards.Token;
 using SpireOfFactorio.SpireOfFactorioCode.Util;
 
@@ -18,6 +19,8 @@ public sealed class FactoryFloorPower : SpireOfFactorioPower
     }
 
     public override PowerStackType StackType => PowerStackType.Single;
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromCard<Logistics>()];
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
