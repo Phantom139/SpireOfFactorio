@@ -54,6 +54,10 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 * Bugfixes
   * Fixed the bug where Portable Fission Reactor was trying to play the power cards too soon, resulting in the relic not properly functioning
   * Fixed an edge-case error with the Logistics Robot that could lead to a discard pile desync issue
+  * Adjusted the interaction patch logic for ConstructLib to allow other players on the same side to see all friendly constructs
+	* This needs testing, but it should allow all construct interaction cards to now properly target allied constructs 
+* Misc:
+  * Brought up ConstructLib to parity with the original MinionLib 
 	
 ## Version History
 0.8.63 -> 0.8.7:

@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
 using SpireOfFactorio.Libraries.ConstructLib.Commands;
@@ -30,15 +32,40 @@ public static class ConstructAddPatch
     }
 }
 
-[HarmonyPatch(typeof(NCreature), nameof(NCreature.UpdateInteractability))]
+[HarmonyPatch(typeof(NCreature), nameof(NCreature.SetIsInteractableInternal))]
 public static class ConstructInteractablePatch
 {
     [HarmonyPrefix]
-    private static void Prefix(NCreature __instance, ref bool changeVisibilityImmediately)
+    private static void Prefix(
+        NCreature __instance,
+        ref bool on,
+        bool ___interactionAllowedBecauseAlive)
     {
-        if (__instance.Entity.Monster is ConstructModel && LocalContext.IsMe(__instance.Entity.PetOwner))
+        Creature construct = __instance.Entity;
+
+        if (___interactionAllowedBecauseAlive &&
+            construct.IsAlive &&
+            construct.Monster is ConstructModel &&
+            construct.PetOwner != null &&
+            construct.CombatState is ICombatState combatState)
         {
-            changeVisibilityImmediately = true;
+            Player? localPlayer = LocalContext.GetMe(combatState);
+
+            if (localPlayer == null)
+                return;
+
+            foreach (CombatSide side in Enum.GetValues<CombatSide>())
+            {
+                IReadOnlyList<Creature> creatures =
+                    combatState.GetCreaturesOnSide(side);
+
+                if (creatures.Contains(localPlayer.Creature) &&
+                    creatures.Contains(construct))
+                {
+                    on = true;
+                    break;
+                }
+            }
         }
     }
 }
