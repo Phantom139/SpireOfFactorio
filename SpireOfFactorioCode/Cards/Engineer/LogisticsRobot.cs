@@ -41,8 +41,6 @@ public sealed class LogisticsRobot : EngineerCard
             CopiedCard.Affliction = item.Affliction;
             CopiedCard.CurrentUpgradeLevel = item.CurrentUpgradeLevel;
             CopiedCard.Enchantment = item.Enchantment;
-
-            CardModel ClonedCard = item.CreateClone();
             // The original card being "moved" has to be dropped from the original player's deck, unless upgraded in which case we use a "trick" to "move" it.
             await CardPileCmd.RemoveFromCombat(item);
             await CardPileCmd.Add(CopiedCard, playerHand, CardPilePosition.Top);
@@ -57,11 +55,23 @@ public sealed class LogisticsRobot : EngineerCard
 
             if (IsUpgraded)
             {
-                // Guarentee upgrade the copied card
                 CardCmd.Upgrade(CopiedCard);
-                // For the upgraded version we take a copy of the original card and place it on the top of the player's deck.
+
+                CardModel ClonedCard =
+                    base.Owner.Creature.CombatState.CreateCard(
+                        item.CanonicalInstance,
+                        base.Owner);
+
+                ClonedCard.Affliction = item.Affliction;
+                ClonedCard.CurrentUpgradeLevel = item.CurrentUpgradeLevel;
+                ClonedCard.Enchantment = item.Enchantment;
+
                 CardCmd.Upgrade(ClonedCard);
-                await CardPileCmd.Add(ClonedCard, PileType.Draw, CardPilePosition.Top);
+
+                await CardPileCmd.Add(
+                    ClonedCard,
+                    PileType.Draw,
+                    CardPilePosition.Top);
             }
         }
     }

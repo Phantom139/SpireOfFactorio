@@ -1,11 +1,13 @@
-﻿using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Rooms;
 
 namespace SpireOfFactorio.SpireOfFactorioCode.Relics;
 
@@ -35,20 +37,47 @@ public class PortableFissionReactor : SpireOfFactorioRelic
     }
     **/
 
-    public override async Task AfterRoomEntered(AbstractRoom room)
+    public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
     {
-        if (room is CombatRoom)
+        if (side != CombatSide.Player)
         {
-            await PowerCmd.Apply<DexterityPower>(new ThrowingPlayerChoiceContext(), base.Owner.Creature, -DynamicVars.Dexterity.BaseValue, base.Owner.Creature, null);
-            await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), base.Owner.Creature, -DynamicVars.Strength.BaseValue, base.Owner.Creature, null);
+            return;
+        }
+        Player player = base.Owner;
+        if (player.PlayerCombatState.TurnNumber != 1)
+        {
+            return;
+        }
+        // Apply the stat penalties.
+        await PowerCmd.Apply<DexterityPower>(
+            new ThrowingPlayerChoiceContext(),
+            player.Creature,
+            -DynamicVars.Dexterity.BaseValue,
+            player.Creature,
+            null);
 
-            foreach (CardModel card in Owner.Deck.Cards)
-            {
-                if (card.Type == CardType.Power)
-                {
-                    await CardCmd.AutoPlay(new BlockingPlayerChoiceContext(), card, base.Owner.Creature);
-                }
-            }
+        await PowerCmd.Apply<StrengthPower>(
+            new ThrowingPlayerChoiceContext(),
+            player.Creature,
+            -DynamicVars.Strength.BaseValue,
+            player.Creature,
+            null);
+
+        // Snapshot all Power cards in the combat draw pile.
+        List<CardModel> powerCards = PileType.Draw
+            .GetPile(player)
+            .Cards
+            .Where(c => c.Type == CardType.Power)
+            .ToList();
+
+        foreach (CardModel card in powerCards)
+        {
+            await CardPileCmd.Add(card, PileType.Play);
+
+            await CardCmd.AutoPlay(
+                new BlockingPlayerChoiceContext(),
+                card,
+                null);
         }
     }
 

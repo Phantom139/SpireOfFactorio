@@ -50,6 +50,12 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* Not sure what I would do for additional Factorio themed events, but it's a possibility  
 
 ### Changelog (Current)
+0.8.7 -> 0.8.71:
+* Bugfixes
+  * Fixed the bug where Portable Fission Reactor was trying to play the power cards too soon, resulting in the relic not properly functioning
+  * Fixed an edge-case error with the Logistics Robot that could lead to a discard pile desync issue
+	
+## Version History
 0.8.63 -> 0.8.7:
 * Bugfixes:
   * Fixed the localization string on The Fool version of Assembled Strike missing its extra effect
@@ -84,8 +90,7 @@ General gist, yes I know there are a few Factorio themed mods already out there,
 	* This version internally will read 0.8.70 to bump ordering over 0.8.63
   * Adjusted the logic in Deeper Research to exclude cards flagged as "Token" insead of just a list of "Generated cards".
 	* You should not notice any behavior change, but this should "future proof" the card in the event new character(s) use Token generated cards to also match the current implementation.
-	
-## Version History
+
 0.8.62 -> 0.8.63:
 * Misc
   * I added a few missing patch notes to some of the earlier 0.8.6 releases that I forgot
